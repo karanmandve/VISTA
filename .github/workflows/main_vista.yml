@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'Vista'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ED2299FCB6C04798BE61BD68A5F0197B }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_95083CA9455D406C842AA224507901F3 }}
