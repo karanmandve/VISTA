@@ -11,8 +11,8 @@ def homepage():
 
 @app.route("/dashboard")
 def dashboard():
-    # return render_template("./dashboard_for_teachers/dashboard.html")
-    return "<h1>karan</h1>"
+    return render_template("dashboard_for_teachers/dashboard.html")
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
