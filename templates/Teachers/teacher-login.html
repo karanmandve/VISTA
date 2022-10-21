@@ -10,24 +10,25 @@
 <body>
     <div class="container">
         <div id="left">
-        <form action="">
+        <form action="{{ url_for('dashboard') }}" method="POST">
             <center><h2><b>LOGIN TO YOUR ACCOUNT</b></h2></center>
             <br>
             <br>
-            <div class="group">      
-                <input type="text" required>
+            <div class="group">
+                {{ dashboard_login_form.csrf_token }}
+                {{ dashboard_login_form.id }}
                 <span class="highlight"></span>
                 <span class="bar"></span>
                 <label>Teacher ID</label>
               </div>
               
               <div class="group">      
-                <input type="password" required>
+                {{ dashboard_login_form.password }}
                 <span class="highlight"></span>
                 <span class="bar"></span>
                 <label>Password</label>
               </div>
-              <a href="./dashboard"><div class="btn" >login</div></a>
+              {{ dashboard_login_form.submit(class="btn") }}
               <br><br><br><br>
               <a href="/"><- GoTo Home</a>
             </form>
