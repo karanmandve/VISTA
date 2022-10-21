@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/create_test.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="nav-wrapper">
+        <nav class="navbar">
+            <img src="../../static/tem.jpeg" alt="Company Logo">
+            <ul class="nav no-search">
+                <li class="nav-item"><a href="#">About</a></li>
+                <li class="nav-item"><a href="#">Contact Us</a></li>
+            </ul>
+        </nav>
+    </div>
+    <form action="">
+        <br>
+        <div class="top_head">
+            <input type="text" name="" id="" value="Untitled test" style="font-size: 2em;">
+            <input type="text" name="" id="" value="Test description" style="padding:15px 20px;">
+        </div>
+        <br>
+        <div id="que_container">
+            <div class="que" id="1">
+                <input class="que_title" type="text" name="" id="" value="untitled question">
+                <br>
+                <br>
+                <input type="radio" name="op1" id="">
+                <label for="op1"><input type="text" placeholder="option 1"></label>
+                <br>
+                <input type="radio" name="op1" id="">
+                <label for="op2"><input type="text" placeholder="option 2"></label>
+                <br>
+                <input type="radio" name="op1" id="">
+                <label for="op3"><input type="text" placeholder="option 3"></label>
+                <br>
+                <input type="radio" name="op1" id="">
+                <label for="op4"><input type="text" placeholder="option 4"></label>
+                <br>
+                <br>
+            </div>
+        </div>
+       
+        <div style="display: flex; width: 45vw; padding: 15px 26px;height: inherit;justify-content: space-between;">
+            <div class="btn" onclick="cancel()"><-Cancel</div></a>
+            <div class="btn" onclick="done()">Done</div></a>
+        </div>
+        
+        <div id="btn_del" onclick="del()"><i class="fa fa-minus" style="font-size:20px;color:#3498db;"></i></div>
+        <div id="btn_add" onclick="add()"><i class="fa fa-plus" style="font-size:20px;color:#3498db;"></i></div>
+        
+    </form>
+    <script>
+        var count=1;
+        
+
+    function add(){
+       count++;
+       let form=document.getElementById("que_container");
+       let node=form.lastElementChild;
+       let copy=node.cloneNode(true);
+       copy.setAttribute("id",count);
+    
+       copy.childNodes[1].value="untitled question";
+
+       copy.childNodes[7].name=count+"op1";
+       copy.childNodes[7].checked=false;
+       copy.childNodes[9].childNodes[0].value="";
+       copy.childNodes[9].for=count+"op1";
+
+       copy.childNodes[13].name=count+"op1";
+       copy.childNodes[13].checked=false;
+       copy.childNodes[15].childNodes[0].value="";
+       copy.childNodes[15].for=count+"op1";
+
+       copy.childNodes[19].name=count+"op1";
+       copy.childNodes[19].checked=false;
+       copy.childNodes[21].childNodes[0].value="";
+       copy.childNodes[21].for=count+"op1";
+
+       copy.childNodes[25].name=count+"op1";
+       copy.childNodes[25].checked=false;
+       copy.childNodes[27].childNodes[0].value="";
+       copy.childNodes[27].for=count+"op1";
+
+       console.log(copy);
+       form.appendChild(copy);
+       window.scrollTo(0,document.body.clientHeight);
+    }
+    function del(){
+        let form=document.getElementById("que_container");
+        if(form.childElementCount>1){
+            form.removeChild(form.lastChild);
+            count--;
+        }
+    }
+    function cancel(){
+        let action= confirm("Do you really want to cancel this test");
+        if(action){
+            window.location.replace("./dashboard") ;
+        }
+    }
+    function done(){
+        let action= confirm("Do you really want to save this test");
+        if(action){
+            window.location.replace("./dashboard") ;
+        }
+    }
+    </script>
+</body>
+</html>

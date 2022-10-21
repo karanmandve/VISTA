@@ -13,6 +13,9 @@ def homepage():
 def dashboard():
     return render_template("Dashboard_for_teachers/dashboard.html")
     
+@app.route("/create_test")
+def create_test():
+    return render_template("Dashboard_for_teachers/create_test.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

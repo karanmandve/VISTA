@@ -1,0 +1,136 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: #dce6e7;
+}
+a{
+  color:black;
+  text-decoration: none;
+}
+.navbar {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+    height:10vh;
+    overflow: hidden;
+  }
+  .nav-wrapper{
+    box-shadow: 0px 3px 10px -4px grey;
+    background: white;
+  }
+  .navbar img {
+    height: 10vh;
+    width: auto;
+    justify-self: start;
+    margin-left: 20px;
+  }
+  
+  .navbar ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+    justify-self: end;
+    
+  }
+  
+  .nav-item a {
+    color: #000;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-decoration: none;
+    transition: color 0.3s ease-out;
+  }
+  
+  .nav-item a:hover {
+    color: #3498db;
+  }
+  /* test */
+  form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .top_head{
+    border-radius: 7px;
+    border-top: 9px solid lightblue;
+    background: white;
+    width: 45vw;
+    height: 18vh;
+    padding: 25px 0px;
+  }
+  .top_head>input{
+    outline: none;
+    display: block;
+    border: none;
+    width: inherit;
+    padding:0 20px;
+  }
+  label>input{
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgba(187, 187, 187, 0.441);
+    padding-top: 15px;
+    width: 20vw;
+  }
+  
+  #que_container{
+    width:45vw;
+    background:white;
+    border-radius: 7px;
+    padding: 20px;
+  }
+  .que_title{
+    font-size: 1em;
+    width: 40vw;
+    padding-left: 19px;
+    height: 5vh;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid gray;
+    background: rgb(241 241 241);
+  }
+  label>input:focus,.que_title:focus{
+    border-bottom: 2px solid #3498db;
+    
+  }
+ /* add button */
+ .btn{
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 14px;
+    text-align: center;
+    background:#3498db;
+    width: 88px;
+    height:30px ;
+ }
+ #btn_add{
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    position: relative;
+    left: -25vw;
+    top: -18vh;
+    text-align: center;
+    line-height: 40px;
+ }
+ #btn_del{
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    position: relative;
+    left: -25vw;
+    top: -20vh;
+    text-align: center;
+    line-height: 40px;
+ }
+ #btn_add:hover, #btn_del:hover,.btn:hover{
+    box-shadow: 0 9px 7px -6px gray;
+ }

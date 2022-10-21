@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/dashboard.css">
+    <title>Document</title>
 </head>
+
 <body>
-    <h1 style="text-align:center">DASHBOARD</h1>
+    <div class="nav-wrapper">
+        <nav class="navbar">
+            <img src="../../static/tem.jpeg" alt="Company Logo">
+            <ul class="nav no-search">
+                <li class="nav-item"><a href="#">About</a></li>
+                <li class="nav-item"><a href="#">Contact Us</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="new">
+        <div class="title">Create new test</div>
+        <a href="./create_test">
+            <div class="box">
+                <div class="up">
+                    <div class="plus"></div>
+                </div>
+                <div class="down">Blank</div>
+            </div>
+        </a>
+    </div>
+    <div id="recent">
+        <div class="title" style="margin-top:20px;">No Recent Test</div>
+        <div id="test_container">
+        </div>
+    </div>
+
 </body>
+
 </html>
