@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect,request
 from flask_cors import CORS
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, PasswordField, SubmitField, validators
@@ -48,6 +48,7 @@ def dashboard():
 
 @app.route("/create_test")
 def create_test():
+   
     return render_template("Dashboard_for_teachers/create_test.html")
 
 @app.route("/form_submit", methods=["POST"])
