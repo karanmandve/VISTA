@@ -12,7 +12,7 @@ cors = CORS(app)
 
 
 DASHBOARD_LOGIN_ID = "root"
-DASHBOARD_LOGIN_PASSOWRD = "root"
+DASHBOARD_LOGIN_PASSWORD = "root"
 
 
 
@@ -28,7 +28,7 @@ def homepage():
     return render_template("index.html")
 
 
-@app.route("/teacher-login", methods=["GET"])
+@app.route("/teacher-login")
 def teacher():
     dashboard_login_form = LoginForm()
 
@@ -40,7 +40,7 @@ def dashboard():
     dashboard_login_form = LoginForm()
 
     if dashboard_login_form.validate_on_submit():
-        if dashboard_login_form.id.data == "root" and dashboard_login_form.password.data == "root":
+        if dashboard_login_form.id.data == DASHBOARD_LOGIN_ID and dashboard_login_form.password.data == DASHBOARD_LOGIN_PASSWORD:
             return render_template("Dashboard_for_teachers/dashboard.html")
 
     return redirect(url_for('teacher'))
@@ -48,24 +48,19 @@ def dashboard():
 
 @app.route("/create_test")
 def create_test():
+    csrf = LoginForm()
    
-    return render_template("Dashboard_for_teachers/create_test.html")
+    return render_template("Dashboard_for_teachers/create_test.html", csrf=csrf)
 
-@app.route("/form_submit", methods=["POST"])
+
+@app.route("/form-submit", methods=["POST"])
 def form_submit():
-    # print(request.form)
-    print(request.form["test_title"]) #test name
-    print(request.form["test_desc"]) #test description
-    no=(len(request.form)-2)//6
-    for x in range(1,no+1):
-        print(request.form["q"+str(x)]) #question
-        print(request.form[str(x)+"option1"]) #option
-        print(request.form[str(x)+"option2"]) #option
-        print(request.form[str(x)+"option3"]) #option
-        print(request.form[str(x)+"option4"]) #option
-        print('anser is : '+ request.form[str(x)+"answer"]) #answer
+    form_data = request.form.to_dict(flat=False)
+    print(form_data)
         
     return render_template("Dashboard_for_teachers/dashboard.html")
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
