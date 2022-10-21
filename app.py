@@ -48,7 +48,6 @@ def dashboard():
 
 @app.route("/create_test")
 def create_test():
-   
     return render_template("Dashboard_for_teachers/create_test.html")
 
 @app.route("/form_submit", methods=["POST"])
