@@ -9,6 +9,10 @@ cors = CORS(app)
 def homepage():
     return render_template("index.html")
 
+@app.route("/teacher")
+def teacher():
+    return render_template("Teachers/login.html")
+
 @app.route("/dashboard")
 def dashboard():
     return render_template("Dashboard_for_teachers/dashboard.html")
