@@ -18,29 +18,29 @@
             </ul>
         </nav>
     </div>
-    <form action="">
+    <form action="./form_submit" method="post" id="form">
         <br>
         <div class="top_head">
-            <input type="text" name="" id="" value="Untitled test" style="font-size: 2em;">
-            <input type="text" name="" id="" value="Test description" style="padding:15px 20px;">
+            <input type="text" name="test_title" id="" value="Untitled test" style="font-size: 2em;">
+            <input type="text" name="test_desc" id="" value="Test description" style="padding:15px 20px;">
         </div>
         <br>
         <div id="que_container">
             <div class="que" id="1">
-                <input class="que_title" type="text" name="" id="" value="untitled question">
+                <input class="que_title" type="text" name="q1" id="" value="untitled question">
                 <br>
                 <br>
-                <input type="radio" name="op1" id="">
-                <label for="op1"><input type="text" placeholder="option 1"></label>
+                <input type="radio" name="1answer" value="1">
+                <label for="op1"><input type="text" placeholder="option 1" name="1option1"></label>
                 <br>
-                <input type="radio" name="op1" id="">
-                <label for="op2"><input type="text" placeholder="option 2"></label>
+                <input type="radio" name="1answer" value="2">
+                <label for="op2"><input type="text" placeholder="option 2" name="1option2"></label>
                 <br>
-                <input type="radio" name="op1" id="">
-                <label for="op3"><input type="text" placeholder="option 3"></label>
+                <input type="radio" name="1answer" value="3">
+                <label for="op3"><input type="text" placeholder="option 3" name="1option3"></label>
                 <br>
-                <input type="radio" name="op1" id="">
-                <label for="op4"><input type="text" placeholder="option 4"></label>
+                <input type="radio" name="1answer" value="4">
+                <label for="op4"><input type="text" placeholder="option 4" name="1option4"></label>
                 <br>
                 <br>
             </div>
@@ -67,28 +67,37 @@
        copy.setAttribute("id",count);
     
        copy.childNodes[1].value="untitled question";
+       copy.childNodes[1].name="q"+count;
 
-       copy.childNodes[7].name=count+"op1";
+       copy.childNodes[7].name=count+"answer";
        copy.childNodes[7].checked=false;
+       copy.childNodes[7].value=1;
        copy.childNodes[9].childNodes[0].value="";
-       copy.childNodes[9].for=count+"op1";
+       copy.childNodes[9].childNodes[0].name=count+"option1";
+       copy.childNodes[9].for=count+"answer";
 
-       copy.childNodes[13].name=count+"op1";
+       copy.childNodes[13].name=count+"answer";
        copy.childNodes[13].checked=false;
+       copy.childNodes[13].value=2;
        copy.childNodes[15].childNodes[0].value="";
+       copy.childNodes[15].childNodes[0].name=count+"option2";
        copy.childNodes[15].for=count+"op1";
 
-       copy.childNodes[19].name=count+"op1";
+       copy.childNodes[19].name=count+"answer";
        copy.childNodes[19].checked=false;
+       copy.childNodes[19].value=3;
        copy.childNodes[21].childNodes[0].value="";
+       copy.childNodes[21].childNodes[0].name=count+"option3";
        copy.childNodes[21].for=count+"op1";
 
-       copy.childNodes[25].name=count+"op1";
+       copy.childNodes[25].name=count+"answer";
        copy.childNodes[25].checked=false;
+       copy.childNodes[25].value=4;
        copy.childNodes[27].childNodes[0].value="";
+       copy.childNodes[27].childNodes[0].name=count+"option4";
        copy.childNodes[27].for=count+"op1";
 
-       console.log(copy);
+       console.log();
        form.appendChild(copy);
        window.scrollTo(0,document.body.clientHeight);
     }
@@ -108,7 +117,9 @@
     function done(){
         let action= confirm("Do you really want to save this test");
         if(action){
-            window.location.replace("./dashboard") ;
+            let form=document.getElementById("form");
+            form.submit();
+            // window.location.replace("./dashboard") ;
         }
     }
     </script>
