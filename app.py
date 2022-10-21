@@ -11,6 +11,11 @@ def homepage():
     return render_template("index.html")
 
 
+@app.route("/teacher-login")
+def teacher():
+    return render_template("Teachers/login.html")
+
+
 @app.route("/dashboard")
 def dashboard():
     return render_template("Dashboard_for_teachers/dashboard.html")
@@ -19,7 +24,6 @@ def dashboard():
 @app.route("/create_test")
 def create_test():
     return render_template("Dashboard_for_teachers/create_test.html")
-
 
 
 if __name__ == "__main__":
