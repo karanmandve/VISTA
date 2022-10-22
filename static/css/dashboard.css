@@ -66,12 +66,13 @@ a{
     margin: 40px 0px 0px 12%;   
     display: grid;
     width:26vh;
-    border-radius:8px ;
+    border-radius: 10px;
     grid-template-rows: 4fr 1fr;
+    transition: all 0.2s;
   }
   .box:hover{
     background: rgb(145, 145, 145);
-    transform: translate(2px ,2px);
+    transform: scale(1.01);
   }
  .up{
     display: flex;
@@ -99,10 +100,34 @@ a{
     width: 40px;
     border-bottom: 4px solid black;
   }
+
+/* test cards */
+/* background: radial-gradient(#1fe4f5, #3fbafe);
+background: radial-gradient(#fbc1cc, #fa99b2);
+background: radial-gradient(#60efbc, #58d5c9);
+background: radial-gradient(#f588d8, #c0a3e5); */
 #test_container{
   display: flex;
+  flex-wrap:wrap;
   padding: 2% 5%;
   justify-content: flex-start;
   flex-direction: row;
 }
-  
+
+.test_card{
+  margin: 30px 0 0 30px;
+  cursor: pointer;
+  color: white;
+  text-shadow:0 1px grey;
+  width:30vh ;
+  height:20vh;
+  padding: 20px;
+  border-radius: 10px;
+  background:radial-gradient(#fbc1cc, #fa99b2);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s;
+}
+.test_card:hover{
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+  transform: scale(1.01);
+}

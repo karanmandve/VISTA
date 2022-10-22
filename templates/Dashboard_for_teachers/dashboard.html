@@ -33,9 +33,33 @@
     <div id="recent">
         <div class="title" style="margin-top:20px;">No Recent Test</div>
         <div id="test_container">
+            <div id="t0" class="test_card" >
+               <h1>DBMS</h1>
+               <p>description</p>
+            </div>
+           
         </div>
     </div>
-
+     <br>
+     <br>
+<script>
+   const bg=[ "radial-gradient(#1fe4f5,#3fbafe)","radial-gradient(#60efbc,#58d5c9)","radial-gradient(#fbc1cc,#fa99b2)","radial-gradient(#f588d8,#c0a3e5)"];
+    function refresh_recent(){
+        fetch("./all-exams").then((res)=>res.json()).then((data)=>{
+            count=0;
+            data.forEach(element => {
+            node=document.getElementById("t0");
+            copy=node.cloneNode(true);
+            copy.style.background=bg[count%3];
+            copy.children[0].innerText=element.length>20?element.slice(0,20)+"...":element;
+            console.log(bg[count%3]);
+            document.getElementById("test_container").appendChild(copy);
+            count++;
+            });
+           
+        });
+    }
+    refresh_recent();
+</script>
 </body>
-
 </html>
