@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect,request
+from flask import Flask, render_template, url_for, redirect, request, jsonify
 from flask_cors import CORS
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, PasswordField, SubmitField, validators
@@ -55,10 +55,35 @@ def create_test():
 
 @app.route("/form-submit", methods=["POST"])
 def form_submit():
-    form_data = request.form.to_dict(flat=False)
-    print(form_data)
-        
+    form_raw_data = request.form.to_dict(flat=False)
+    form_data = {form_raw_data['test_title'][0] : form_raw_data}
+    
+    try:
+        with open("database.txt", "r") as file:
+            exam_data = file.read()
+            exam_data = eval(exam_data)
+
+        exam_data[f"{form_raw_data['test_title'][0]}"] = form_raw_data
+
+        with open("database.txt", "w") as file:
+            file.write(f"{exam_data}")
+    except:
+        with open("database.txt", "w") as file:
+            file.write(f"{form_data}")
+
     return render_template("Dashboard_for_teachers/dashboard.html")
+
+
+@app.route("/all-exams")
+def all_exam():
+    with open("database.txt", "r") as file:
+        exam_data = file.read()
+        exam_data = eval(exam_data)
+
+    all_exams = []
+    all_exams = [key for key in exam_data.keys()]
+
+    return jsonify(all_exams)
 
 
 
