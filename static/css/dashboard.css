@@ -71,6 +71,7 @@ a{
     transition: all 0.2s;
   }
   .box:hover{
+    color: white;
     background: rgb(145, 145, 145);
     transform: scale(1.01);
   }
@@ -109,14 +110,13 @@ background: radial-gradient(#f588d8, #c0a3e5); */
 #test_container{
   display: flex;
   flex-wrap:wrap;
-  padding: 2% 5%;
+  padding: 0% 5%;
   justify-content: flex-start;
   flex-direction: row;
 }
 
 .test_card{
   margin: 30px 0 0 30px;
-  cursor: pointer;
   color: white;
   text-shadow:0 1px grey;
   width:30vh ;
@@ -129,5 +129,45 @@ background: radial-gradient(#f588d8, #c0a3e5); */
 }
 .test_card:hover{
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
-  transform: scale(1.01);
+  /* transform: scale(1.01); */
 }
+.more{
+  cursor: pointer;
+    font-size: 30px;
+    color: white;
+    width: 30px;
+    height: 30px;
+    line-height: 33px;
+    text-align: center;
+    float: right;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+.more:hover{
+  background: rgba(255, 255, 255, 0.479);
+  
+}
+
+/* fdgfsdgs */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  width: 15vh;
+  margin-left:-11vh ;
+  overflow: auto;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  font-size: medium;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.show {display: block;}
