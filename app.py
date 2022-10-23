@@ -83,7 +83,7 @@ def all_exam():
 
     all_exams = {}
     all_exams = {key:0 for key in exam_data.keys()}
-    all_exams["active_subject"] = ACTIVE_SUBJECT
+    all_exam["active_subject"] = exam_data["active_exam"]
 
     return jsonify(all_exams)
 
@@ -95,9 +95,29 @@ def active_exam(exam_title):
     if ACTIVE_SUBJECT == exam_title["subject_name"]:
         if not exam_title["is_active"]:
             ACTIVE_SUBJECT = ""
+
+            with open("database.txt", "r") as file:
+                exam_data = file.read()
+                exam_data = eval(exam_data)
+
+            exam_data["active_subject"] = ACTIVE_SUBJECT
+
+            with open("database.txt", "w") as file:
+                file.write(f"{exam_data}")
+
             return "Subject Deactivated"
     else:
         ACTIVE_SUBJECT = exam_title["subject_name"]
+
+        with open("database.txt", "r") as file:
+                exam_data = file.read()
+                exam_data = eval(exam_data)
+
+        exam_data["active_subject"] = ACTIVE_SUBJECT
+
+        with open("database.txt", "w") as file:
+                file.write(f"{exam_data}")
+
         return "Subject Activated"
 
 
@@ -106,9 +126,9 @@ def delete_subject(subject_name):
     with open("database.txt", "r") as file:
         exam_data = file.read()
         exam_data = eval(exam_data)
-    print(subject_name)
+
     del exam_data[subject_name]
-    print(exam_data)
+
     with open("database.txt", "w") as file:
         file.write(f"{exam_data}")
 
@@ -139,7 +159,6 @@ def update_add_subject_questions():
 
     return redirect(url_for('dashboard'))
     
-
 
 
 if __name__ == "__main__":
