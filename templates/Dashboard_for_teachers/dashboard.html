@@ -32,18 +32,18 @@
         </a>
     </div>
     <div id="recent">
-        <div class="title" style="margin-top:20px;">No Recent Test</div>
+        <div id="recent_title" class="title" style="margin-top:20px;">No Recent Test</div>
         <div id="test_container">
             <template id="t0">
                 <div  class="test_card" >
-                <i class="fa fa-ellipsis-v more"  >
-                    <div  class="dropdown-content">
-                        <a href="#home">Activate</a>
-                        <a href="#about">Responses</a>
-                        <a href="#contact">View</a>
-                        <a href="#conact">Delete</a>
-                      </div>
-                </i>
+                    <i class="fa fa-ellipsis-v more"  >
+                        <div  class="dropdown-content">
+                            <a>Activate</a>
+                            <a>Responses</a>
+                            <a>View</a>
+                            <a>Delete</a>
+                        </div>
+                    </i>
                 <h1>DBMS</h1>
                 <p>description</p>
                 </div>
@@ -56,6 +56,8 @@
    var test_count=0;
    const bg=[ "radial-gradient(#1fe4f5,#3fbafe)","radial-gradient(#60efbc,#58d5c9)","radial-gradient(#fbc1cc,#fa99b2)","radial-gradient(#f588d8,#c0a3e5)"];
     function refresh_recent(){
+        let recent_title=document.getElementById("recent_title");
+        let test=document.getElementById("test_container");
         fetch("./all-exams").then((res)=>res.json()).then((data)=>{
             count=0;
             data.forEach(element => {
@@ -65,12 +67,19 @@
             copy.id=++test_count;
             let id=copy.id;
             copy.children[0].addEventListener("click",function show_more(id){if(typeof(id.path[0].children[0]) !="undefined"){id.path[0].children[0].classList.toggle("show");}});
+            copy.children[0].children[0].children[0].addEventListener("click",(e)=>{fetch("./activate_test",{method:"POST",body:JSON.stringify({subject_name:e.path[3].children[1]})})});
             copy.children[1].innerText=element.length>20?element.slice(0,20)+"...":element;
             document.getElementById("test_container").appendChild(copy);
             count++;
             });
-           
+            if(test.childElementCount ==1){
+            recent_title.innerText="No recent tests";
+            }
+        else{
+            recent_title.innerText="Recent tests";
+            }
         });
+       
     }
     
     window.onclick = function(event) {

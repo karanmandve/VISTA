@@ -86,7 +86,6 @@ def all_exam():
     return jsonify(all_exams)
 
 
-
 if __name__ == "__main__":
     app.run(debug=True)
 
