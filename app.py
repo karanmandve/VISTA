@@ -115,6 +115,32 @@ def delete_subject(subject_name):
     return "Subject Deleted"
 
 
+@app.route("/subject_questions/<subject_name>")
+def subject_questions(subject_name):
+    with open("database.txt", "r") as file:
+        exam_data = file.read()
+        exam_data = eval(exam_data)
+
+    return jsonify(exam_data[subject_name])
+
+
+@app.route("/update_add_subject_questions", methods=["POST"])
+def update_add_subject_questions():
+    form_raw_data = request.form.to_dict(flat=False)
+    
+    with open("database.txt", "r") as file:
+        exam_data = file.read()
+        exam_data = eval(exam_data)
+
+    exam_data[f"{form_raw_data['test_title'][0]}"] = form_raw_data
+
+    with open("database.txt", "w") as file:
+        file.write(f"{exam_data}")
+
+    return redirect(url_for('dashboard'))
+    
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
