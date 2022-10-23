@@ -88,6 +88,8 @@ def all_exam():
     return jsonify(all_exams)
 
 
+# ENDPOINTS FOR DROP DOWN MENU OPTIONS
+
 @app.route("/active-exam/<exam_title>") #first make a dictionary then make it string then pass to url
 def active_exam(exam_title):
     global ACTIVE_SUBJECT
@@ -112,13 +114,13 @@ def active_exam(exam_title):
         ACTIVE_SUBJECT = exam_title["subject_name"]
 
         with open("database.txt", "r") as file:
-                exam_data = file.read()
-                exam_data = eval(exam_data)
+            exam_data = file.read()
+            exam_data = eval(exam_data)
 
         exam_data["active_subject"] = ACTIVE_SUBJECT
 
         with open("database.txt", "w") as file:
-                file.write(f"{exam_data}")
+            file.write(f"{exam_data}")
 
         return "Subject Activated"
 
