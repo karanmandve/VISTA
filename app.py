@@ -13,6 +13,7 @@ cors = CORS(app)
 
 DASHBOARD_LOGIN_ID = "root"
 DASHBOARD_LOGIN_PASSWORD = "root"
+ACTIVE_SUBJECT = ""
 
 
 
@@ -80,10 +81,38 @@ def all_exam():
         exam_data = file.read()
         exam_data = eval(exam_data)
 
-    all_exams = []
-    all_exams = [key for key in exam_data.keys()]
+    all_exams = {}
+    all_exams = {key:0 for key in exam_data.keys()}
+    all_exams["active_subject"] = ACTIVE_SUBJECT
 
     return jsonify(all_exams)
+
+
+@app.route("/active-exam/<exam_title>")
+def active_exam(exam_title):
+    global ACTIVE_SUBJECT
+
+    if ACTIVE_SUBJECT == exam_title["subject_name"]:
+        if not exam_title["is_active"]:
+            ACTIVE_SUBJECT = ""
+            return "Subject Deactivated"
+    else:
+        ACTIVE_SUBJECT = exam_title["subject_name"]
+        return "Subject Activated"
+
+
+@app.route("/delete_subject/<subject_name>")
+def delete_subject(subject_name):
+    with open("database.txt", "r") as file:
+        exam_data = file.read()
+        exam_data = eval(exam_data)
+    print(subject_name)
+    del exam_data[subject_name]
+    print(exam_data)
+    with open("database.txt", "w") as file:
+        file.write(f"{exam_data}")
+
+    return "Subject Deleted"
 
 
 
