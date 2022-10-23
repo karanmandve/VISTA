@@ -83,14 +83,16 @@ def all_exam():
 
     all_exams = {}
     all_exams = {key:0 for key in exam_data.keys()}
-    all_exam["active_subject"] = exam_data["active_exam"]
+    all_exams["active_subject"] = exam_data["active_subject"]
 
     return jsonify(all_exams)
 
 
-@app.route("/active-exam/<exam_title>")
+@app.route("/active-exam/<exam_title>") #first make a dictionary then make it string then pass to url
 def active_exam(exam_title):
     global ACTIVE_SUBJECT
+
+    exam_title = eval(exam_title)# to convert string to dictionary
 
     if ACTIVE_SUBJECT == exam_title["subject_name"]:
         if not exam_title["is_active"]:
