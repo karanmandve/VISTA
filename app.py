@@ -13,6 +13,7 @@ cors = CORS(app)
 
 DASHBOARD_LOGIN_ID = "root"
 DASHBOARD_LOGIN_PASSWORD = "root"
+ACTIVE_SUBJECT = ""
 
 
 
@@ -80,12 +81,70 @@ def all_exam():
         exam_data = file.read()
         exam_data = eval(exam_data)
 
-    all_exams = []
-    all_exams = [key for key in exam_data.keys()]
+    all_exams = {}
+    all_exams = {key:0 for key in exam_data.keys()}
+    all_exams["active_subject"] = ACTIVE_SUBJECT
 
     return jsonify(all_exams)
 
 
+<<<<<<< HEAD
+=======
+@app.route("/active-exam/<exam_title>")
+def active_exam(exam_title):
+    global ACTIVE_SUBJECT
+
+    if ACTIVE_SUBJECT == exam_title["subject_name"]:
+        if not exam_title["is_active"]:
+            ACTIVE_SUBJECT = ""
+            return "Subject Deactivated"
+    else:
+        ACTIVE_SUBJECT = exam_title["subject_name"]
+        return "Subject Activated"
+
+
+@app.route("/delete_subject/<subject_name>")
+def delete_subject(subject_name):
+    with open("database.txt", "r") as file:
+        exam_data = file.read()
+        exam_data = eval(exam_data)
+    print(subject_name)
+    del exam_data[subject_name]
+    print(exam_data)
+    with open("database.txt", "w") as file:
+        file.write(f"{exam_data}")
+
+    return "Subject Deleted"
+
+
+@app.route("/subject_questions/<subject_name>")
+def subject_questions(subject_name):
+    with open("database.txt", "r") as file:
+        exam_data = file.read()
+        exam_data = eval(exam_data)
+
+    return jsonify(exam_data[subject_name])
+
+
+@app.route("/update_add_subject_questions", methods=["POST"])
+def update_add_subject_questions():
+    form_raw_data = request.form.to_dict(flat=False)
+    
+    with open("database.txt", "r") as file:
+        exam_data = file.read()
+        exam_data = eval(exam_data)
+
+    exam_data[f"{form_raw_data['test_title'][0]}"] = form_raw_data
+
+    with open("database.txt", "w") as file:
+        file.write(f"{exam_data}")
+
+    return redirect(url_for('dashboard'))
+    
+
+
+
+>>>>>>> b99568380d762a75c311143d3186b8c0ab9edcc6
 if __name__ == "__main__":
     app.run(debug=True)
 

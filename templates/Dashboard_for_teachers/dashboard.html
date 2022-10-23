@@ -59,7 +59,11 @@
         let recent_title=document.getElementById("recent_title");
         let test=document.getElementById("test_container");
         fetch("./all-exams").then((res)=>res.json()).then((data)=>{
+            console.log(data);
             count=0;
+            // remove active_exam = key and store in another variable to know which subject is activate
+            data = Object.keys(data);
+
             data.forEach(element => {
             node=document.getElementById("t0");
             copy=node.content.children[0].cloneNode(true);
