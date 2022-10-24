@@ -92,11 +92,13 @@ def all_exam():
 
 @app.route("/active-exam/<exam_title>") #first make a dictionary then make it string then pass to url
 def active_exam(exam_title):
+    print("hello")
     global ACTIVE_SUBJECT
-
+    
     exam_title = eval(exam_title)# to convert string to dictionary
 
     if ACTIVE_SUBJECT == exam_title["subject_name"]:
+        
         if not exam_title["is_active"]:
             ACTIVE_SUBJECT = ""
 

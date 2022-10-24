@@ -35,18 +35,6 @@
         <div class="right">
             <div class="title">Active test</div>
             <div id="active_container">
-                <div  class="test_card" >
-                    <i class="fa fa-ellipsis-v more"  >
-                        <div  class="dropdown-content">
-                            <a>Activate</a>
-                            <a>Responses</a>
-                            <a>View</a>
-                            <a>Delete</a>
-                        </div>
-                    </i>
-                <h1>DBMS</h1>
-                <p>description</p>
-                </div>
             </div>
         </div>
     </div>
@@ -73,7 +61,7 @@
      <br>
 <script>
    var test_count=0;
-   const bg=[ "radial-gradient(#1fe4f5,#3fbafe)","radial-gradient(#60efbc,#58d5c9)","radial-gradient(#fbc1cc,#fa99b2)","radial-gradient(#f588d8,#c0a3e5)"];
+   const bg=[ "radial-gradient(#1fe4f5,#3fbafe)","radial-gradient(#60efbc,#58d5c9)","radial-gradient(#f588d8,#c0a3e5)"];
     
     function refresh_recent(){
         let recent_title=document.getElementById("recent_title");
@@ -85,25 +73,46 @@
            }
             count=0;
             // remove active_exam = key and store in another variable to know which subject is activate
+            let active_subject=data.active_subject;
             data = Object.keys(data);
+            console.log(active_subject);
             for (let index = 0; index < data.length; index++) {
                 const element = data[index];
-                if(element == "active_subject"){
+
+                node=document.getElementById("t0");
+                copy=node.content.children[0].cloneNode(true);
+                copy.children[0].addEventListener("click",function show_more(e){if(typeof(e.path[0].children[0]) !="undefined"){e.path[0].children[0].classList.toggle("show");}});
+                copy.children[0].children[0].children[3].addEventListener("click",(e)=>{fetch("./delete_subject/"+e.path[3].children[1].value).then((res)=>{
+                    document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
+                    refresh_recent();
+                })});
+                
+                if(element != "active_subject"){
+                    if(active_subject !=element){
+                       
+                        copy.style.background=bg[count%2];
+                        copy.id=++test_count;
+                        copy.children[0].children[0].children[0].addEventListener("click",(e)=>{fetch("./active-exam/{'subject_name':'"+e.path[3].children[1].value+"'}").then((res)=>{
+                            document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
+                            refresh_recent();
+                        })});
+                        copy.children[1].value=element;
+                        copy.children[1].innerText=element.length>15?element.slice(0,15)+"...":element;
+                        document.getElementById("test_container").appendChild(copy);
+                        count++;
+                    }
                 }
-                else{ 
-                    node=document.getElementById("t0");
-                    copy=node.content.children[0].cloneNode(true);
-                    copy.style.background=bg[count%3];
-                    copy.id=++test_count;
-                    let id=copy.id;
-                    copy.children[0].addEventListener("click",function show_more(id){if(typeof(id.path[0].children[0]) !="undefined"){id.path[0].children[0].classList.toggle("show");}});
-                    copy.children[0].children[0].children[0].addEventListener("click",(e)=>{fetch("./active-exam/"+e.path[3].children[1].value).then((res)=>{refresh_recent();})});
-                    copy.children[0].children[0].children[3].addEventListener("click",(e)=>{fetch("./delete_subject/"+e.path[3].children[1].value).then((res)=>{refresh_recent();})});
-                    copy.children[1].value=element;
-                    copy.children[1].innerText=element.length>15?element.slice(0,15)+"...":element;
-                    document.getElementById("test_container").appendChild(copy);
-                    count++;
-                    }  
+                else if(active_subject !=""){ 
+                    copy.style.background="radial-gradient(#fbc1cc, #fa99b2)";
+                    copy.children[0].children[0].children[0].innerText="Diactivate";
+                    copy.children[0].children[0].children[0].addEventListener("click",(e)=>{fetch("./active-exam/{'subject_name':'"+e.path[3].children[1].value+"','is_active':'true'}").then((res)=>{
+                            document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
+                            refresh_recent();
+                        })});
+                    copy.children[1].value=active_subject;
+                    copy.children[1].innerText=active_subject.length>15?active_subject.slice(0,15)+"...":active_subject;
+                    document.getElementById("active_container").appendChild(copy);
+                }  
             }
             if(test.childElementCount ==1){
             recent_title.innerText="No recent tests";
