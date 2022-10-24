@@ -63,8 +63,8 @@ def form_submit():
         with open("database.txt", "r") as file:
             exam_data = file.read()
             exam_data = eval(exam_data)
-
-        exam_data[f"{form_raw_data['test_title'][0]}"] = form_raw_data
+        new=form_raw_data['test_title'][0].replace(" ","")
+        exam_data[f"{new}"] = form_raw_data
 
         with open("database.txt", "w") as file:
             file.write(f"{exam_data}")
@@ -88,8 +88,6 @@ def all_exam():
     return jsonify(all_exams)
 
 
-<<<<<<< HEAD
-=======
 @app.route("/active-exam/<exam_title>")
 def active_exam(exam_title):
     global ACTIVE_SUBJECT
@@ -109,7 +107,7 @@ def delete_subject(subject_name):
         exam_data = file.read()
         exam_data = eval(exam_data)
     print(subject_name)
-    del exam_data[subject_name]
+    del exam_data[subject_name.replace("%20"," ")]
     print(exam_data)
     with open("database.txt", "w") as file:
         file.write(f"{exam_data}")
@@ -144,7 +142,6 @@ def update_add_subject_questions():
 
 
 
->>>>>>> b99568380d762a75c311143d3186b8c0ab9edcc6
 if __name__ == "__main__":
     app.run(debug=True)
 

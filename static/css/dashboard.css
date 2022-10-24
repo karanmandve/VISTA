@@ -50,6 +50,8 @@ a{
   /* new section */
   
   .new{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     margin: 0;
     background: #d9d5d5;
     height: 38vh;
@@ -116,6 +118,7 @@ background: radial-gradient(#f588d8, #c0a3e5); */
 }
 
 .test_card{
+  word-wrap: break-word;
   margin: 30px 0 0 30px;
   color: white;
   text-shadow:0 1px grey;
