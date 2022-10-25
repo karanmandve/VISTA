@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/css/create_test.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="nav-wrapper">
+        <nav class="navbar">
+            <img src="../../static/tem.jpeg" alt="Company Logo">
+            <ul class="nav no-search">
+                <li class="nav-item"><a href="#">About</a></li>
+                <li class="nav-item"><a href="#">Contact Us</a></li>
+            </ul>
+        </nav>
+    </div>
+    <form action="{{ url_for('form_submit') }}" method="POST" id="form">
+        {{ csrf.csrf_token }}
+        <br>
+        <div class="top_head">
+            <input type="text" name="test_title" id="title" value="Untitled test" style="font-size: 2em;">
+            <input type="text" name="test_desc" id="desc" value="Test description" style="padding:15px 20px;">
+        </div>
+        <br>
+        <div id="que_container">
+            <template>
+                <div class="que" id="1">
+                    <input class="que_title" type="text" name="q1" id="" value="untitled question">
+                    <br>
+                    <br>
+                    <input type="radio" name="1answer" value="1">
+                    <label for="op1"><input type="text" placeholder="option 1" name="1option1"></label>
+                    <br>
+                    <input type="radio" name="1answer" value="2">
+                    <label for="op2"><input type="text" placeholder="option 2" name="1option2"></label>
+                    <br>
+                    <input type="radio" name="1answer" value="3">
+                    <label for="op3"><input type="text" placeholder="option 3" name="1option3"></label>
+                    <br>
+                    <input type="radio" name="1answer" value="4">
+                    <label for="op4"><input type="text" placeholder="option 4" name="1option4"></label>
+                    <br>
+                    <br>
+                </div>
+            </template>
+        </div>
+       
+        <div style="display: flex; width: 45vw; padding: 15px 26px;height: inherit;justify-content: space-between;">
+            <div id="btn_cancel" class="btn" onclick="cancel()"><-Cancel</div></a>
+            <div id="btn_done" class="btn" onclick="done()">Done</div></a>
+        </div>
+        
+        <div id="btn_del" onclick="del()"><i class="fa fa-minus" style="font-size:20px;color:#3498db;"></i></div>
+        <div id="btn_add" onclick="add()"><i class="fa fa-plus" style="font-size:20px;color:#3498db;"></i></div>
+        
+    </form>
+    <script>
+        var count;
+    function mount_question(){
+        fetch("../subject_questions").then((res)=>res.json()).then((data)=>{
+            
+            
+            count=Math.floor((Object.keys(data).length-3)/6);
+            document.getElementById("title").value=data.test_title[0];
+            document.getElementById("title").readOnly=true;
+            document.getElementById("desc").value=data.test_desc[0];
+            document.getElementById("desc").readOnly=true;
+
+            let form=document.getElementById("que_container");
+            let node=form.lastElementChild;
+            
+            if(count==0){form.innerHTML="<center>No questions avialable</center>"}
+            for (let index = 1; index <= count; index++) {
+                let copy=node.content.children[0].cloneNode(true)
+                copy.setAttribute("id",index);
+
+                copy.childNodes[1].value=data["q"+index];
+                copy.childNodes[1].readOnly=true;
+                copy.childNodes[1].name="q"+index;
+
+                copy.childNodes[7].name=index+"answer";
+                copy.childNodes[7].value=1;
+                copy.childNodes[7].disabled=true;
+                copy.childNodes[7].checked=copy.childNodes[7].value ==Number(data[index+"answer"])?true:false;
+                copy.childNodes[9].childNodes[0].value=data[index+"option1"];
+                copy.childNodes[9].childNodes[0].name=index+"option1";
+                copy.childNodes[9].childNodes[0].readOnly=true;
+                copy.childNodes[9].for=index+"answer";
+
+                copy.childNodes[13].name=index+"answer";
+                copy.childNodes[13].value=2;
+                copy.childNodes[13].disabled=true;
+                copy.childNodes[13].checked=copy.childNodes[13].value ==Number(data[index+"answer"])?true:false;
+                copy.childNodes[15].childNodes[0].value=data[index+"option2"];
+                copy.childNodes[15].childNodes[0].name=index+"option2";
+                copy.childNodes[15].childNodes[0].readOnly=true;
+                copy.childNodes[15].for=index+"op1";
+
+                copy.childNodes[19].name=index+"answer";
+                copy.childNodes[19].value=3;
+                copy.childNodes[19].disabled=true;
+                copy.childNodes[19].checked=copy.childNodes[19].value ==Number(data[index+"answer"])?true:false;
+                copy.childNodes[21].childNodes[0].value=data[index+"option3"];
+                copy.childNodes[21].childNodes[0].name=index+"option3";
+                copy.childNodes[21].childNodes[0].readOnly=true;
+                copy.childNodes[21].for=index+"op1";
+
+                copy.childNodes[25].name=index+"answer";
+                copy.childNodes[25].value=4;
+                copy.childNodes[25].disabled=true;
+                copy.childNodes[25].checked=copy.childNodes[25].value ==Number(data[index+"answer"])?true:false;
+                copy.childNodes[27].childNodes[0].value=data[index+"option4"];
+                copy.childNodes[27].childNodes[0].name=index+"option4";
+                copy.childNodes[27 ].childNodes[0].readOnly=true;
+                copy.childNodes[27].for=index+"op1";
+
+                form.appendChild(copy);
+                // window.scrollTo(0,document.body.clientHeight);
+                
+            }
+
+        });
+           document.getElementById("btn_cancel").style.display="none";
+           document.getElementById("btn_done").style.display="none";
+           document.getElementById("btn_del").style.display="none";
+           document.getElementById("btn_add").style.display="none";
+
+    }
+    mount_question();
+    function add(){
+       count++;
+       let form=document.getElementById("que_container");
+       let node=form.firstElementChild;
+       console.log(node);
+       let copy=node.content.children[0].cloneNode(true);
+       copy.setAttribute("id",count);
+    
+       copy.childNodes[1].value="untitled question";
+       copy.childNodes[1].name="q"+count;
+
+       copy.childNodes[7].name=count+"answer";
+       copy.childNodes[7].checked=false;
+       copy.childNodes[7].value=1;
+       copy.childNodes[9].childNodes[0].value="";
+       copy.childNodes[9].childNodes[0].name=count+"option1";
+       copy.childNodes[9].for=count+"answer";
+
+       copy.childNodes[13].name=count+"answer";
+       copy.childNodes[13].checked=false;
+       copy.childNodes[13].value=2;
+       copy.childNodes[15].childNodes[0].value="";
+       copy.childNodes[15].childNodes[0].name=count+"option2";
+       copy.childNodes[15].for=count+"op1";
+
+       copy.childNodes[19].name=count+"answer";
+       copy.childNodes[19].checked=false;
+       copy.childNodes[19].value=3;
+       copy.childNodes[21].childNodes[0].value="";
+       copy.childNodes[21].childNodes[0].name=count+"option3";
+       copy.childNodes[21].for=count+"op1";
+
+       copy.childNodes[25].name=count+"answer";
+       copy.childNodes[25].checked=false;
+       copy.childNodes[25].value=4;
+       copy.childNodes[27].childNodes[0].value="";
+       copy.childNodes[27].childNodes[0].name=count+"option4";
+       copy.childNodes[27].for=count+"op1";
+
+       form.appendChild(copy);
+       window.scrollTo(0,document.body.clientHeight);
+    }
+    function del(){
+        let form=document.getElementById("que_container");
+        if(form.childElementCount>1){
+            form.removeChild(form.lastChild);
+            count--;
+        }
+    }
+    function cancel(){
+        let action= confirm("Do you really want to cancel this test");
+        if(action){
+            window.location.replace("./dashboard") ;
+        }
+    }
+    function done(){
+        let action= confirm("Do you really want to save this test");
+        if(action){
+            let form=document.getElementById("form");
+            form.submit();
+        }
+    }
+    </script>
+</body>
+</html>

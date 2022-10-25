@@ -14,7 +14,7 @@ cors = CORS(app)
 DASHBOARD_LOGIN_ID = "root"
 DASHBOARD_LOGIN_PASSWORD = "root"
 ACTIVE_SUBJECT = ""
-
+SHOW_TEST=""
 
 
 class LoginForm(FlaskForm):
@@ -142,13 +142,21 @@ def delete_subject(subject_name):
     return "Subject Deleted"
 
 
-@app.route("/subject_questions/<subject_name>")
-def subject_questions(subject_name):
+@app.route("/subject_questions")
+def subject_questions():
     with open("database.txt", "r") as file:
         exam_data = file.read()
         exam_data = eval(exam_data)
 
-    return jsonify(exam_data[subject_name])
+    return jsonify(exam_data[SHOW_TEST])
+
+
+@app.route("/show_test/<subject_name>")
+def show_test(subject_name):
+    global SHOW_TEST
+    SHOW_TEST=subject_name
+    csrf = LoginForm()
+    return render_template("Dashboard_for_teachers/show-test.html",csrf=csrf)
 
 
 @app.route("/update_add_subject_questions", methods=["POST"])
