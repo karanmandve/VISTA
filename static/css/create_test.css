@@ -36,7 +36,9 @@ a{
     justify-self: end;
     
   }
-  
+  .nav-item{
+    text-align: center;
+  }
   .nav-item a {
     color: #000;
     font-size: 0.9rem;

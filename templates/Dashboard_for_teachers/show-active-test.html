@@ -13,7 +13,6 @@
         <nav class="navbar">
             <img src="../../static/tem.jpeg" alt="Company Logo">
             <ul class="nav no-search">
-                <li class="nav-item btn" id="btn_edit" onclick="edit()">Edit</li>
                 <li class="nav-item"><a href="#">About</a></li>
                 <li class="nav-item"><a href="#">Contact Us</a></li>
             </ul>
@@ -49,25 +48,15 @@
                 </div>
             </template>
         </div>
-       
-        <div style="display: flex; width: 45vw; padding: 15px 26px;height: inherit;justify-content: space-between;">
-            <div id="btn_cancel" class="btn" onclick="cancel()"><-Cancel</div></a>
-            <div id="btn_done" class="btn" onclick="done()">Done</div></a>
-        </div>
-        
-        <div id="btn_del" onclick="del()"><i class="fa fa-minus" style="font-size:20px;color:#3498db;"></i></div>
-        <div id="btn_add" onclick="add()"><i class="fa fa-plus" style="font-size:20px;color:#3498db;"></i></div>
         
     </form>
     <script>
         var count;
-        var subject_name;
     function mount_question(){
         fetch("../subject_questions").then((res)=>res.json()).then((data)=>{
             
             
             count=Math.floor((Object.keys(data).length-3)/6);
-            subject_name=data.test_title[0]; //saving subject name for deleting purpose
             document.getElementById("title").value=data.test_title[0];
             document.getElementById("title").readOnly=true;
             document.getElementById("desc").value=data.test_desc[0];
@@ -127,95 +116,8 @@
             }
 
         });
-           document.getElementById("btn_cancel").style.display="none";
-           document.getElementById("btn_done").style.display="none";
-           document.getElementById("btn_del").style.display="none";
-           document.getElementById("btn_add").style.display="none";
-
     }
     mount_question();
-    function add(){
-       count++;
-       let form=document.getElementById("que_container");
-       let node=form.firstElementChild;
-       console.log(node);
-       let copy=node.content.children[0].cloneNode(true);
-       copy.setAttribute("id",count);
-    
-       copy.childNodes[1].value="untitled question";
-       copy.childNodes[1].name="q"+count;
-
-       copy.childNodes[7].name=count+"answer";
-       copy.childNodes[7].checked=false;
-       copy.childNodes[7].value=1;
-       copy.childNodes[9].childNodes[0].value="";
-       copy.childNodes[9].childNodes[0].name=count+"option1";
-       copy.childNodes[9].for=count+"answer";
-
-       copy.childNodes[13].name=count+"answer";
-       copy.childNodes[13].checked=false;
-       copy.childNodes[13].value=2;
-       copy.childNodes[15].childNodes[0].value="";
-       copy.childNodes[15].childNodes[0].name=count+"option2";
-       copy.childNodes[15].for=count+"op1";
-
-       copy.childNodes[19].name=count+"answer";
-       copy.childNodes[19].checked=false;
-       copy.childNodes[19].value=3;
-       copy.childNodes[21].childNodes[0].value="";
-       copy.childNodes[21].childNodes[0].name=count+"option3";
-       copy.childNodes[21].for=count+"op1";
-
-       copy.childNodes[25].name=count+"answer";
-       copy.childNodes[25].checked=false;
-       copy.childNodes[25].value=4;
-       copy.childNodes[27].childNodes[0].value="";
-       copy.childNodes[27].childNodes[0].name=count+"option4";
-       copy.childNodes[27].for=count+"op1";
-
-       form.appendChild(copy);
-       window.scrollTo(0,document.body.clientHeight);
-    }
-    function del(){
-        let form=document.getElementById("que_container");
-        if(form.childElementCount>1){
-            form.removeChild(form.lastChild);
-            count--;
-        }
-    }
-    function cancel(){
-        let action= confirm("Do you really want to cancel the edited test");
-        if(action){
-            window.location.reload();
-        }
-    }
-    function done(){
-        let action= confirm("Do you really want to save edited test");
-        if(action){
-            fetch("/delete_subject/"+subject_name).then((res)=>{
-                let form=document.getElementById("form");
-                form.submit();
-            }); 
-        }
-    }
-    function edit(){
-        window.scrollTo(0,document.body.clientHeight);
-        document.getElementById("btn_cancel").style.display="block";
-        document.getElementById("btn_done").style.display="block";
-        document.getElementById("btn_del").style.display="block";
-        document.getElementById("btn_add").style.display="block";
-        let input_text=document.querySelectorAll("input[type=text");
-        for (let index = 0; index < input_text.length; index++) {
-            const element = input_text[index];
-            element.readOnly=false;
-        }
-        let input_check=document.querySelectorAll("input[type=radio");
-        for (let index = 0; index < input_check.length; index++) {
-            const element = input_check[index];
-            element.disabled=false;
-            
-        }
-    }
     </script>
 </body>
 </html>
