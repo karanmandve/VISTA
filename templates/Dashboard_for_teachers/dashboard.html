@@ -33,7 +33,7 @@
             </a>
         </div>
         <div class="right">
-            <div class="title">Active test</div>
+            <div id="active_title" class="title">No active test</div>
             <div id="active_container">
             </div>
         </div>
@@ -66,6 +66,7 @@
     function refresh_recent(){
         let recent_title=document.getElementById("recent_title");
         let test=document.getElementById("test_container");
+        let active=document.getElementById("active_container");
         fetch("./all-exams").then((res)=>res.json()).then((data)=>{
            let parent= document.getElementById("test_container");
            while(parent.childElementCount !=1){
@@ -82,17 +83,28 @@
                 node=document.getElementById("t0");
                 copy=node.content.children[0].cloneNode(true);
                 copy.children[0].addEventListener("click",function show_more(e){if(typeof(e.path[0].children[0]) !="undefined"){e.path[0].children[0].classList.toggle("show");}});
-                copy.children[0].children[0].children[3].addEventListener("click",(e)=>{fetch("./delete_subject/"+e.path[3].children[1].value).then((res)=>{
-                    document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
-                    refresh_recent();
-                })});
+                copy.children[0].children[0].children[2].addEventListener("click",(e)=>{window.location="./show_test/"+e.path[3].children[1].value;});
+                
                 
                 if(element != "active_subject"){
                     if(active_subject !=element){
-                       
                         copy.style.background=bg[count%2];
                         copy.id=++test_count;
-                        copy.children[0].children[0].children[0].addEventListener("click",(e)=>{fetch("./active-exam/{'subject_name':'"+e.path[3].children[1].value+"'}").then((res)=>{
+                        copy.children[0].children[0].children[0].addEventListener("click",(e)=>{
+                            if(active.childElementCount==1){
+                                alert("Some test is already active Please deactivate that first to activate this!!");
+                            }
+                            else{
+                                fetch("./active-exam/{'subject_name':'"+e.path[3].children[1].value+"'}").then((res)=>{
+                                    if(active.childElementCount !=0){
+                                            active.removeChild(active.lastChild);
+                                    }
+                                    refresh_recent();
+                                })
+                            }
+                           
+                        });
+                        copy.children[0].children[0].children[3].addEventListener("click",(e)=>{fetch("./delete_subject/"+e.path[3].children[1].value).then((res)=>{
                             document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
                             refresh_recent();
                         })});
@@ -104,11 +116,12 @@
                 }
                 else if(active_subject !=""){ 
                     copy.style.background="radial-gradient(#fbc1cc, #fa99b2)";
-                    copy.children[0].children[0].children[0].innerText="Diactivate";
-                    copy.children[0].children[0].children[0].addEventListener("click",(e)=>{fetch("./active-exam/{'subject_name':'"+e.path[3].children[1].value+"','is_active':'true'}").then((res)=>{
+                    copy.children[0].children[0].children[0].innerText="Diactivate";                               
+                    copy.children[0].children[0].children[0].addEventListener("click",(e)=>{fetch("./active-exam/{'subject_name':'"+e.path[3].children[1].value+"','is_active':False}").then((res)=>{
                             document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
                             refresh_recent();
                         })});
+                    copy.children[0].children[0].children[3].addEventListener("click",(e)=>{alert("please deactivate this test first then delete!!")});
                     copy.children[1].value=active_subject;
                     copy.children[1].innerText=active_subject.length>15?active_subject.slice(0,15)+"...":active_subject;
                     document.getElementById("active_container").appendChild(copy);
@@ -119,6 +132,12 @@
             }
         else{
             recent_title.innerText="Recent tests";
+            }
+            if(active.childElementCount ==0){
+            document.getElementById("active_title").innerText="No active tests";
+            }
+        else{
+            document.getElementById("active_title").innerText="Active tests";
             }
         });
        
