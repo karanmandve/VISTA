@@ -63,8 +63,9 @@ def form_submit():
         with open("database.txt", "r") as file:
             exam_data = file.read()
             exam_data = eval(exam_data)
-        new=form_raw_data['test_title'][0].replace(" ","")
-        exam_data[f"{new}"] = form_raw_data
+            
+        # new=form_raw_data['test_title'][0].replace(" ","")
+        exam_data[f"{form_raw_data['test_title'][0]}"] = form_raw_data
 
         with open("database.txt", "w") as file:
             file.write(f"{exam_data}")
@@ -132,9 +133,9 @@ def delete_subject(subject_name):
     with open("database.txt", "r") as file:
         exam_data = file.read()
         exam_data = eval(exam_data)
-    print(subject_name)
+
     del exam_data[subject_name.replace("%20"," ")]
-    print(exam_data)
+
     with open("database.txt", "w") as file:
         file.write(f"{exam_data}")
 
