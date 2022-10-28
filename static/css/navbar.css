@@ -41,4 +41,22 @@ a{
     .nav-item a:hover {
       color: #3498db;
     }
+    .btn{
+      color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-weight:500;
+        border-radius: 4px;
+        text-align: center;
+        background:#3498db;
+        width: 88px;
+        height:30px ;
+     }
+     .btn:hover{
+      box-shadow: 0 9px 7px -6px gray;
+      background:#62a4cf ;
+      color: white;
+   }
     

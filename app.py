@@ -155,12 +155,10 @@ def show_test(subject_name):
     SHOW_TEST=subject_name
     if subject_name != ACTIVE_SUBJECT:
         csrf = LoginForm()
-        print("not active")
         print(ACTIVE_SUBJECT)
         return render_template("Dashboard_for_teachers/show-test.html",csrf=csrf)
     else :
         csrf = LoginForm()
-        print("active")
         print(ACTIVE_SUBJECT)
         return render_template("Dashboard_for_teachers/show-active-test.html",csrf=csrf)
 
@@ -180,7 +178,23 @@ def update_add_subject_questions():
 
     return render_template("Dashboard_for_teachers/dashboard.html")
     
+# student page
+@app.route("/students")
+def students():
+    return render_template("Students/student_test.html")
 
+# to show only active test
+@app.route("/students_active_page")
+def students_active_page():
+    return render_template("Students/student_active.html")
+
+@app.route("/students_active")
+def students_active():
+    with open("database.txt", "r") as file:
+        exam_data = file.read()
+        exam_data = eval(exam_data)
+
+    return jsonify(exam_data[ACTIVE_SUBJECT])
 
 if __name__ == "__main__":
     app.run(debug=True)

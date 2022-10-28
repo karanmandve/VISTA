@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css"/>
+    <link rel="stylesheet" href="../../static/css/navbar.css">
+    <link rel="stylesheet" href="../../static/css/student_test.css">
+    <link rel="stylesheet" href="../../static/css/create_test.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="nav-wrapper">
+        <nav class="navbar">
+            <img src="../../static/logoblack.png" alt="Company Logo">
+            <ul class="nav no-search">
+                <li class="nav-item"><a href="#">About</a></li>
+                <li class="nav-item"><a href="#">Contact Us</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div style="display: flex;height:91vh;justify-content:center;align-items:center;">
+        <div class="test_container">
+            <div class="up_sec">
+                <div id="title" style="font-weight: bold;">DBMS TEST</div>
+                <div id="timer"><b>1:23</b></div>
+            </div>
+            <div class="mid_sec">
+                
+                <form action="" style="display: block;">
+                    <div id="que_cont" class="question_container">
+                        <template>
+                            <div class="que" style="width: 53vw;height: 50vh;display: flex;align-items: center;justify-content: center;" id="1">
+                                <div>
+                                    <textarea class="que_title" style="background:#e1ecf1;border-bottom:none;width: 51vw;" rows="5" name="q1" id="" readonly>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facere repudiandae suscipit ipsam earum alias iusto eos cum consequuntur quis, maiores, corrupti architecto reprehenderit! Vitae perferendis et tenetur assumenda quae nesciunt asperiores incidunt, repudiandae quisquam, tempore, aperiam sed ipsam molestiae architecto totam voluptatem! Similique aspernatur, labore nam ut eveniet libero consequuntur.</textarea>
+                                    <br>
+                                    
+                                    <input type="radio" name="1answer" value="1">
+                                    <label for="op1"><textarea  style="background:#e1ecf1;border-bottom:none;width: 50vw;" rows="3" name="1option1" readonly></textarea></label>
+                                    <br>
+                                    
+                                    <input type="radio" name="1answer" value="2">
+                                    <label for="op2"><textarea  style="background:#e1ecf1;border-bottom:none;width: 50vw;" rows="3" name="1option2" readonly></textarea></label>
+                                    <br>
+                                    
+                                    <input type="radio" name="1answer" value="3">
+                                    <label for="op3"><textarea  style="background:#e1ecf1;border-bottom:none;width: 50vw;" rows="3" name="1option3" readonly></textarea></label>
+                                    <br>
+                                    
+                                    <input type="radio" name="1answer" value="4">
+                                    <label for="op4"><textarea  style="background:#e1ecf1;border-bottom:none;width: 50vw;" rows="3" name="1option4" readonly></textarea></label>
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </form>
+               
+                <div id="que_box" class="question_box">
+                    <template>
+                        <div class="que_circle">2</div>  
+                    </template>
+                    
+                </div>
+            </div>
+            <div class="low_sec">
+                <div class="btn" style="background:tomato;">Finish</div>
+                <div class="btn" style="background:#3498db;" onclick="next()">Next</div>
+                <div class="btn" style="background:#3498db;" onclick="pre()">Previous</div>
+            </div>
+        </div>
+    </div>
+   <script>
+    let count;
+    var cur_que;
+        fetch("../subject_questions").then((res)=>res.json()).then((data)=>{
+            console.log(data);
+            count=Math.floor((Object.keys(data).length-3)/6);
+            document.getElementById("title").innerText=data.test_title[0];
+            var form=document.getElementById("que_cont");
+            let node=form.lastElementChild;
+
+            for (let index = 1; index <= count; index++) {
+                let copy=node.content.children[0].cloneNode(true)
+                copy.setAttribute("id",index);
+
+                copy.children[0].children[0].innerText=data["q"+index];
+                copy.children[0].children[0].name="q"+index;
+                copy.children[0].children[0].rows=data["q"+index].length<50?1:2;
+
+                copy.children[0].children[2].name=index+"answer";
+                copy.children[0].children[2].value=1;
+                copy.children[0].children[2].checked=copy.children[0].children[2].value ==Number(data[index+"answer"])?true:false;
+                copy.children[0].children[3].children[0].innerText=data[index+"option1"];
+                copy.children[0].children[3].children[0].name=index+"option1";
+                copy.children[0].children[3].children[0].rows=data[index+"option1"].length<50?1:2;
+                copy.children[0].children[3].for=index+"answer";
+
+                copy.children[0].children[5].name=index+"answer";
+                copy.children[0].children[5].value=2;
+                copy.children[0].children[5].checked=copy.children[0].children[5].value ==Number(data[index+"answer"])?true:false;
+                copy.children[0].children[6].children[0].innerText=data[index+"option2"];
+                copy.children[0].children[6].children[0].name=index+"option2";
+                copy.children[0].children[6].children[0].rows=data[index+"option2"].length<50?1:2;
+                copy.children[0].children[6].for=index+"op1";
+
+                copy.children[0].children[8].name=index+"answer";
+                copy.children[0].children[8].value=3;
+                copy.children[0].children[8].checked=copy.children[0].children[8].value ==Number(data[index+"answer"])?true:false;
+                copy.children[0].children[9].children[0].innerText=data[index+"option3"];
+                copy.children[0].children[9].children[0].name=index+"option3";
+                copy.children[0].children[9].children[0].rows=data[index+"option3"].length<50?1:2;
+                copy.children[0].children[9].for=index+"op1";
+
+                copy.children[0].children[11].name=index+"answer";
+                copy.children[0].children[11].value=4;
+                copy.children[0].children[11].checked=copy.children[0].children[12].value ==Number(data[index+"answer"])?true:false;
+                copy.children[0].children[12].children[0].innerText=data[index+"option4"];
+                copy.children[0].children[12].children[0].name=index+"option4";
+                copy.children[0].children[12].children[0].rows=data[index+"option4"].length<50?1:2;
+                copy.children[0].children[12].for=index+"op1";
+
+                var box=document.getElementById("que_box");
+                let que_circle=box.children[0].content.children[0].cloneNode(true);
+                que_circle.innerText=index;
+                que_circle.addEventListener("click",()=>{cur_que=copy.id;refresh_curent(); });
+                box.appendChild(que_circle);
+               
+                copy.style.display="none";
+                form.appendChild(copy);
+                
+            }
+            cur_que=form.children[1].id;
+            refresh_curent();
+        });
+        function refresh_curent(){
+             let form=document.getElementById("que_cont");
+             let int=1;
+             while(form.childElementCount!=int){
+                form.children[int].style.display="none";
+                document.getElementById("que_box").children[Number(int)].style.color="grey";
+                document.getElementById("que_box").children[Number(int)].style.border="2px solid lightblue";
+                int++;
+             }
+             document.getElementById("que_box").children[Number(cur_que)].style.color="black";
+             document.getElementById("que_box").children[Number(cur_que)].style.border="2px solid #3498db";
+             document.getElementById(cur_que).style.display="flex";
+        }
+        function next(){
+            let temp=Number(cur_que)
+            if(temp <count){
+                cur_que=String(++temp);
+                console.log(cur_que);
+                refresh_curent();
+            }
+            
+        }
+        function pre(){
+            let temp=Number(cur_que)
+            if(temp >1){
+                cur_que=String(--temp);
+                console.log(cur_que);
+                refresh_curent();
+            }
+        }
+   </script>
+</body>
+</html>
