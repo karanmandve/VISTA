@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css"/>
+    <link rel="stylesheet" href="../../static/css/navbar.css">
     <link rel="stylesheet" href="../../static/css/dashboard.css">
     <title>Document</title>
 </head>
@@ -13,7 +15,7 @@
 <body>
     <div class="nav-wrapper">
         <nav class="navbar">
-            <img src="../../static/tem.jpeg" alt="Company Logo">
+            <img src="../../static/logoblack.png" alt="Company Logo">
             <ul class="nav no-search">
                 <li class="nav-item"><a href="#">About</a></li>
                 <li class="nav-item"><a href="#">Contact Us</a></li>
@@ -39,20 +41,21 @@
         </div>
     </div>
     <div id="recent">
-        <div id="recent_title" class="title" style="margin-top:20px;">No Recent Test</div>
+        <div id="recent_title"  style="margin: 1.5% 0 0 12%;font-weight: bold;">No Recent Test</div>
         <div id="test_container">
             <template id="t0">
                 <div  class="test_card" >
-                    <i class="fa fa-ellipsis-v more"  >
+                    <div class="preview"></div>
+                    <i class="fa fa-ellipsis-v more"  style="color: grey;">
                         <div  class="dropdown-content">
-                            <a>Activate</a>
-                            <a>Responses</a>
-                            <a>View</a>
-                            <a>Delete</a>
+                            <a><i class="fa fa-flash" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">Activate</div></a>
+                            <a><i class="fa fa-group" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">Responses</div></a>
+                            <a><i class="fa fa-eye" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">View</div></a>
+                            <a style="color:tomato;"><i class="fa fa-trash-o" style="font-size:20px;color:tomato;"></i><div style="margin-left:-9vh">Delete</div></a>
                         </div>
                     </i>
-                <h1>DBMS</h1>
-                <p>description</p>
+                <h1 style="padding: 6% 0 0 12%;font-size: unset;font-weight: bold;">DBMS</h1>
+                <p style="padding: 3% 12%;font-size: small; word-spacing: 5px;">desc</p>
                 </div>
             </template>
         </div>
@@ -61,7 +64,7 @@
      <br>
 <script>
    var test_count=0;
-   const bg=[ "radial-gradient(#1fe4f5,#3fbafe)","radial-gradient(#60efbc,#58d5c9)","radial-gradient(#f588d8,#c0a3e5)"];
+//    const bg=[ "radial-gradient(#1fe4f5,#3fbafe)","radial-gradient(#60efbc,#58d5c9)","radial-gradient(#f588d8,#c0a3e5)"];
     
     function refresh_recent(){
         let recent_title=document.getElementById("recent_title");
@@ -77,25 +80,26 @@
             let active_subject=data.active_subject;
             data = Object.keys(data);
             console.log(active_subject);
-            for (let index = 0; index < data.length; index++) {
+            
+            for (let index = 0; index < data.length;index++) {
                 const element = data[index];
 
                 node=document.getElementById("t0");
                 copy=node.content.children[0].cloneNode(true);
-                copy.children[0].addEventListener("click",function show_more(e){if(typeof(e.path[0].children[0]) !="undefined"){e.path[0].children[0].classList.toggle("show");}});
-                copy.children[0].children[0].children[2].addEventListener("click",(e)=>{window.location="./show_test/"+e.path[3].children[1].value;});
+                copy.children[1].addEventListener("click",function show_more(e){if(typeof(e.path[0].children[0]) !="undefined"){e.path[0].children[0].classList.toggle("show");}});
+            copy.children[1].children[0].children[2].addEventListener("click",(e)=>{window.location="./show_test/"+e.path[4].children[2].value;});
                 
                 
                 if(element != "active_subject"){
                     if(active_subject !=element){
-                        copy.style.background=bg[count%2];
+                        // copy.style.background=bg[count%2];
                         copy.id=++test_count;
-                        copy.children[0].children[0].children[0].addEventListener("click",(e)=>{
+                        copy.children[1].children[0].children[0].addEventListener("click",(e)=>{
                             if(active.childElementCount==1){
                                 alert("Some test is already active Please deactivate that first to activate this!!");
                             }
                             else{
-                                fetch("./active-exam/{'subject_name':'"+e.path[3].children[1].value+"'}").then((res)=>{
+                                fetch("./active-exam/{'subject_name':'"+e.path[4].children[2].value+"'}").then((res)=>{
                                     if(active.childElementCount !=0){
                                             active.removeChild(active.lastChild);
                                     }
@@ -104,27 +108,40 @@
                             }
                            
                         });
-                        copy.children[0].children[0].children[3].addEventListener("click",(e)=>{fetch("./delete_subject/"+e.path[3].children[1].value).then((res)=>{
+                        copy.children[1].children[0].children[3].addEventListener("click",(e)=>{console.log(e);fetch("./delete_subject/"+e.path[4].children[2].value).then((res)=>{
                             document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
                             refresh_recent();
                         })});
-                        copy.children[1].value=element;
-                        copy.children[1].innerText=element.length>15?element.slice(0,15)+"...":element;
+                        copy.children[2].value=element;
+                        copy.children[2].innerText=element.length>15?element.slice(0,15)+"...":element;
+                        copy.children[3].innerHTML='<i class="fa fa-dot-circle-o"></i>&nbsp;Inactive';
+                        copy.children[3].style.color="blue";
+                        copy.children[0].style.background="url('../../static/test_icon.png')";
+                        copy.children[0].style.backgroundSize="cover";
                         document.getElementById("test_container").appendChild(copy);
                         count++;
+                        
+                        
                     }
                 }
                 else if(active_subject !=""){ 
-                    copy.style.background="radial-gradient(#fbc1cc, #fa99b2)";
-                    copy.children[0].children[0].children[0].innerText="Diactivate";                               
-                    copy.children[0].children[0].children[0].addEventListener("click",(e)=>{fetch("./active-exam/{'subject_name':'"+e.path[3].children[1].value+"','is_active':False}").then((res)=>{
+                    copy.children[1].children[0].children[0].innerHTML='<i class="fa fa-flash" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">&nbsp;Deactivate</div>';                               
+                    copy.children[1].children[0].children[0].addEventListener("click",(e)=>{fetch("./active-exam/{'subject_name':'"+e.path[4].children[2].value+"','is_active':False}").then((res)=>{
                             document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
                             refresh_recent();
                         })});
-                    copy.children[0].children[0].children[3].addEventListener("click",(e)=>{alert("please deactivate this test first then delete!!")});
-                    copy.children[1].value=active_subject;
-                    copy.children[1].innerText=active_subject.length>15?active_subject.slice(0,15)+"...":active_subject;
+                    copy.children[1].children[0].children[3].addEventListener("click",(e)=>{alert("please deactivate this test first then delete!!")});
+                    copy.children[2].value=active_subject;
+                    copy.children[2].innerText=active_subject.length>15?active_subject.slice(0,15)+"...":active_subject;
+                    copy.children[3].innerHTML='<i class="fa fa-dot-circle-o"></i>&nbsp;Active';
+                    copy.children[3].style.color="tomato";
+                    copy.style.position="relative";
+                    copy.style.zIndex="2";
+                    copy.style.margin="-2% 0 0 20%";
+                    copy.children[0].style.background="url('../../static/test_icon.png')";
+                    copy.children[0].style.backgroundSize="cover";
                     document.getElementById("active_container").appendChild(copy);
+                    
                 }  
             }
             if(test.childElementCount ==1){
@@ -148,7 +165,7 @@
       for (let index = 0; index < tests.length; index++) {
         const element = tests[index];
         if(element!=event.path[1]){
-            element.children[0].children[0].classList.remove("show");
+            element.children[1].children[0].classList.remove("show");
         }
       }
     }

@@ -93,7 +93,6 @@ def all_exam():
 
 @app.route("/active-exam/<exam_title>") #first make a dictionary then make it string then pass to url
 def active_exam(exam_title):
-    print("hello")
     global ACTIVE_SUBJECT
     
     exam_title = eval(exam_title)# to convert string to dictionary
@@ -155,8 +154,16 @@ def subject_questions():
 def show_test(subject_name):
     global SHOW_TEST
     SHOW_TEST=subject_name
-    csrf = LoginForm()
-    return render_template("Dashboard_for_teachers/show-test.html",csrf=csrf)
+    if subject_name != ACTIVE_SUBJECT:
+        csrf = LoginForm()
+        print("not active")
+        print(ACTIVE_SUBJECT)
+        return render_template("Dashboard_for_teachers/show-test.html",csrf=csrf)
+    else :
+        csrf = LoginForm()
+        print("active")
+        print(ACTIVE_SUBJECT)
+        return render_template("Dashboard_for_teachers/show-active-test.html",csrf=csrf)
 
 
 @app.route("/update_add_subject_questions", methods=["POST"])
@@ -172,7 +179,7 @@ def update_add_subject_questions():
     with open("database.txt", "w") as file:
         file.write(f"{exam_data}")
 
-    return redirect(url_for('dashboard'))
+    return render_template("Dashboard_for_teachers/dashboard.html")
     
 
 
