@@ -76,7 +76,7 @@
    <script>
     let count;
     var cur_que;
-        fetch("../subject_questions").then((res)=>res.json()).then((data)=>{
+        fetch("./students_active").then((res)=>res.json()).then((data)=>{
             console.log(data);
             count=Math.floor((Object.keys(data).length-3)/6);
             document.getElementById("title").innerText=data.test_title[0];
@@ -93,7 +93,6 @@
 
                 copy.children[0].children[2].name=index+"answer";
                 copy.children[0].children[2].value=1;
-                copy.children[0].children[2].checked=copy.children[0].children[2].value ==Number(data[index+"answer"])?true:false;
                 copy.children[0].children[3].children[0].innerText=data[index+"option1"];
                 copy.children[0].children[3].children[0].name=index+"option1";
                 copy.children[0].children[3].children[0].rows=data[index+"option1"].length<50?1:2;
@@ -101,7 +100,6 @@
 
                 copy.children[0].children[5].name=index+"answer";
                 copy.children[0].children[5].value=2;
-                copy.children[0].children[5].checked=copy.children[0].children[5].value ==Number(data[index+"answer"])?true:false;
                 copy.children[0].children[6].children[0].innerText=data[index+"option2"];
                 copy.children[0].children[6].children[0].name=index+"option2";
                 copy.children[0].children[6].children[0].rows=data[index+"option2"].length<50?1:2;
@@ -109,7 +107,6 @@
 
                 copy.children[0].children[8].name=index+"answer";
                 copy.children[0].children[8].value=3;
-                copy.children[0].children[8].checked=copy.children[0].children[8].value ==Number(data[index+"answer"])?true:false;
                 copy.children[0].children[9].children[0].innerText=data[index+"option3"];
                 copy.children[0].children[9].children[0].name=index+"option3";
                 copy.children[0].children[9].children[0].rows=data[index+"option3"].length<50?1:2;
@@ -117,7 +114,6 @@
 
                 copy.children[0].children[11].name=index+"answer";
                 copy.children[0].children[11].value=4;
-                copy.children[0].children[11].checked=copy.children[0].children[12].value ==Number(data[index+"answer"])?true:false;
                 copy.children[0].children[12].children[0].innerText=data[index+"option4"];
                 copy.children[0].children[12].children[0].name=index+"option4";
                 copy.children[0].children[12].children[0].rows=data[index+"option4"].length<50?1:2;

@@ -48,6 +48,7 @@ body{
 input[type="radio"]{
     width: 3vh;
     height: 3vh;
+    cursor: pointer;
 }
 .question_box{
     display: flex;

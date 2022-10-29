@@ -21,7 +21,7 @@
             </ul>
         </nav>
     </div>
-    <form action="{{ url_for('update_add_subject_questions') }}" method="POST" id="form">
+    <form action="./students_response" method="POST" id="form">
         {{ csrf.csrf_token }}
         <br>
         <div class="top_head">
@@ -219,6 +219,12 @@
             element.disabled=false;
             
         }
+    }
+    function submit(){
+        let form=document.getElementById("form");
+        let cont=document.getElementById("que_container");
+        cont.removeChild(cont.firstElementChild);
+        form.submit();
     }
     </script>
 </body>

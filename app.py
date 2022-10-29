@@ -188,6 +188,12 @@ def students():
 def students_active_page():
     return render_template("Students/student_active.html")
 
+# to show test page to student
+@app.route("/students_test_page")
+def students_test_page():
+    return render_template("Students/student_test.html")
+
+
 @app.route("/students_active")
 def students_active():
     with open("database.txt", "r") as file:
@@ -195,6 +201,27 @@ def students_active():
         exam_data = eval(exam_data)
 
     return jsonify(exam_data[ACTIVE_SUBJECT])
+
+# endpointto store responses
+# @app.route("/response_submit", methods=["POST"])
+# def response_submit():
+#     form_raw_data = request.form.to_dict(flat=False)
+#     form_data = {form_raw_data['test_title'][0] : form_raw_data}
+    
+#     try:
+#         with open("database.txt", "r") as file:
+#             exam_data = file.read()
+#             exam_data = eval(exam_data)
+#         new=form_raw_data['test_title'][0].replace(" ","")
+#         exam_data[f"{new}"] = form_raw_data
+
+#         with open("database.txt", "w") as file:
+#             file.write(f"{exam_data}")
+#     except:
+#         with open("database.txt", "w") as file:
+#             file.write(f"{form_data}")
+
+#     return render_template("Dashboard_for_teachers/dashboard.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
