@@ -3,8 +3,16 @@
     margin: 0;
     padding: 0;
 }
+@font-face{
+  font-family:'Regular' ;
+  src: url(../font/Product\ Sans\ Regular.ttf);
+}
+@font-face{
+  font-family:'Bold' ;
+  src: url(../font/Product\ Sans\ Bold.ttf);
+}
 body{
-    font-family: "Open Sans",Roboto,Arial,sans-serif;
+    font-family:'Regular';
 }
 
   /* new section */
@@ -49,7 +57,7 @@ body{
     padding: 4px 4px;
     font-size: medium;
     line-height: 25px;
-    font-weight: bold;
+    font-family: 'Bold';
  }
  .plus {
   height: 55px;
@@ -123,7 +131,7 @@ background: radial-gradient(#f588d8, #c0a3e5); */
 
 /* fdgfsdgs */
 .dropdown-content {
-  font-family:"Open Sans",Roboto,Arial,sans-serif;
+  font-family:'Regular';
   display: none;
   position: absolute;
   background-color: white;

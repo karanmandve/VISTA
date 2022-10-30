@@ -3,8 +3,16 @@
     margin: 0;
     padding: 0;
 }
+@font-face{
+  font-family:'Regular' ;
+  src: url(../font/Product\ Sans\ Regular.ttf);
+}
+@font-face{
+  font-family:'Bold' ;
+  src: url(../font/Product\ Sans\ Bold.ttf);
+}
 body{
-    font-family: "Open Sans",Roboto,Arial,sans-serif;
+    font-family:'Regular';
     background: #dce6e7;
 }
 
@@ -24,6 +32,7 @@ body{
   }
   .top_head>input{
     outline: none;
+    font-family:'Regular' ;
     display: block;
     border: none;
     width: inherit;
@@ -32,6 +41,7 @@ body{
   label>input{
     outline: none;
     border: none;
+    font-family:'Regular' ;
     border-bottom: 1px solid rgba(187, 187, 187, 0.441);
     padding-top: 15px;
     width: 20vw;
@@ -44,6 +54,7 @@ body{
     padding: 20px;
   }
   .que_title{
+    font-family:'Regular' ;
     font-size: 1em;
     width: 40vw;
     padding-left: 19px;
@@ -63,7 +74,7 @@ body{
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-weight:500;
+    font-family: 'Bold';
     border-radius: 4px;
     text-align: center;
     background:#3498db;
