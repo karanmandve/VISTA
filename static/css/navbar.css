@@ -1,3 +1,11 @@
+@font-face{
+  font-family:'Regular' ;
+  src: url(../font/Product\ Sans\ Regular.ttf);
+}
+@font-face{
+  font-family:'Bold' ;
+  src: url(../font/Product\ Sans\ Bold.ttf);
+}
 a{
     text-decoration: none;
     color: inherit;
@@ -33,7 +41,7 @@ a{
     .nav-item a {
       color: white;
       font-size: 0.9rem;
-      font-weight: 400;
+      font-family: 'Bold';
       text-decoration: none;
       transition: color 0.3s ease-out;
     }
@@ -41,4 +49,22 @@ a{
     .nav-item a:hover {
       color: #3498db;
     }
+    .btn{
+      color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-family: 'Bold';
+        border-radius: 4px;
+        text-align: center;
+        background:#3498db;
+        width: 88px;
+        height:30px ;
+     }
+     .btn:hover{
+      box-shadow: 0 9px 7px -6px gray;
+      background:#62a4cf ;
+      color: white;
+   }
     

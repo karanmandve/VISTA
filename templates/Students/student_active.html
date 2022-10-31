@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css"/>
+    <link rel="stylesheet" href="../../static/css/navbar.css">
+    <link rel="stylesheet" href="../../static/css/dashboard.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="nav-wrapper">
+        <nav class="navbar">
+            <img src="../../static/logoblack.png" alt="Company Logo">
+            <ul class="nav no-search">
+                <li class="nav-item"><a href="#">About</a></li>
+                <li class="nav-item"><a href="#">Contact Us</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="new">
+        <div class="right">
+            <div id="active_title" class="title">No active test</div>
+            <div id="active_container">
+                <template id="t0">
+                    <div  class="test_card" style="margin: -11px 0 0 141px;position: absolute;z-index: 1;" >
+                        <div class="preview" style="background: url('../../static/test_icon.png');background-size: cover;"></div>
+                        <h1 style="padding: 6% 0 0 12%;font-size: unset;font-family: 'Bold';">DBMS</h1>
+                        <p style="padding: 3% 12%;padding: 6% 12%;margin: 1% 0 0 50%;" class="btn" onclick="start()">Start</p>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+<script>
+    fetch("./students_active").then((res)=>res.json()).then((data)=>{
+        let cont=document.getElementById("active_container")
+        let node=cont.children[0].content.children[0];
+        let copy=node.cloneNode(true);
+        copy.children[1].innerText=data.test_title[0];
+        cont.appendChild(copy);
+    });
+    function start(){
+       let check=confirm("Do you really want to start the test ?");
+       if(check){
+        window.location="./students_test_page";
+       }
+    }
+</script>
+</body>
+</html>

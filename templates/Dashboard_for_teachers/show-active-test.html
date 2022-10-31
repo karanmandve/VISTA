@@ -25,7 +25,7 @@
         <br>
         <div class="top_head">
             <input type="text" name="test_title" id="title" value="Untitled test" style="font-size: 2em;">
-            <input type="text" name="test_desc" id="desc" value="Test description" style="padding:15px 20px;">
+            <input type="text" name="test_time" id="time" placeholder="Enter the time span of test (in min)" style="padding:15px 20px;">
         </div>
         <br>
         <div id="que_container">
@@ -61,8 +61,8 @@
             count=Math.floor((Object.keys(data).length-3)/6);
             document.getElementById("title").value=data.test_title[0];
             document.getElementById("title").readOnly=true;
-            document.getElementById("desc").value=data.test_desc[0];
-            document.getElementById("desc").readOnly=true;
+            document.getElementById("time").value=data.test_time[0];
+            document.getElementById("time").readOnly=true;
 
             let form=document.getElementById("que_container");
             let node=form.lastElementChild;
