@@ -1,6 +1,6 @@
-from logging import PlaceHolder
-from flask import Flask, render_template, url_for, redirect, request, jsonify
+from flask import Flask, render_template, url_for, redirect, request, jsonify, Response
 from flask_cors import CORS
+from exam import Exam
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, PasswordField, SubmitField, validators
 
@@ -11,11 +11,15 @@ app.config["SECRET_KEY"] = "karan"
 csrf = CSRFProtect(app)
 cors = CORS(app)
 
+sql= MySQLPool() #for database
+exam= Exam()
+
 
 DASHBOARD_LOGIN_ID = "root"
 DASHBOARD_LOGIN_PASSWORD = "root"
 ACTIVE_SUBJECT = ""
 SHOW_TEST=""
+
 
 
 class LoginForm(FlaskForm):
@@ -182,15 +186,18 @@ def update_add_subject_questions():
 
     return render_template("Dashboard_for_teachers/dashboard.html")
     
+
 # student page
 @app.route("/students")
 def students():
     return render_template("Students/student_test.html")
 
+
 # to show only active test
 @app.route("/students_active_page")
 def students_active_page():
     return render_template("Students/student_active.html")
+
 
 # to show test page to student
 @app.route("/students_test_page")
@@ -206,6 +213,71 @@ def students_active():
 
     return jsonify(exam_data[ACTIVE_SUBJECT])
 
+
+@app.route("/addExam", methods=['POST'])
+def add_exam():
+    isTeacher=True # first check if it's an authorised teacher using session
+    if isTeacher:
+        data= request.get_json()
+
+        title=data["title"]
+        subject=data["subject"]
+        teacher=data["teacher"]
+        date=data["date"]
+        question=data["question"]
+        mcq1=data["mcq1"]
+        mcq2=data["mcq2"]
+        mcq3=data["mcq3"]
+        mcq4=data["mcq4"]
+        answer=data["answer"]
+        total_marks=data["total_marks"]
+        activate=data["activate_now"]
+
+        if activate:
+            sql_query="INSERT INTO ACTIVE VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+            values=(title,subject,teacher,date,question,mcq1,mcq2,mcq3,mcq4,answer,total_marks)
+            sql.execute(sql_query,values,False)
+            id=sql.execute("SELECT id from ACTIVE;")[0]
+            exam.activate(id)
+        else:
+            sql_query="INSERT INTO PENDING VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+            values=(title,subject,teacher,date,question,mcq1,mcq2,mcq3,mcq4,answer,total_marks)
+            sql.execute(sql_query,values,False)
+        
+        return Response("{'id':'"+id+"'}", status=201, mimetype='application/json')
+
+    else:
+        return Response("You are not authorised", status=404, mimetype='application/json')
+
+
+@app.route("/getPendingExams", methods=['GET'])
+def get_pending_exams():
+    isTeacher=True # first check if it's an authorised teacher using session
+    if isTeacher:
+        exam_list=[]
+        mainDict={}
+        res=sql.execute("SELECT * FROM PENDING")
+        for row in res:
+            dict1={
+                "id": row[0],
+                "title": row[1],
+                "subject": row[2],
+                "teacher": row[3],
+                "date": row[4],
+                "question": row[5],
+                "mcq1": row[6],
+                "mcq2": row[7],
+                "mcq3": row[8],
+                "mcq4": row[9],
+                "answer": row[10],
+                "total_marks": row[11],
+            }
+            exam_list.append(dict1)
+        mainDict["PENDING_EXAM"]=exam_list
+        Response(jsonify(mainDict), status=200, mimetype='application/json')
+    else:
+        Response("You are not authorised", status=404, mimetype='application/json')
+    
 
 
 if __name__ == "__main__":
