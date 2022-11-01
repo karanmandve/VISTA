@@ -11,7 +11,7 @@ app.config["SECRET_KEY"] = "karan"
 csrf = CSRFProtect(app)
 cors = CORS(app)
 
-sql= MySQLPool() #for database
+# sql= MySQLPool() #for database
 exam= Exam()
 
 
