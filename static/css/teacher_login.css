@@ -225,31 +225,6 @@ form.up {
   transform: translateY(-180px);
 }
 
-h1 {
-  color: #FF4081;
-  font-family: 'Dancing Script', cursive;
-}
-
-.btn {
-  background: #fff;
-  padding: 5px;
-  width: 150px;
-  height: 35px;
-  border: 1px solid #FF4081;
-  margin-top: 25px;
-  cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 50px #FF4081 inset;
-  color: #fff;
-}
-.btn:hover {
-  box-shadow: 0 0 #FF4081 inset;
-  color: #FF4081;
-}
-.btn:focus {
-  outline: none;
-}
-
 .form-group {
   position: relative;
   font-size: 15px;

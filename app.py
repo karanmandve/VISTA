@@ -1,3 +1,4 @@
+from logging import PlaceHolder
 from flask import Flask, render_template, url_for, redirect, request, jsonify
 from flask_cors import CORS
 from flask_wtf import FlaskForm, CSRFProtect
@@ -26,7 +27,9 @@ class LoginForm(FlaskForm):
 # HOMEPAGE
 @app.route("/")
 def homepage():
-    return render_template("index.html")
+    dashboard_login_form = LoginForm()
+
+    return render_template("index.html", dashboard_login_form=dashboard_login_form)
 
 
 @app.route("/teacher-login")

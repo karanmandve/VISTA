@@ -4,26 +4,151 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/login.css">
     <title>VISTA</title>
+
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/teacher_login.css">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
-    <div class="container">
-        <div id="left">
-        <form action="">
-            <h2 style="font-family: 'bold';">For Teachers</h2>
+    <section id="landing-page">
+
+
+        <!-- NAVBAR -->
+
+        <nav class="navbar bg-white navbar-expand-lg shadow-sm">
+            <a class="navbar-brand ms-3" href="index.html">Vista</a>
+        <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse me-2" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto menu-item">
+                <li class="nav-item">
+                    <a class="nav-link menu">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu">Contact</a>
+                </li>
+                <li class="nav-item menu">
+                    <a class="nav-link menu">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('teacher') }}" class="nav-link"><div class="btn btn-primary">Teacher Login</div></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    
+
+    <!-- PANDA LOGIN     -->
+
+<div class="container">
+
+  <div class="panda">
+    <div class="ear"></div>
+        <div class="face">
+          <div class="eye-shade"></div>
+          <div class="eye-white">
+            <div class="eye-ball"></div>
+          </div>
+          <div class="eye-shade rgt"></div>
+          <div class="eye-white rgt">
+            <div class="eye-ball"></div>
+          </div>
+          <div class="nose"></div>
+          <div class="mouth"></div>
+        </div>
+        <div class="body"> </div>
+        <div class="foot">
+          <div class="finger"></div>
+        </div>
+        <div class="foot rgt">
+          <div class="finger"></div>
+        </div>
+      </div>
+      <form action="{{ url_for('dashboard') }}" method="POST">
+        <div class="hand"></div>
+        <div class="hand rgt"></div>
+        <h1>Login</h1>
+        <div class="input-group my-3">
+          {{ dashboard_login_form.csrf_token }}
+          {{ dashboard_login_form.id(placeholder="Username", class="form-control") }}
+            <!-- {{ dashboard_login_form.id(class="form-control") }} -->
+        </div>
+        <div class="input-group">
+          {{ dashboard_login_form.password(placeholder="Password", class="form-control") }}
+            <!-- {{ dashboard_login_form.password(class="form-control") }} -->
+          <p class="alert">Invalid Credentials..!!</p>
+          <br>
+        </div>
+        <button href="/students_active_page" class="btn btn-start-exam btn-primary mt-4">Start Exam</button>
+      </form>
+      
+    </div>
+    <a href="/students_active_page">go to exam from this just for testing</a>
+  </section>
+      
+      <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+      <script>
+    $('#password').focusin(function(){
+      $('form').addClass('up')
+    });
+    $('#password').focusout(function(){
+      $('form').removeClass('up')
+    });
+    
+    // Panda Eye move
+    $(document).on( "mousemove", function( event ) {
+      var dw = $(document).width() / 15;
+      var dh = $(document).height() / 15;
+      var x = event.pageX/ dw;
+      var y = event.pageY/ dh;
+      $('.eye-ball').css({
+        width : x,
+        height : y
+      });
+    });
+    
+    // validation
+    
+    
+    $('.btn').click(function(){
+      $('form').addClass('wrong-entry');
+        setTimeout(function(){ 
+           $('form').removeClass('wrong-entry');
+         },3000 );
+    });
+    
+      </script>
+
+
+            <!-- <div class="container student-login">
+                <div id="left">
+                    <form action="">
+                        <h2 style="font-family: 'bold';">For Teachers</h2>
             <p> Create,edit and manage tests</p>
             <br>
-            <a href="{{ url_for('teacher') }}"><div class="btn">Login for teachers</div></a>
+            <a href="{{ url_for('teacher') }}"><div class="btn btn-primary">Login for teachers</div></a>
             <br><br><br>
             <h2 style="font-family: 'Bold';">For Students</h2>
             <p>Take a virtual instant VIVA Test</p>
             <br>
-            <a href="./students_active_page"><div class="btn">Start Exam</div></a>
-
+            <a href="./students_active_page"><div class="btn btn-primary">Start Exam</div></a>
+            
         </form>
-        </div>
-        <div id="right" style="background:url(../../static/tem.jpeg);background-size: cover;"></div>
-    </div> 
+    </div>
+    <div id="right" style="background:url(../../static/tem.jpeg);background-size: cover;"></div>
+    </div> -->
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    
 </body>
 </html>
