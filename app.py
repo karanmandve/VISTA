@@ -187,16 +187,18 @@ def update_add_subject_questions():
     return render_template("Dashboard_for_teachers/dashboard.html")
     
 
+# STUDENT SECTION STARTS HERE
+
+# to show only active test to student
+@app.route("/students-active-page")
+def students_active_page():
+    return render_template("Students/student_active_test.html")
+
+
 # student page
 @app.route("/students")
 def students():
     return render_template("Students/student_test.html")
-
-
-# to show only active test
-@app.route("/students_active_page")
-def students_active_page():
-    return render_template("Students/student_active.html")
 
 
 # to show test page to student
@@ -213,6 +215,29 @@ def students_active():
 
     return jsonify(exam_data[ACTIVE_SUBJECT])
 
+
+@app.route("/student-reponse", methods=["POST"])
+def student_reponse():
+    response_data = request.args
+    print(response_data)
+
+    try:
+        with open("student_response.txt", "r") as file:
+            student_data = file.read()
+            student_data = eval(student_data)
+
+
+        with open("student_response.txt", "w") as file:
+            student_data["student"] = response_data
+    except:
+        with open("student_response.txt", "w") as file:
+            response_data = {"student":response_data}
+            file.write(f"{response_data}")
+
+    return "more work needed"
+
+
+# KRISHNA'S CODE
 
 @app.route("/addExam", methods=['POST'])
 def add_exam():

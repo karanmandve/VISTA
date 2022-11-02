@@ -58,6 +58,11 @@ form{
     border-color: #7DE5ED;
 }
 
+.btn-start-exam:not(:disabled):not(:disabled):active {
+    background-color: #7DE5ED;
+    border-color: #7DE5ED;
+ } 
+
 .container{
     margin-top: 6%;
 }
