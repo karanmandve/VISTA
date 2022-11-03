@@ -54,8 +54,8 @@
                             <a style="color:tomato;"><i class="fa fa-trash-o" style="font-size:20px;color:tomato;"></i><div style="margin-left:-9vh">Delete</div></a>
                         </div>
                     </i>
-                <h1 style="padding: 6% 0 0 12%;font-size: unset;font-family: 'Bold';">DBMS</h1>
-                <p style="padding: 3% 12%;font-size: small; word-spacing: 5px;">desc</p>
+                <h1 style="padding: 6% 0 0 12%;font-size: unset;font-family: 'Bold';margin-bottom: 0;">DBMS</h1>
+                <p style="padding: 2% 12%;font-size: small; word-spacing: 5px;">desc</p>
                 </div>
             </template>
         </div>
@@ -64,7 +64,6 @@
      <br>
 <script>
    var test_count=0;
-//    const bg=[ "radial-gradient(#1fe4f5,#3fbafe)","radial-gradient(#60efbc,#58d5c9)","radial-gradient(#f588d8,#c0a3e5)"];
     
     function refresh_recent(){
         let recent_title=document.getElementById("recent_title");
@@ -116,7 +115,7 @@
                         copy.children[2].innerText=element.length>15?element.slice(0,15)+"...":element;
                         copy.children[3].innerHTML='<i class="fa fa-dot-circle-o"></i>&nbsp;Inactive';
                         copy.children[3].style.color="blue";
-                        copy.children[0].style.background="url('../../static/test_icon.png')";
+                        copy.children[0].style.background="url('../../static/icon.jpg')";
                         copy.children[0].style.backgroundSize="cover";
                         document.getElementById("test_container").appendChild(copy);
                         count++;
@@ -138,7 +137,7 @@
                     copy.style.position="relative";
                     copy.style.zIndex="2";
                     copy.style.margin="-2% 0 0 20%";
-                    copy.children[0].style.background="url('../../static/test_icon.png')";
+                    copy.children[0].style.background="url('../../static/icon.jpg')";
                     copy.children[0].style.backgroundSize="cover";
                     document.getElementById("active_container").appendChild(copy);
                     
