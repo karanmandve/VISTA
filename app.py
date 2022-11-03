@@ -21,7 +21,7 @@ DASHBOARD_LOGIN_ID = "root"
 DASHBOARD_LOGIN_PASSWORD = "root"
 ACTIVE_SUBJECT = ""
 SHOW_TEST=""
-STUDENT_PASSWORDS=[]
+STUDENT_PASSWORDS=[""]
 
 
 
@@ -104,6 +104,7 @@ def all_exam():
 @app.route("/active-exam/<exam_title>") #first make a dictionary then make it string then pass to url
 def active_exam(exam_title):
     global ACTIVE_SUBJECT
+    global  STUDENT_PASSWORDS
     
     exam_title = eval(exam_title)# to convert string to dictionary
 
@@ -120,6 +121,9 @@ def active_exam(exam_title):
 
             with open("database.txt", "w") as file:
                 file.write(f"{exam_data}")
+            
+            STUDENT_PASSWORDS.clear()
+            STUDENT_PASSWORDS.append("")
 
             return "Subject Deactivated"
     else:
@@ -254,6 +258,12 @@ def generate_passwords(count):
     
     STUDENT_PASSWORDS.extend(passwords)
     return jsonify(passwords)
+
+# send student password
+@app.route("/show-passwords/")
+def show_passwords():
+    return jsonify(STUDENT_PASSWORDS)
+
 
 
 

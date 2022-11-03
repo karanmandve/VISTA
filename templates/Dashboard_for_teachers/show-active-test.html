@@ -52,6 +52,10 @@
         </div>
         
     </form>
+    <div class="student_container"id="student_container" >
+        <input type="number" id="count" placeholder="Enter the no of students">
+        <div class="nav-item btn" id="btn_gen" onclick="genarate()"><a>Generate</a></div>
+    </div>
     <script>
         var count;
     function mount_question(){
@@ -120,6 +124,50 @@
         });
     }
     mount_question();
+    fetch("/show-passwords/").then((res)=>res.json()).then((data)=>{
+        console.log(data.length);
+        if(data.length >1){
+                let student_box=document.getElementById("student_container");
+                student_box.removeChild(student_box.lastElementChild);
+                student_box.removeChild(student_box.lastElementChild);
+                let node=document.createElement("div");
+                node.innerHTML="<b>Student Id and Pass</b>";
+                student_box.appendChild(node);
+                let roll=1;
+                for (let index = 1; index < data.length; index++) {
+                    const element = data[index];
+                    node=document.createElement("div");
+                    node.innerHTML="<b>"+roll+":</b>&nbsp; "+element;
+                student_box.appendChild(node);
+                roll++;
+                }
+            }
+            else{
+                console.log(data);
+            }
+    });
+
+
+    function genarate(){
+        let student_box=document.getElementById("student_container");
+        let count=document.getElementById("count").value;
+            fetch("/generate-passwords/"+count).then((res)=>res.json()).then((data)=>{
+                console.log(data);
+                student_box.removeChild(student_box.lastElementChild);
+                student_box.removeChild(student_box.lastElementChild);
+                let node=document.createElement("div");
+                node.innerHTML="<b>Student Id and Pass</b>";
+                student_box.appendChild(node);
+                let roll=1;
+                for (let index = 0; index < data.length; index++) {
+                    const element = data[index];
+                    node=document.createElement("div");
+                    node.innerHTML="<b>"+roll+":</b>&nbsp; "+element;
+                student_box.appendChild(node);
+                roll++;
+                }
+            });
+    }
     </script>
 </body>
 </html>

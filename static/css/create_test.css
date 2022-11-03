@@ -110,3 +110,29 @@ body{
     background:#62a4cf ;
     color: white;
  }
+
+ .student_container{
+  display: flex;
+  overflow: scroll;
+  align-items:flex-start;
+  flex-direction: column;
+  padding: 1% 1%;
+  height: 91vh;
+  width:20vw;
+  right: 0;
+  top: 9vh;
+  background: white;
+  position: fixed;
+  border: 2px solid whitesmoke;
+ }
+ #count{
+  outline: none;
+  padding: 0 2%;
+  height: 6%;
+ }
+ .student_container::-webkit-scrollbar{
+  display: none;
+ }
+ .student_container div{
+  margin-top: 2%;
+ }
