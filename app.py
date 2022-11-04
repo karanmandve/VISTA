@@ -21,7 +21,6 @@ DASHBOARD_LOGIN_ID = "root"
 DASHBOARD_LOGIN_PASSWORD = "root"
 ACTIVE_SUBJECT = ""
 SHOW_TEST=""
-STUDENT_PASSWORDS=[""]
 
 
 
@@ -252,18 +251,19 @@ def generate_passwords(count):
     count=int(count)
     global STUDENT_PASSWORDS
     passwords=[]
-    for i in range(0,count):
+    for _ in range(count):
         password=''.join(random.choice(string.ascii_uppercase + string.digits+ string.ascii_lowercase) for _ in range(6))
         passwords.append(password)
-    
-    STUDENT_PASSWORDS.extend(passwords)
+
+
     return jsonify(passwords)
 
 
-# send student password
-@app.route("/show-passwords/")
-def show_passwords():
-    return jsonify(STUDENT_PASSWORDS)
+# # send student password
+# @app.route("/show-passwords/")
+# def show_passwords():
+
+#     return jsonify(STUDENT_PASSWORDS)
 
 
 
