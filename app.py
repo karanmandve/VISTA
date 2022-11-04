@@ -37,6 +37,11 @@ def homepage():
 
     return render_template("index.html", dashboard_login_form=dashboard_login_form)
 
+# about page
+@app.route("/about")
+def aboutpage():
+    return render_template("about_index.html")
+
 
 @app.route("/teacher-login")
 def teacher():
@@ -47,10 +52,15 @@ def teacher():
 
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():
+    global ACTIVE_SUBJECT
     dashboard_login_form = LoginForm()
 
     if dashboard_login_form.validate_on_submit():
         if dashboard_login_form.id.data == DASHBOARD_LOGIN_ID and dashboard_login_form.password.data == DASHBOARD_LOGIN_PASSWORD:
+            with open("database.txt", "r") as file:
+                exam_data = file.read()
+                exam_data = eval(exam_data)
+                ACTIVE_SUBJECT=exam_data["active_subject"]
             return render_template("Dashboard_for_teachers/dashboard.html")
 
     return redirect(url_for('teacher'))
