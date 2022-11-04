@@ -33,8 +33,12 @@ class LoginForm(FlaskForm):
 # HOMEPAGE
 @app.route("/")
 def homepage():
+    global ACTIVE_SUBJECT
     dashboard_login_form = LoginForm()
-
+    with open("database.txt", "r") as file:
+                exam_data = file.read()
+                exam_data = eval(exam_data)
+                ACTIVE_SUBJECT=exam_data["active_subject"]
     return render_template("index.html", dashboard_login_form=dashboard_login_form)
 
 # about page
@@ -52,15 +56,10 @@ def teacher():
 
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():
-    global ACTIVE_SUBJECT
     dashboard_login_form = LoginForm()
 
     if dashboard_login_form.validate_on_submit():
         if dashboard_login_form.id.data == DASHBOARD_LOGIN_ID and dashboard_login_form.password.data == DASHBOARD_LOGIN_PASSWORD:
-            with open("database.txt", "r") as file:
-                exam_data = file.read()
-                exam_data = eval(exam_data)
-                ACTIVE_SUBJECT=exam_data["active_subject"]
             return render_template("Dashboard_for_teachers/dashboard.html")
 
     return redirect(url_for('teacher'))
@@ -112,7 +111,6 @@ def all_exam():
 @app.route("/active-exam/<exam_title>") #first make a dictionary then make it string then pass to url
 def active_exam(exam_title):
     global ACTIVE_SUBJECT
-    global  STUDENT_PASSWORDS
     
     exam_title = eval(exam_title)# to convert string to dictionary
 
@@ -129,9 +127,6 @@ def active_exam(exam_title):
 
             with open("database.txt", "w") as file:
                 file.write(f"{exam_data}")
-            
-            STUDENT_PASSWORDS.clear()
-            STUDENT_PASSWORDS.append("")
 
             return "Subject Deactivated"
     else:
