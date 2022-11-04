@@ -249,7 +249,7 @@ def student_reponse():
 @app.route("/generate-passwords/<count>")
 def generate_passwords(count):
     count=int(count)
-    global STUDENT_PASSWORDS
+    
     passwords=[]
     for _ in range(count):
         password=''.join(random.choice(string.ascii_uppercase + string.digits+ string.ascii_lowercase) for _ in range(6))
