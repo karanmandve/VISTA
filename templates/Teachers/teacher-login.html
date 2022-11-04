@@ -47,92 +47,100 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../../static/css/teacher_login.css">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello</h1>
-  <div class="panda">
-    <div class="ear"></div>
-    <div class="face">
-      <div class="eye-shade"></div>
-      <div class="eye-white">
-        <div class="eye-ball"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/teacher_login.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="panda">
+        <div class="ear"></div>
+        <div class="face">
+          <div class="eye-shade"></div>
+          <div class="eye-white">
+            <div class="eye-ball"></div>
+          </div>
+          <div class="eye-shade rgt"></div>
+          <div class="eye-white rgt">
+            <div class="eye-ball"></div>
+          </div>
+          <div class="nose"></div>
+          <div class="mouth"></div>
+        </div>
+        <div class="body"></div>
+        <div class="foot">
+          <div class="finger"></div>
+        </div>
+        <div class="foot rgt">
+          <div class="finger"></div>
+        </div>
       </div>
-      <div class="eye-shade rgt"></div>
-      <div class="eye-white rgt">
-        <div class="eye-ball"></div>
-      </div>
-      <div class="nose"></div>
-      <div class="mouth"></div>
+      <form action="{{ url_for('dashboard') }}" method="POST">
+        <div class="hand"></div>
+        <div class="hand rgt"></div>
+        <h1>Login</h1>
+        <div class="input-group my-3">
+          {{ dashboard_login_form.csrf_token }} {{
+          dashboard_login_form.id(placeholder="Username", class="form-control")
+          }}
+          <!-- {{ dashboard_login_form.id(class="form-control") }} -->
+        </div>
+        <div class="input-group">
+          {{ dashboard_login_form.password(placeholder="Password",
+          class="form-control") }}
+          <!-- {{ dashboard_login_form.password(class="form-control") }} -->
+          <p class="alert">Invalid Credentials..!!</p>
+          <br />
+        </div>
+        <button
+          href="/students_active_page"
+          class="btn btn-start-exam btn-primary mt-4"
+        >
+          Login
+        </button>
+      </form>
     </div>
-    <div class="body"> </div>
-    <div class="foot">
-      <div class="finger"></div>
-    </div>
-    <div class="foot rgt">
-      <div class="finger"></div>
-    </div>
-  </div>
-  <form action="{{ url_for('dashboard') }}" method="POST">
-    <div class="hand"></div>
-    <div class="hand rgt"></div>
-    <h1>Login</h1>
-    <div class="form-group">
-      {{ dashboard_login_form.csrf_token }}
-        {{ dashboard_login_form.id }}
-    </div>
-    <div class="form-group">
-        {{ dashboard_login_form.password }}
-      <p class="alert">Invalid Credentials..!!</p>
-      <button class="btn">Login </button>
-    </div>
-  </form>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+      $("#password").focusin(function () {
+        $("form").addClass("up");
+      });
+      $("#password").focusout(function () {
+        $("form").removeClass("up");
+      });
 
-  
-  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-  <script>
-$('#password').focusin(function(){
-  $('form').addClass('up')
-});
-$('#password').focusout(function(){
-  $('form').removeClass('up')
-});
+      // Panda Eye move
+      $(document).on("mousemove", function (event) {
+        var dw = $(document).width() / 15;
+        var dh = $(document).height() / 15;
+        var x = event.pageX / dw;
+        var y = event.pageY / dh;
+        $(".eye-ball").css({
+          width: x,
+          height: y,
+        });
+      });
 
-// Panda Eye move
-$(document).on( "mousemove", function( event ) {
-  var dw = $(document).width() / 15;
-  var dh = $(document).height() / 15;
-  var x = event.pageX/ dw;
-  var y = event.pageY/ dh;
-  $('.eye-ball').css({
-    width : x,
-    height : y
-  });
-});
+      // validation
 
-// validation
-
-
-$('.btn').click(function(){
-  $('form').addClass('wrong-entry');
-    setTimeout(function(){ 
-       $('form').removeClass('wrong-entry');
-     },3000 );
-});
-
-  </script>
-
-</body>
+      $(".btn").click(function () {
+        $("form").addClass("wrong-entry");
+        setTimeout(function () {
+          $("form").removeClass("wrong-entry");
+        }, 3000);
+      });
+    </script>
+  </body>
 </html>
-
-
-
-
-
-
