@@ -29,7 +29,8 @@
             </div>
             <div class="mid_sec">
                 
-                <form action="" style="display: block;" id="form">
+                <form action="/student-reponse" method="post" style="display: block;" id="form">
+                    {{ csrf.csrf_token }}
                     <div id="que_cont" class="question_container">
                         <template>
                             <div class="que" style="width: 53vw;height: 50vh;display: flex;align-items: center;justify-content: center;" id="1">
@@ -67,7 +68,7 @@
                 </div>
             </div>
             <div class="low_sec">
-                <div class="btn" style="background:tomato;">Finish</div>
+                <div class="btn" style="background:tomato;" onclick="finish()">Finish</div>
                 <div class="btn" style="background:#3498db;" onclick="next()">Next</div>
                 <div class="btn" style="background:#3498db;" onclick="pre()">Previous</div>
             </div>
@@ -142,10 +143,12 @@
             
             
             let newsec=0+(time*60);
-            setInterval(()=>{
+            let test_time=setInterval(()=>{
                 --newsec;
                 if(newsec < 0){
-                    alert("time up");
+                    alert("time up !! submiting form !!");
+                    document.getElementById("form").submit();
+                    clearInterval(test_time);
                     // document.getElementById("form").submit();
                 }
                 else{
@@ -198,6 +201,11 @@
                 cur_que=String(--temp);
                 refresh_curent();
             }
+        }
+        function finish(){
+            let form = document.getElementById("form");
+            form.children[1].removeChild(form.children[1].children[0]);
+            form.submit();
         }
    </script>
 </body>

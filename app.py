@@ -214,7 +214,8 @@ def students():
 # to show test page to student
 @app.route("/students_test_page")
 def students_test_page():
-    return render_template("Students/student_test.html")
+    csrf = LoginForm()
+    return render_template("Students/student_test.html",csrf=csrf)
 
 
 @app.route("/students_active")
@@ -228,7 +229,7 @@ def students_active():
 
 @app.route("/student-reponse", methods=["POST"])
 def student_reponse():
-    response_data = request.args
+    response_data = request.form.to_dict(flat=False)
     print(response_data)
 
     try:
