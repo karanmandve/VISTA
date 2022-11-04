@@ -73,7 +73,6 @@ def form_submit():
             exam_data = file.read()
             exam_data = eval(exam_data)
             
-        # new=form_raw_data['test_title'][0].replace(" ","")
         exam_data[f"{form_raw_data['test_title'][0]}"] = form_raw_data
 
         with open("database.txt", "w") as file:
@@ -249,12 +248,13 @@ def student_reponse():
 @app.route("/generate-passwords/<count>")
 def generate_passwords(count):
     count=int(count)
-    
+
     passwords=[]
     for _ in range(count):
         password=''.join(random.choice(string.ascii_uppercase + string.digits+ string.ascii_lowercase) for _ in range(6))
         passwords.append(password)
 
+    passwords = {"passwords":passwords}
 
     return jsonify(passwords)
 

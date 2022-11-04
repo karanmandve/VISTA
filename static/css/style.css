@@ -58,6 +58,11 @@ form{
     border-color: #7DE5ED;
 }
 
+.btn-start-exam:focus{
+    background-color: #7dd5db;
+    border-color: #7DE5ED;
+}
+
 .btn-start-exam:not(:disabled):not(:disabled):active {
     background-color: #7DE5ED;
     border-color: #7DE5ED;
