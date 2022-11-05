@@ -250,17 +250,16 @@ def student_reponse():
 
 # KRISHNA'S CODE
 
-
 @app.route("/generate-passwords/<count>")
 def generate_passwords(count):
     count=int(count)
-
-    passwords=[]
-    for _ in range(count):
-        password=''.join(random.choice(string.ascii_uppercase + string.digits+ string.ascii_lowercase) for _ in range(6))
-        passwords.append(password)
-
-    passwords = {"passwords":passwords}
+    global STUDENT_PASSWORDS
+    passwords = []
+    for i in range(1, count+1):
+        password = ''.join(
+            random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in range(6))
+        dict1 = {"number": i, "password": password}
+        passwords.append(dict1)
 
     return jsonify(passwords)
 

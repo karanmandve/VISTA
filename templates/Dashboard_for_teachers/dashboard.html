@@ -170,5 +170,31 @@
     }
     refresh_recent();
 </script>
+<!-- use xlsx.full.min.js from version 0.19.0 -->
+<script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.19.0/package/dist/xlsx.full.min.js"></script>
+<script>
+
+    document.getElementById("password").onclick= function(event){
+        fetch('/generate-passwords/30')
+        .then((response) => response.json())
+        .then((data) => {
+            const objs=data.filter(row=> {});
+            const rows=data.map(row =>({
+                number: row.number,
+                password: row.password,
+                sign: null
+            }));
+           const worksheet= XLSX.utils.json_to_sheet(rows);
+           const workbook = XLSX.utils.book_new();
+           XLSX.utils.book_append_sheet(workbook,worksheet,"Passwords");
+           XLSX.utils.sheet_add_aoa(worksheet,[["number","password"]],{origin: "A1"});
+           const max_width= rows.reduce((w,r) => Math.max(w,r.password.length),10);
+           worksheet["!cols"]=[{ wch: max_width}];
+           XLSX.writeFile(workbook,"Passwords.xlsx",{compression: false});
+        })		
+    }
+
+    </script>
+
 </body>
 </html>
