@@ -260,12 +260,8 @@ def generate_passwords(count):
     return jsonify(passwords)
 
 
-# # send student password
-# @app.route("/show-passwords/")
-# def show_passwords():
-
-#     return jsonify(STUDENT_PASSWORDS)
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+
