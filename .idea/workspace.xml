@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6469abef-7d10-485f-9ed4-c4b0f75fda97" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/about_page.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/about_page.css" afterDir="false" />
+    <list default="true" id="6469abef-7d10-485f-9ed4-c4b0f75fda97" name="Changes" comment="Added github profile pictures">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/about_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/about_index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,6 +70,14 @@
       <option name="presentableId" value="Default" />
       <updated>1667455381261</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added github profile pictures">
+      <created>1667719320356</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1667719320356</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -86,5 +93,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added github profile pictures" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added github profile pictures" />
   </component>
 </project>
