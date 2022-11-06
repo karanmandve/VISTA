@@ -69,7 +69,6 @@ body{
 
 
 .our_team .team_member .member_img{
-  background: #e9e5fa;  
   max-width: 190px;
   width: 100%;
   height: 190px;
@@ -79,6 +78,8 @@ body{
   position: relative;
   cursor: pointer;
 }
+
+
 
 .our_team .team_member .member_img img{
   width: 100%;
