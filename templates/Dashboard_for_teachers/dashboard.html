@@ -48,11 +48,11 @@
                     <div class="preview"></div>
                     <i class="fa fa-ellipsis-v more"  style="color: grey;">
                         <div  class="dropdown-content">
-                            <a><i class="fa fa-flash" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">Activate</div></a>
-                            <a id="password"><i class="fa fa-hashtag" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">Passwords</div></a>
-                            <a><i class="fa fa-group" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">Responses</div></a>
-                            <a><i class="fa fa-eye" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">View</div></a>
-                            <a style="color:tomato;"><i class="fa fa-trash-o" style="font-size:20px;color:tomato;"></i><div style="margin-left:-9vh">Delete</div></a>
+                            <a><i class="fa fa-flash" style="font-size:20px;color:grey;"></i><div style="margin-left:-3vh">Activate</div></a>
+                            <a id="password"><i class="fa fa-hashtag" style="font-size:20px;color:grey;"></i><div style="margin-left:-3vh">Passwords</div></a>
+                            <a><i class="fa fa-group" style="font-size:20px;color:grey;"></i><div style="margin-left:-3vh">Responses</div></a>
+                            <a><i class="fa fa-eye" style="font-size:20px;color:grey;"></i><div style="margin-left:-3vh">View</div></a>
+                            <a style="color:tomato;"><i class="fa fa-trash-o" style="font-size:20px;color:tomato;"></i><div style="margin-left:-3vh">Delete</div></a>
                         </div>
                     </i>
                 <h1 style="padding: 6% 0 0 12%;font-size: unset;font-family: 'Bold';margin-bottom: 0;">DBMS</h1>
@@ -125,7 +125,7 @@
                     }
                 }
                 else if(active_subject !=""){ 
-                    copy.children[1].children[0].children[0].innerHTML='<i class="fa fa-flash" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">&nbsp;Deactivate</div>';                               
+                    copy.children[1].children[0].children[0].innerHTML='<i class="fa fa-flash" style="font-size:20px;color:grey;"></i><div style="margin-left:-3vh">&nbsp;Deactivate</div>';                               
                     copy.children[1].children[0].children[0].addEventListener("click",(e)=>{fetch("./active-exam/{'subject_name':'"+e.path[4].children[2].value+"','is_active':False}").then((res)=>{
                             document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
                             refresh_recent();
