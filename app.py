@@ -35,7 +35,7 @@ SHOW_TEST = ""
 class Questions(db.Model):
     __tablename__ = "questions"
     id = db.Column(db.Integer, primary_key=True)
-    subject_name = db.Column(db.String(250), unique=True, nullable=False)
+    subject_name = db.Column(db.String(250), nullable=False)
     test_time = db.Column(db.Integer, nullable=False)
     question = db.Column(db.Text, nullable=False)
     option_1 = db.Column(db.String(250), nullable=False)
@@ -48,7 +48,7 @@ class Questions(db.Model):
 class StudentResponse(db.Model):
     __tablename__ = "student_response"
     id = db.Column(db.Integer, primary_key=True)
-    roll_no = db.Column(db.Integer, unique=True, nullable=False)
+    roll_no = db.Column(db.Integer, nullable=False)
     question = db.Column(db.Text, nullable=False)
     option_1 = db.Column(db.String(250), nullable=False)
     option_2 = db.Column(db.String(250), nullable=False)
@@ -124,6 +124,7 @@ def dashboard():
     dashboard_login_form = LoginForm()
 
     if dashboard_login_form.validate_on_submit():
+
         admin = User.query.filter_by(id=1).first()
 
         roll_no = int(dashboard_login_form.roll_no.data)
@@ -139,8 +140,6 @@ def dashboard():
             flash("Password is wrong, try again")
             return redirect(url_for('teacher'))
         
-        
-        
 
     return redirect(url_for('teacher'))
 
@@ -154,22 +153,30 @@ def create_test():
 
 @app.route("/form-submit", methods=["POST"])
 def form_submit():
-    form_raw_data = request.form.to_dict(flat=False)
-    print(form_raw_data)
-    form_data = {form_raw_data['test_title'][0]: form_raw_data}
+    form_data = request.form.to_dict(flat=False)
 
-    try:
-        with open("database.txt", "r") as file:
-            exam_data = file.read()
-            exam_data = eval(exam_data)
+    subject_name = form_data["test_title"][0]
 
-        exam_data[f"{form_raw_data['test_title'][0]}"] = form_raw_data
+    if db.session.query(Questions).filter_by(subject_name=subject_name).first() is not None:
+        flash("Subject name should be UNIQUE, please try again")
+        return redirect(url_for('create_test'))
 
-        with open("database.txt", "w") as file:
-            file.write(f"{exam_data}")
-    except:
-        with open("database.txt", "w") as file:
-            file.write(f"{form_data}")
+    questions_count = int((len(form_data)-3)/6)
+
+    for index in range(1, questions_count+1):
+        subject_name = form_data["test_title"][0]
+        test_time = int(form_data["test_time"][0])
+        question = form_data[f"q{index}"][0]
+        option_1 = form_data[f"{index}option1"][0]
+        option_2 = form_data[f"{index}option2"][0]
+        option_3 = form_data[f"{index}option3"][0]
+        option_4 = form_data[f"{index}option4"][0]
+        answer = form_data[f"{index}answer"][0]
+
+        questions = Questions(subject_name=subject_name, test_time=test_time, question=question, option_1=option_1, option_2=option_2, option_3=option_3, option_4=option_4, answer=answer)
+        db.session.add(questions)
+        db.session.commit()
+
 
     return render_template("Dashboard_for_teachers/dashboard.html")
 

@@ -22,6 +22,13 @@
     </div>
     <form action="{{ url_for('form_submit') }}" method="POST" id="form">
         {{ csrf.csrf_token }}
+        {% if get_flashed_messages() %}
+
+        {% for message in get_flashed_messages() %}
+          <em><p style="color: red; font-size: 1.3rem; margin-top: 5%;">{{ message }}</p></em>
+        {% endfor %}
+      
+      {% endif %}
         <br>
         <div class="top_head">
             <input type="text" name="test_title" id="" value="Untitled test" style="font-size: 2em;">
