@@ -39,11 +39,11 @@
         </div>
     </div>
 <script>
-    fetch("./students_active").then((res)=>res.json()).then((data)=>{
+    fetch("./all-exams").then((res)=>res.json()).then((data)=>{
         let cont=document.getElementById("active_container")
         let node=cont.children[0].content.children[0];
         let copy=node.cloneNode(true);
-        copy.children[1].innerText=data.test_title[0];
+        copy.children[1].innerText=data[0];
         cont.appendChild(copy);
     });
     function start(){

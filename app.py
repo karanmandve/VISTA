@@ -22,8 +22,6 @@ db = SQLAlchemy(app)
 app.app_context().push()
 
 
-DASHBOARD_LOGIN_ID = "root"
-DASHBOARD_LOGIN_PASSWORD = "root"
 # ACTIVE_SUBJECT = "None" NOT NEEDED NOW    
 SHOW_TEST = ""
 
@@ -106,12 +104,8 @@ def homepage():
     # db.session.add(subject)
     # db.session.commit()
 
-    global ACTIVE_SUBJECT
     dashboard_login_form = LoginForm()
-    with open("database.txt", "r") as file:
-        exam_data = file.read()
-        exam_data = eval(exam_data)
-        ACTIVE_SUBJECT = exam_data["active_subject"]
+
     return render_template("index.html", dashboard_login_form=dashboard_login_form)
 
 
@@ -213,7 +207,7 @@ def active_exam(subject_name):
 
     active_subject = AllSubject.query.filter_by(id=1).first()
 
-    if active_subject.subject_name == "None":
+    if subject_name["subject_name"] != "None":
         active_subject.subject_name = subject_name["subject_name"]
         db.session.commit()
 
@@ -244,47 +238,48 @@ def delete_subject(subject_name):
         return "Subject Deleted"
 
 
-@app.route("/subject_questions")
-def subject_questions():
-    with open("database.txt", "r") as file:
-        exam_data = file.read()
-        exam_data = eval(exam_data)
+# @app.route("/subject_questions")
+# def subject_questions():
+#     with open("database.txt", "r") as file:
+#         exam_data = file.read()
+#         exam_data = eval(exam_data)
 
-    return jsonify(exam_data[SHOW_TEST])
-
-
-@app.route("/show_test/<subject_name>")
-def show_test(subject_name):
-    global SHOW_TEST
-    SHOW_TEST = subject_name
-    if subject_name != ACTIVE_SUBJECT:
-        csrf = LoginForm()
-        print(ACTIVE_SUBJECT)
-        return render_template("Dashboard_for_teachers/show-test.html", csrf=csrf)
-    else:
-        csrf = LoginForm()
-        print(ACTIVE_SUBJECT)
-        return render_template("Dashboard_for_teachers/show-active-test.html", csrf=csrf)
+#     return jsonify(exam_data[SHOW_TEST])
 
 
-@app.route("/update_add_subject_questions", methods=["POST"])
-def update_add_subject_questions():
-    form_raw_data = request.form.to_dict(flat=False)
+# @app.route("/show_test/<subject_name>")
+# def show_test(subject_name):
+#     global SHOW_TEST
+#     SHOW_TEST = subject_name
+#     if subject_name != ACTIVE_SUBJECT:
+#         csrf = LoginForm()
+#         print(ACTIVE_SUBJECT)
+#         return render_template("Dashboard_for_teachers/show-test.html", csrf=csrf)
+#     else:
+#         csrf = LoginForm()
+#         print(ACTIVE_SUBJECT)
+#         return render_template("Dashboard_for_teachers/show-active-test.html", csrf=csrf)
 
-    with open("database.txt", "r") as file:
-        exam_data = file.read()
-        exam_data = eval(exam_data)
 
-    exam_data[f"{form_raw_data['test_title'][0]}"] = form_raw_data
+# @app.route("/update_add_subject_questions", methods=["POST"])
+# def update_add_subject_questions():
+#     form_raw_data = request.form.to_dict(flat=False)
 
-    with open("database.txt", "w") as file:
-        file.write(f"{exam_data}")
+#     with open("database.txt", "r") as file:
+#         exam_data = file.read()
+#         exam_data = eval(exam_data)
 
-    return render_template("Dashboard_for_teachers/dashboard.html")
+#     exam_data[f"{form_raw_data['test_title'][0]}"] = form_raw_data
+
+#     with open("database.txt", "w") as file:
+#         file.write(f"{exam_data}")
+
+#     return render_template("Dashboard_for_teachers/dashboard.html")
 
 
 
 # STUDENT SECTION STARTS HERE
+
 
 
 # to show only active test to student
@@ -292,13 +287,6 @@ def update_add_subject_questions():
 @app.route("/students-active-page")
 def students_active_page():
     return render_template("Students/student_active_test.html")
-
-
-# student page
-
-@app.route("/students")
-def students():
-    return render_template("Students/student_test.html")
 
 
 # to show test page to student
@@ -309,13 +297,29 @@ def students_test_page():
     return render_template("Students/student_test.html", csrf=csrf)
 
 
-@app.route("/students_active")
-def students_active():
-    with open("database.txt", "r") as file:
-        exam_data = file.read()
-        exam_data = eval(exam_data)
+# active exam all questions
 
-    return jsonify(exam_data[ACTIVE_SUBJECT])
+@app.route("/active-exam-questions")
+def active_exam_questions():
+    # get all question from Questions table with respect to subject_name
+    active_subject = AllSubject.query.filter_by(id=1).first()
+    all_questions = Questions.query.filter_by(subject_name=active_subject.subject_name).all()
+
+    #convert all_question into dictionary
+    all_questions = [question.__dict__ for question in all_questions]
+
+    # remove _sa_instance_state from all_questions
+    for question in all_questions:
+        question.pop("_sa_instance_state")
+
+    return jsonify(all_questions)
+
+
+# # student page
+
+# @app.route("/students")
+# def students():
+#     return render_template("Students/student_test.html")
 
 
 @app.route("/student-reponse", methods=["POST"])
