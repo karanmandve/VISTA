@@ -24,7 +24,7 @@ app.app_context().push()
 
 DASHBOARD_LOGIN_ID = "root"
 DASHBOARD_LOGIN_PASSWORD = "root"
-ACTIVE_SUBJECT = ""
+# ACTIVE_SUBJECT = "None" NOT NEEDED NOW    
 SHOW_TEST = ""
 
 
@@ -64,6 +64,12 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(50), nullable=False)
 
 
+class AllSubject(db.Model):
+    __tablename__ = "all_subjects"
+    id = db.Column(db.Integer, primary_key=True)
+    subject_name = db.Column(db.String(250), nullable=False)
+
+
 
 # FLASK WTFORMS
 
@@ -94,6 +100,10 @@ def homepage():
     # db.create_all()
     # user = User(roll_no=00, password="root")
     # db.session.add(user)
+    # db.session.commit()
+
+    # subject = AllSubject(subject_name="None")
+    # db.session.add(subject)
     # db.session.commit()
 
     global ACTIVE_SUBJECT
@@ -161,17 +171,21 @@ def form_submit():
         flash("Subject name should be UNIQUE, please try again")
         return redirect(url_for('create_test'))
 
+    subject = AllSubject(subject_name=subject_name)
+    db.session.add(subject)
+    db.session.commit()
+
     questions_count = int((len(form_data)-3)/6)
 
-    for index in range(1, questions_count+1):
+    for count in range(1, questions_count+1):
         subject_name = form_data["test_title"][0]
         test_time = int(form_data["test_time"][0])
-        question = form_data[f"q{index}"][0]
-        option_1 = form_data[f"{index}option1"][0]
-        option_2 = form_data[f"{index}option2"][0]
-        option_3 = form_data[f"{index}option3"][0]
-        option_4 = form_data[f"{index}option4"][0]
-        answer = form_data[f"{index}answer"][0]
+        question = form_data[f"q{count}"][0]
+        option_1 = form_data[f"{count}option1"][0]
+        option_2 = form_data[f"{count}option2"][0]
+        option_3 = form_data[f"{count}option3"][0]
+        option_4 = form_data[f"{count}option4"][0]
+        answer = form_data[f"{count}answer"][0]
 
         questions = Questions(subject_name=subject_name, test_time=test_time, question=question, option_1=option_1, option_2=option_2, option_3=option_3, option_4=option_4, answer=answer)
         db.session.add(questions)
@@ -183,67 +197,51 @@ def form_submit():
 
 @app.route("/all-exams")
 def all_exam():
-    with open("database.txt", "r") as file:
-        exam_data = file.read()
-        exam_data = eval(exam_data)
 
-    all_exams = {}
-    all_exams = {key: 0 for key in exam_data.keys()}
-    all_exams["active_subject"] = exam_data["active_subject"]
+    all_subjects = db.session.query(AllSubject.subject_name).all()
+    all_subjects = [subject[0] for subject in all_subjects]
 
-    return jsonify(all_exams)
+    return jsonify(all_subjects)
 
 
 # ENDPOINTS FOR DROP DOWN MENU OPTIONS
 
-@app.route("/active-exam/<exam_title>")  # first make a dictionary then make it string then pass to url
-def active_exam(exam_title):
-    global ACTIVE_SUBJECT
+@app.route("/active-exam/<subject_name>")  # first make a dictionary then make it string then pass to url
+def active_exam(subject_name):
 
-    exam_title = eval(exam_title)  # to convert string to dictionary
+    subject_name = eval(subject_name)  # to convert string to dictionary
 
-    if ACTIVE_SUBJECT == exam_title["subject_name"]:
+    active_subject = AllSubject.query.filter_by(id=1).first()
 
-        if not exam_title["is_active"]:
-            ACTIVE_SUBJECT = ""
-
-            with open("database.txt", "r") as file:
-                exam_data = file.read()
-                exam_data = eval(exam_data)
-
-            exam_data["active_subject"] = ACTIVE_SUBJECT
-
-            with open("database.txt", "w") as file:
-                file.write(f"{exam_data}")
-
-            return "Subject Deactivated"
-    else:
-        ACTIVE_SUBJECT = exam_title["subject_name"]
-
-        with open("database.txt", "r") as file:
-            exam_data = file.read()
-            exam_data = eval(exam_data)
-
-        exam_data["active_subject"] = ACTIVE_SUBJECT
-
-        with open("database.txt", "w") as file:
-            file.write(f"{exam_data}")
+    if active_subject.subject_name == "None":
+        active_subject.subject_name = subject_name["subject_name"]
+        db.session.commit()
 
         return "Subject Activated"
+    else:
+        active_subject.subject_name = "None"
+        db.session.commit()
+
+        return "Subject Deactivated"
 
 
 @app.route("/delete_subject/<subject_name>")
 def delete_subject(subject_name):
-    with open("database.txt", "r") as file:
-        exam_data = file.read()
-        exam_data = eval(exam_data)
 
-    del exam_data[subject_name.replace("%20", " ")]
+        active_subject = AllSubject.query.filter_by(id=1).first()
 
-    with open("database.txt", "w") as file:
-        file.write(f"{exam_data}")
+        if active_subject.subject_name == subject_name:
+            return "Subject is active, please deactivate it first"
 
-    return "Subject Deleted"
+        # delete all rows in Questions table with subject_name
+        Questions.query.filter_by(subject_name=subject_name).delete()
+        db.session.commit()
+
+        # delete subject_name from AllSubject table
+        AllSubject.query.filter_by(subject_name=subject_name).delete()
+        db.session.commit()
+
+        return "Subject Deleted"
 
 
 @app.route("/subject_questions")
