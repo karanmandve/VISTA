@@ -128,6 +128,11 @@ background: radial-gradient(#f588d8, #c0a3e5); */
   
 }
 
+#active{
+  position: relative;
+  z-index: 2;
+  margin:-2% 0 0 20%;
+}
 /* fdgfsdgs */
 .dropdown-content {
   font-family:'Regular';
@@ -158,3 +163,18 @@ background: radial-gradient(#f588d8, #c0a3e5); */
 .dropdown-content a:hover {background-color: #ddd;}
 
 .show {display: block;}
+
+
+/* for small screen size */
+@media only screen and (max-width:768px){
+  .new{
+    display:block;
+    height: unset;
+  }
+  .left ,.right{
+    padding: 4vh 0;
+  }
+  #active{
+    margin:-5% 0 0 20%;
+  }
+}

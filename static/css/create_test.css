@@ -136,3 +136,27 @@ body{
  .student_container div{
   margin-top: 2%;
  }
+ #form_options{
+  display: flex;
+  width: 45vw;
+  padding: 15px 26px;
+  height: inherit;
+  justify-content: space-between;
+}
+
+ /* for small screen size */
+@media only screen and (max-width:768px){
+  form{
+    display: unset;
+  }
+  .top_head,#que_container,#form_options{
+    width: unset;
+  }
+  .top_head>input,.que_title{
+    width: -webkit-fill-available;
+  }
+  #btn_add,#btn_del{
+    left: 84vw;
+    background: #b8b8b8;
+  }
+}

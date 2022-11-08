@@ -39,6 +39,8 @@
         </div>
     </div>
 <script>
+
+    // fetching the active test details
     fetch("./students_active").then((res)=>res.json()).then((data)=>{
         let cont=document.getElementById("active_container")
         let node=cont.children[0].content.children[0];
@@ -46,6 +48,8 @@
         copy.children[1].innerText=data.test_title[0];
         cont.appendChild(copy);
     });
+
+    // function to start the test
     function start(){
        let check=confirm("Do you really want to start the test ?");
        if(check){

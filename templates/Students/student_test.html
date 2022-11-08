@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css"/>
     <link rel="stylesheet" href="../../static/css/navbar.css">
     <link rel="stylesheet" href="../../static/css/student_test.css">
     <link rel="stylesheet" href="../../static/css/create_test.css">
@@ -149,7 +148,6 @@
                     alert("time up !! submiting form !!");
                     document.getElementById("form").submit();
                     clearInterval(test_time);
-                    // document.getElementById("form").submit();
                 }
                 else{
                     document.getElementById("timer").innerText=Math.floor(newsec/60) +":"+((newsec)%60);
