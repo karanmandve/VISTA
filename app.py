@@ -1,19 +1,26 @@
 import string
-from flask import Flask, render_template, url_for, redirect, request, jsonify, Response
+from flask import Flask, render_template, url_for, redirect, request, jsonify, flash
 from flask_cors import CORS
-from exam import Exam
 from flask_wtf import FlaskForm, CSRFProtect
-from wtforms import StringField, PasswordField, SubmitField, validators
+from wtforms import StringField, PasswordField, SubmitField, validators, IntegerField
 import random
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
+
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "karan"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exam.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 
 csrf = CSRFProtect(app)
 cors = CORS(app)
+login_manager = LoginManager(app)
+db = SQLAlchemy(app)
+app.app_context().push()
 
-# sql= MySQLPool() #for database
-exam = Exam()
 
 DASHBOARD_LOGIN_ID = "root"
 DASHBOARD_LOGIN_PASSWORD = "root"
@@ -21,15 +28,74 @@ ACTIVE_SUBJECT = ""
 SHOW_TEST = ""
 
 
+
+# SQLALCHEMY TABLES
+
+
+class Questions(db.Model):
+    __tablename__ = "questions"
+    id = db.Column(db.Integer, primary_key=True)
+    subject_name = db.Column(db.String(250), unique=True, nullable=False)
+    test_time = db.Column(db.Integer, nullable=False)
+    question = db.Column(db.Text, nullable=False)
+    option_1 = db.Column(db.String(250), nullable=False)
+    option_2 = db.Column(db.String(250), nullable=False)
+    option_3 = db.Column(db.String(250), nullable=False)
+    option_4 = db.Column(db.String(250), nullable=False)
+    answer = db.Column(db.String(250), nullable=False)
+
+
+class StudentResponse(db.Model):
+    __tablename__ = "student_response"
+    id = db.Column(db.Integer, primary_key=True)
+    roll_no = db.Column(db.Integer, unique=True, nullable=False)
+    question = db.Column(db.Text, nullable=False)
+    option_1 = db.Column(db.String(250), nullable=False)
+    option_2 = db.Column(db.String(250), nullable=False)
+    option_3 = db.Column(db.String(250), nullable=False)
+    option_4 = db.Column(db.String(250), nullable=False)
+    answer = db.Column(db.String(250), nullable=False)
+
+
+class User(db.Model, UserMixin):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    roll_no = db.Column(db.Integer, unique=True, nullable=False)
+    password = db.Column(db.String(50), nullable=False)
+
+
+
+# FLASK WTFORMS
+
+
 class LoginForm(FlaskForm):
-    id = StringField(label="id", validators=[validators.data_required()])
+    roll_no = IntegerField(label="id", validators=[validators.data_required()])
     password = PasswordField(label="password", validators=[validators.data_required()])
     submit = SubmitField(label="Log In")
 
 
+
+# FLASK LOGIN
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+
+# ROUTE'S START HERE
+
+
 # HOMEPAGE
+
 @app.route("/")
 def homepage():
+    # db.create_all()
+    # user = User(roll_no=00, password="root")
+    # db.session.add(user)
+    # db.session.commit()
+
     global ACTIVE_SUBJECT
     dashboard_login_form = LoginForm()
     with open("database.txt", "r") as file:
@@ -40,6 +106,7 @@ def homepage():
 
 
 # about page
+
 @app.route("/about")
 def aboutpage():
     return render_template("about_index.html")
@@ -57,8 +124,23 @@ def dashboard():
     dashboard_login_form = LoginForm()
 
     if dashboard_login_form.validate_on_submit():
-        if dashboard_login_form.id.data == DASHBOARD_LOGIN_ID and dashboard_login_form.password.data == DASHBOARD_LOGIN_PASSWORD:
+        admin = User.query.filter_by(id=1).first()
+
+        roll_no = int(dashboard_login_form.roll_no.data)
+        password = dashboard_login_form.password.data
+
+        if admin.roll_no != roll_no:
+            flash("Id does not exist, please try again")
+            return redirect(url_for('teacher'))
+        elif admin.password == password:
+            # login_user(admin)
             return render_template("Dashboard_for_teachers/dashboard.html")
+        else:
+            flash("Password is wrong, try again")
+            return redirect(url_for('teacher'))
+        
+        
+        
 
     return redirect(url_for('teacher'))
 
@@ -73,6 +155,7 @@ def create_test():
 @app.route("/form-submit", methods=["POST"])
 def form_submit():
     form_raw_data = request.form.to_dict(flat=False)
+    print(form_raw_data)
     form_data = {form_raw_data['test_title'][0]: form_raw_data}
 
     try:
@@ -195,21 +278,26 @@ def update_add_subject_questions():
     return render_template("Dashboard_for_teachers/dashboard.html")
 
 
+
 # STUDENT SECTION STARTS HERE
 
+
 # to show only active test to student
+
 @app.route("/students-active-page")
 def students_active_page():
     return render_template("Students/student_active_test.html")
 
 
 # student page
+
 @app.route("/students")
 def students():
     return render_template("Students/student_test.html")
 
 
 # to show test page to student
+
 @app.route("/students_test_page")
 def students_test_page():
     csrf = LoginForm()
@@ -230,17 +318,17 @@ def student_reponse():
     response_data = request.form.to_dict(flat=False)
     print(response_data)
 
-    try:
-        with open("student_response.txt", "r") as file:
-            student_data = file.read()
-            student_data = eval(student_data)
+    # try:
+    #     with open("student_response.txt", "r") as file:
+    #         student_data = file.read()
+    #         student_data = eval(student_data)
 
-        with open("student_response.txt", "w") as file:
-            student_data["student"] = response_data
-    except:
-        with open("student_response.txt", "w") as file:
-            response_data = {"student": response_data}
-            file.write(f"{response_data}")
+    #     with open("student_response.txt", "w") as file:
+    #         student_data["student"] = response_data
+    # except:
+    #     with open("student_response.txt", "w") as file:
+    #         response_data = {"student": response_data}
+    #         file.write(f"{response_data}")
 
     return "more work needed"
 
