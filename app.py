@@ -1,11 +1,12 @@
 import string
-from flask import Flask, render_template, url_for, redirect, request, jsonify, flash
+from flask import Flask, render_template, url_for, redirect, request, jsonify, flash, abort
 from flask_cors import CORS
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, PasswordField, SubmitField, validators, IntegerField
 import random
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
+from functools import wraps
 
 
 
@@ -88,6 +89,28 @@ def load_user(user_id):
 
 
 
+# ADMIN LOGIN DECORATOR FUNCTION
+
+
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # try:
+        #     current_user.password
+        #     admin = User.query.filter_by(id=1).first()
+        # except:
+        #     abort(403)
+        admin = User.query.filter_by(id=1).first()
+
+        if current_user.password == admin.password:
+            return f(*args, **kwargs)
+        else:
+            return abort(403)
+
+    return decorated_function
+
+
+
 # ROUTE'S START HERE
 
 
@@ -116,15 +139,8 @@ def aboutpage():
     return render_template("about_index.html")
 
 
-@app.route("/teacher-login")
+@app.route("/teacher-login", methods=["GET", "POST"])
 def teacher():
-    dashboard_login_form = LoginForm()
-
-    return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
-
-
-@app.route("/dashboard", methods=["GET", "POST"])
-def dashboard():
     dashboard_login_form = LoginForm()
 
     if dashboard_login_form.validate_on_submit():
@@ -136,19 +152,53 @@ def dashboard():
 
         if admin.roll_no != roll_no:
             flash("Id does not exist, please try again")
-            return redirect(url_for('teacher'))
+            return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
+            # return redirect(url_for('teacher'))
         elif admin.password == password:
-            # login_user(admin)
+            login_user(admin, remember=True)
             return render_template("Dashboard_for_teachers/dashboard.html")
         else:
             flash("Password is wrong, try again")
-            return redirect(url_for('teacher'))
+            return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
+            # return redirect(url_for('teacher'))
+
+    return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("homepage"))
+
+
+@app.route("/dashboard", methods=["GET", "POST"])
+@admin_only
+def dashboard():
+    # dashboard_login_form = LoginForm()
+
+    # if dashboard_login_form.validate_on_submit():
+
+    #     admin = User.query.filter_by(id=1).first()
+
+    #     roll_no = int(dashboard_login_form.roll_no.data)
+    #     password = dashboard_login_form.password.data
+
+    #     if admin.roll_no != roll_no:
+    #         flash("Id does not exist, please try again")
+    #         return redirect(url_for('teacher'))
+    #     elif admin.password == password:
+    #         login_user(admin, remember=True)
+    #         return render_template("Dashboard_for_teachers/dashboard.html")
+    #     else:
+    #         flash("Password is wrong, try again")
+    #         return redirect(url_for('teacher'))
         
 
-    return redirect(url_for('teacher'))
+    return render_template("Dashboard_for_teachers/dashboard.html")
 
 
 @app.route("/create_test")
+@admin_only
 def create_test():
     csrf = LoginForm()
 
@@ -156,6 +206,7 @@ def create_test():
 
 
 @app.route("/form-submit", methods=["POST"])
+@admin_only
 def form_submit():
     form_data = request.form.to_dict(flat=False)
 
@@ -190,6 +241,7 @@ def form_submit():
 
 
 @app.route("/all-exams")
+@login_required
 def all_exam():
 
     all_subjects = db.session.query(AllSubject.subject_name).all()
@@ -201,6 +253,7 @@ def all_exam():
 # ENDPOINTS FOR DROP DOWN MENU OPTIONS
 
 @app.route("/active-exam/<subject_name>")  # first make a dictionary then make it string then pass to url
+@admin_only
 def active_exam(subject_name):
 
     subject_name = eval(subject_name)  # to convert string to dictionary
@@ -220,6 +273,7 @@ def active_exam(subject_name):
 
 
 @app.route("/delete_subject/<subject_name>")
+@admin_only
 def delete_subject(subject_name):
 
         active_subject = AllSubject.query.filter_by(id=1).first()
@@ -285,6 +339,7 @@ def delete_subject(subject_name):
 # to show only active test to student
 
 @app.route("/students-active-page")
+@login_required
 def students_active_page():
     return render_template("Students/student_active_test.html")
 
@@ -292,6 +347,7 @@ def students_active_page():
 # to show test page to student
 
 @app.route("/students_test_page")
+@login_required
 def students_test_page():
     csrf = LoginForm()
     return render_template("Students/student_test.html", csrf=csrf)
@@ -300,6 +356,7 @@ def students_test_page():
 # active exam all questions
 
 @app.route("/active-exam-questions")
+@login_required
 def active_exam_questions():
     # get all question from Questions table with respect to subject_name
     active_subject = AllSubject.query.filter_by(id=1).first()
@@ -323,6 +380,7 @@ def active_exam_questions():
 
 
 @app.route("/student-reponse", methods=["POST"])
+@admin_only
 def student_reponse():
     response_data = request.form.to_dict(flat=False)
     print(response_data)
@@ -345,6 +403,7 @@ def student_reponse():
 # KRISHNA'S CODE
 
 @app.route("/generate-passwords/<count>")
+@admin_only
 def generate_passwords(count):
     count = int(count)
     passwords = []
