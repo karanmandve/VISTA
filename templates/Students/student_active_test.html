@@ -39,13 +39,7 @@
         </div>
     </div>
 <script>
-<<<<<<< HEAD
-
-    // fetching the active test details
-    fetch("./students_active").then((res)=>res.json()).then((data)=>{
-=======
     fetch("./all-exams").then((res)=>res.json()).then((data)=>{
->>>>>>> 28eac1975b0fb62db5c8663443e72b8aa66c84f0
         let cont=document.getElementById("active_container")
         let node=cont.children[0].content.children[0];
         let copy=node.cloneNode(true);

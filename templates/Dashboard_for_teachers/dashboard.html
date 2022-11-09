@@ -89,6 +89,8 @@
             // fetching test details from server
             fetch("./all-exams").then((res) => res.json()).then((data) => {
 
+                console.log(data);
+
                 // removing already existing test from current page
                 let parent = document.getElementById("test_container");
                 while (parent.childElementCount != 1) {
@@ -96,8 +98,8 @@
                 }
 
                 //    extracting the active subject name from server response
-                let active_subject = data.active_subject;
-                data = Object.keys(data);
+                let active_subject = data[0];
+                // data = Object.keys(data);
 
                 // creating each cards for the tests
                 for (let index = 0; index < data.length; index++) {
@@ -114,10 +116,10 @@
                     copy.children[1].children[0].children[3].addEventListener("click", (e) => { window.location = "./show_test/" + e.path[4].children[2].value; });
 
                     // checking that we creating the deactivated test cards 
-                    if (element != "active_subject") {
+                    if (index !=0) {
 
                         // checking that we are not creating the active test card comming with deactivated card
-                        if (active_subject != element) {
+                        // if (active_subject != element) {
 
                             // creating the deactivated test card
 
@@ -175,11 +177,11 @@
                             
 
 
-                        }
+                        // }
                     }
 
                     // creating active test card
-                    else if (active_subject != "") {
+                    else if (index==0 && data[index]!="None") {
 
                         // deactivate option 
                         copy.children[1].children[0].children[0].innerHTML = '<i class="fa fa-flash" style="font-size:20px;color:grey;"></i><div style="margin-left:-3vh">&nbsp;Deactivate</div>';

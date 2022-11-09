@@ -246,8 +246,9 @@ def form_submit():
 def all_exam():
 
     all_subjects = db.session.query(AllSubject.subject_name).all()
+    print(all_subjects)
     all_subjects = [subject[0] for subject in all_subjects]
-
+    print(all_subjects)
     return jsonify(all_subjects)
 
 
@@ -260,17 +261,29 @@ def active_exam(subject_name):
     subject_name = eval(subject_name)  # to convert string to dictionary
 
     active_subject = AllSubject.query.filter_by(id=1).first()
+    print(active_subject.subject_name)
 
-    if subject_name["subject_name"] != "None":
-        active_subject.subject_name = subject_name["subject_name"]
-        db.session.commit()
+    # if subject_name["subject_name"] != "None":
+    #     active_subject.subject_name = subject_name["subject_name"]
+    #     db.session.commit()
 
-        return "Subject Activated"
-    else:
+    #     return "Subject Activated"
+    # else:
+    #     active_subject.subject_name = "None"
+    #     db.session.commit()
+
+    #     return "Subject Deactivated"
+    if active_subject.subject_name == subject_name["subject_name"]:
         active_subject.subject_name = "None"
         db.session.commit()
-
         return "Subject Deactivated"
+ 
+    else:
+        
+        active_subject.subject_name = subject_name["subject_name"]
+        db.session.commit()
+        return "Subject Activated"
+        
 
 
 @app.route("/delete_subject/<subject_name>")
