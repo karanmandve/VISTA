@@ -95,11 +95,11 @@ def load_user(user_id):
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # try:
-        #     current_user.password
-        #     admin = User.query.filter_by(id=1).first()
-        # except:
-        #     abort(403)
+        try:
+            current_user.password
+        except:
+            abort(403)
+            
         admin = User.query.filter_by(id=1).first()
 
         if current_user.password == admin.password:
@@ -166,6 +166,7 @@ def teacher():
 
 
 @app.route("/logout")
+@login_required
 def logout():
     logout_user()
     return redirect(url_for("homepage"))
@@ -347,7 +348,6 @@ def students_active_page():
 # to show test page to student
 
 @app.route("/students_test_page")
-@login_required
 def students_test_page():
     csrf = LoginForm()
     return render_template("Students/student_test.html", csrf=csrf)
@@ -356,7 +356,6 @@ def students_test_page():
 # active exam all questions
 
 @app.route("/active-exam-questions")
-@login_required
 def active_exam_questions():
     # get all question from Questions table with respect to subject_name
     active_subject = AllSubject.query.filter_by(id=1).first()
@@ -379,9 +378,9 @@ def active_exam_questions():
 #     return render_template("Students/student_test.html")
 
 
-@app.route("/student-reponse", methods=["POST"])
-@admin_only
-def student_reponse():
+@app.route("/student-response", methods=["POST"])
+@login_required
+def student_response():
     response_data = request.form.to_dict(flat=False)
     print(response_data)
 
