@@ -87,21 +87,28 @@
           <div class="finger"></div>
         </div>
       </div>
-      <form action="{{ url_for('dashboard') }}" method="POST">
+      <form action="{{ url_for('teacher') }}" method="POST" class="wrong-entry">
         <div class="hand"></div>
         <div class="hand rgt"></div>
         <h1>Login</h1>
+        
+        {% if get_flashed_messages() %}
+
+        {% for message in get_flashed_messages() %}
+          <em><p style="color: red; height: 5%;">{{ message }}</p></em>
+        {% endfor %}
+      
+      {% endif %}
         <div class="input-group my-3">
           {{ dashboard_login_form.csrf_token }} {{
-          dashboard_login_form.id(placeholder="Username", class="form-control")
+          dashboard_login_form.roll_no(placeholder="Username", class="form-control")
           }}
-          <!-- {{ dashboard_login_form.id(class="form-control") }} -->
+          
         </div>
         <div class="input-group">
           {{ dashboard_login_form.password(placeholder="Password",
           class="form-control") }}
-          <!-- {{ dashboard_login_form.password(class="form-control") }} -->
-          <p class="alert">Invalid Credentials..!!</p>
+          <!-- <p class="alert">Invalid Credentials..!!</p> -->
           <br />
         </div>
         <button
@@ -136,12 +143,12 @@
 
       // validation
 
-      $(".btn").click(function () {
-        $("form").addClass("wrong-entry");
-        setTimeout(function () {
-          $("form").removeClass("wrong-entry");
-        }, 3000);
-      });
+      // $(".btn").click(function () {
+      //   $("form").addClass("wrong-entry");
+      //   setTimeout(function () {
+      //     $("form").removeClass("wrong-entry");
+      //   }, 3000);
+      // });
     </script>
   </body>
 </html>

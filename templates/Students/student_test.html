@@ -29,7 +29,7 @@
             </div>
             <div class="mid_sec">
                 
-                <form action="/student-reponse" method="post" style="display: block;" id="form">
+                <form action="/student-response" method="post" style="display: block;" id="form">
                     {{ csrf.csrf_token }}
                     <div id="que_cont" class="question_container">
                         <template>
@@ -78,9 +78,10 @@
     let count;
     let time;
     var cur_que;
-        fetch("./students_active").then((res)=>res.json()).then((data)=>{
+        fetch("./active-exam-questions").then((res)=>res.json()).then((data)=>{
+            console.log(data)
             count=Math.floor((Object.keys(data).length-3)/6);
-            document.getElementById("title").innerText=data.test_title[0];
+            document.getElementById("title").innerText=data[0].subject_name;
             var form=document.getElementById("que_cont");
             let node=form.lastElementChild;
 
