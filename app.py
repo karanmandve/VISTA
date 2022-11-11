@@ -263,26 +263,16 @@ def active_exam(subject_name):
     active_subject = AllSubject.query.filter_by(id=1).first()
     print(active_subject.subject_name)
 
-    # if subject_name["subject_name"] != "None":
-    #     active_subject.subject_name = subject_name["subject_name"]
-    #     db.session.commit()
-
-    #     return "Subject Activated"
-    # else:
-    #     active_subject.subject_name = "None"
-    #     db.session.commit()
-
-    #     return "Subject Deactivated"
-    if active_subject.subject_name == subject_name["subject_name"]:
-        active_subject.subject_name = "None"
-        db.session.commit()
-        return "Subject Deactivated"
- 
-    else:
-        
+    if subject_name["subject_name"] != "None":
         active_subject.subject_name = subject_name["subject_name"]
         db.session.commit()
+
         return "Subject Activated"
+    else:
+        active_subject.subject_name = "None"
+        db.session.commit()
+
+        return "Subject Deactivated"
         
 
 

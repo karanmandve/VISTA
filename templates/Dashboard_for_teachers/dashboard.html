@@ -116,7 +116,7 @@
                     copy.children[1].children[0].children[3].addEventListener("click", (e) => { window.location = "./show_test/" + e.path[4].children[2].value; });
 
                     // checking that we creating the deactivated test cards 
-                    if (index !=0) {
+                    if (index !=0 && data[index] !=data[0]) {
 
                         // checking that we are not creating the active test card comming with deactivated card
                         // if (active_subject != element) {
@@ -188,7 +188,7 @@
 
                         // view option  
                         copy.children[1].children[0].children[0].addEventListener("click", (e) => {
-                            fetch("./active-exam/{'subject_name':'" + e.path[4].children[2].value + "','is_active':False}").then((res) => {
+                            fetch("./active-exam/{'subject_name':'None'}").then((res) => {
                                 document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
                                 refresh_recent();
                             })
