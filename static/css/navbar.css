@@ -6,6 +6,15 @@
   font-family:'Bold' ;
   src: url(../font/Product\ Sans\ Bold.ttf);
 }
+
+.logo{
+  position: absolute;
+  height: auto;
+  
+}
+
+
+
 a{
     text-decoration: none;
     color: inherit;
@@ -14,7 +23,7 @@ a{
       display: grid;
       grid-template-columns: 1fr 3fr;
       align-items: center;
-      height:9vh;
+      height:5vh;
       overflow: hidden;
     }
     .nav-wrapper{

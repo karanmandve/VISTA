@@ -22,13 +22,14 @@
 
 
         <!-- NAVBAR -->
-
-        <nav class="navbar bg-white navbar-expand-lg shadow-sm">
-            <a class="navbar-brand ms-3" href="index.html">Vista</a>
-        <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar bg-white navbar-expand-lg shadow-sm pt-1 pb-1">
+          <img src="../static/new_img.png" class = "logo" style="width:150px; padding:10px 20px">
+          <img src="../static/vista_img.png" class = "logo" style="width:150px; padding:10px 20px">
+          <!-- <a class="navbar-brand ms-3" href="index.html">Vista</a> -->
+          <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse me-2" id="navbarSupportedContent">
+          </button>
+          <div class="collapse navbar-collapse me-2" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto menu-item">
               {% if current_user.is_authenticated %}
                 <li class="nav-item">
