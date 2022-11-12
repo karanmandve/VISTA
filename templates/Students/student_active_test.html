@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css"/>
+    <link rel="shortcut icon" href="../../static/favicon/favicon-96x96.png" type="image/x-icon">
     <link rel="stylesheet" href="../../static/css/navbar.css">
     <link rel="stylesheet" href="../../static/css/dashboard.css">
     <title>Active Test</title>
@@ -46,6 +46,8 @@
         copy.children[1].innerText=data[0];
         cont.appendChild(copy);
     });
+
+    // function to start the test
     function start(){
        let check=confirm("Do you really want to start the test ?");
        if(check){

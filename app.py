@@ -12,11 +12,14 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "karan"
+app.config["SESSION_COOKIE_SECURE"]=True
+app.config["SERVER_NAME"]="vista.azurewebsites.net"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exam.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
 csrf = CSRFProtect(app)
+csrf.init_app(app)
 cors = CORS(app)
 login_manager = LoginManager(app)
 db = SQLAlchemy(app)
@@ -225,7 +228,6 @@ def all_exam():
 
     all_subjects = db.session.query(AllSubject.subject_name).all()
     all_subjects = [subject[0] for subject in all_subjects]
-
     return jsonify(all_subjects)
 
 
@@ -238,6 +240,7 @@ def active_exam(subject_name):
     subject_name = eval(subject_name)  # to convert string to dictionary
 
     active_subject = AllSubject.query.filter_by(id=1).first()
+    print(active_subject.subject_name)
 
     if subject_name["subject_name"] != "None":
         active_subject.subject_name = subject_name["subject_name"]
@@ -249,6 +252,7 @@ def active_exam(subject_name):
         db.session.commit()
 
         return "Subject Deactivated"
+        
 
 
 @app.route("/delete_subject/<subject_name>")

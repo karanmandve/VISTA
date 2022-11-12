@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../static/favicon/favicon-96x96.png" type="image/x-icon">
     <link rel="stylesheet" href="../../static/css/navbar.css">
     <link rel="stylesheet" href="../../static/css/create_test.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css"/>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css" />
     <title>Create test</title>
 </head>
+
 <body>
     <div class="nav-wrapper">
         <nav class="navbar">
@@ -32,7 +35,8 @@
         <br>
         <div class="top_head">
             <input type="text" name="test_title" id="" value="Untitled test" style="font-size: 2em;">
-            <input type="number" name="test_time" id="" placeholder="Enter the time span of test (in min)" style="padding:15px 20px;">
+            <input type="number" name="test_time" id="" placeholder="Enter the time span of test (in min)"
+                style="padding:15px 20px;">
         </div>
         <br>
         <div id="que_container">
@@ -55,82 +59,104 @@
                 <br>
             </div>
         </div>
-       
-        <div style="display: flex; width: 45vw; padding: 15px 26px;height: inherit;justify-content: space-between;">
+
+        <div id="form_options">
             <div class="btn" onclick="cancel()">Cancel</div></a>
             <div class="btn" onclick="done()">Done</div></a>
         </div>
-        
+
         <div id="btn_del" onclick="del()"><i class="fa fa-minus" style="font-size:20px;color:#3498db;"></i></div>
         <div id="btn_add" onclick="add()"><i class="fa fa-plus" style="font-size:20px;color:#3498db;"></i></div>
-        
+
     </form>
     <script>
-        var count=1;
-        
+        // variable to count no of questions
+        var count = 1;
 
-    function add(){
-       count++;
-       let form=document.getElementById("que_container");
-       let node=form.lastElementChild;
-       let copy=node.cloneNode(true);
-       copy.setAttribute("id",count);
-    
-       copy.childNodes[1].value="untitled question";
-       copy.childNodes[1].name="q"+count;
+        // function to  add new empty question
+        function add() {
+            // incresing the count
+            count++;
+            // variable to select question container
+            let form = document.getElementById("que_container");
+            //  old quwstion feild
+            let node = form.lastElementChild;
+            // copying the old question
+            let copy = node.cloneNode(true);
 
-       copy.childNodes[7].name=count+"answer";
-       copy.childNodes[7].checked=false;
-       copy.childNodes[7].value=1;
-       copy.childNodes[9].childNodes[0].value="";
-       copy.childNodes[9].childNodes[0].name=count+"option1";
-       copy.childNodes[9].for=count+"answer";
+            // setting id
+            copy.setAttribute("id", count);
 
-       copy.childNodes[13].name=count+"answer";
-       copy.childNodes[13].checked=false;
-       copy.childNodes[13].value=2;
-       copy.childNodes[15].childNodes[0].value="";
-       copy.childNodes[15].childNodes[0].name=count+"option2";
-       copy.childNodes[15].for=count+"op1";
+            // setting the question
+            copy.childNodes[1].value = "untitled question";
+            copy.childNodes[1].name = "q" + count;
 
-       copy.childNodes[19].name=count+"answer";
-       copy.childNodes[19].checked=false;
-       copy.childNodes[19].value=3;
-       copy.childNodes[21].childNodes[0].value="";
-       copy.childNodes[21].childNodes[0].name=count+"option3";
-       copy.childNodes[21].for=count+"op1";
+            // option 1
+            copy.childNodes[7].name = count + "answer";
+            copy.childNodes[7].checked = false;
+            copy.childNodes[7].value = 1;
+            copy.childNodes[9].childNodes[0].value = "";
+            copy.childNodes[9].childNodes[0].name = count + "option1";
+            copy.childNodes[9].for = count + "answer";
 
-       copy.childNodes[25].name=count+"answer";
-       copy.childNodes[25].checked=false;
-       copy.childNodes[25].value=4;
-       copy.childNodes[27].childNodes[0].value="";
-       copy.childNodes[27].childNodes[0].name=count+"option4";
-       copy.childNodes[27].for=count+"op1";
+            //    option 2
+            copy.childNodes[13].name = count + "answer";
+            copy.childNodes[13].checked = false;
+            copy.childNodes[13].value = 2;
+            copy.childNodes[15].childNodes[0].value = "";
+            copy.childNodes[15].childNodes[0].name = count + "option2";
+            copy.childNodes[15].for = count + "op1";
 
-       console.log();
-       form.appendChild(copy);
-       window.scrollTo(0,document.body.clientHeight);
-    }
-    function del(){
-        let form=document.getElementById("que_container");
-        if(form.childElementCount>1){
-            form.removeChild(form.lastChild);
-            count--;
+            //    option 3
+            copy.childNodes[19].name = count + "answer";
+            copy.childNodes[19].checked = false;
+            copy.childNodes[19].value = 3;
+            copy.childNodes[21].childNodes[0].value = "";
+            copy.childNodes[21].childNodes[0].name = count + "option3";
+            copy.childNodes[21].for = count + "op1";
+
+            //    option 4
+            copy.childNodes[25].name = count + "answer";
+            copy.childNodes[25].checked = false;
+            copy.childNodes[25].value = 4;
+            copy.childNodes[27].childNodes[0].value = "";
+            copy.childNodes[27].childNodes[0].name = count + "option4";
+            copy.childNodes[27].for = count + "op1";
+
+
+            //  appending the new question to the form 
+            form.appendChild(copy);
+
+            //    scrolling down
+            window.scrollTo(0, document.body.clientHeight);
         }
-    }
-    function cancel(){
-        let action= confirm("Do you really want to cancel this test");
-        if(action){
-            window.location.replace("./dashboard") ;
+
+        // function to delete question 
+        function del() {
+            let form = document.getElementById("que_container");
+            if (form.childElementCount > 1) {
+                form.removeChild(form.lastChild);
+                count--;
+            }
         }
-    }
-    function done(){
-        let action= confirm("Do you really want to save this test");
-        if(action){
-            let form=document.getElementById("form");
-            form.submit();
+
+        // function to cancel form
+        function cancel() {
+            let action = confirm("Do you really want to cancel this test");
+            if (action) {
+                window.location.replace("./dashboard");
+            }
         }
-    }
+
+        // function to submit form
+        function done() {
+            let action = confirm("Do you really want to save this test");
+            if (action) {
+                let form = document.getElementById("form");
+                form.submit();
+            }
+        }
     </script>
 </body>
+
 </html>

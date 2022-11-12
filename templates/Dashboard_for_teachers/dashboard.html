@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../static/favicon/favicon-96x96.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css"/>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css" />
     <link rel="stylesheet" href="../../static/css/navbar.css">
     <link rel="stylesheet" href="../../static/css/dashboard.css">
     <title>Dashboard</title>
@@ -41,161 +42,247 @@
         </div>
     </div>
     <div id="recent">
-        <div id="recent_title"  style="margin: 1.5% 0 0 12%;font-family: 'Bold';">No Recent Test</div>
+        <div id="recent_title" style="margin: 1.5% 0 0 12%;font-family: 'Bold';">No Recent Test</div>
         <div id="test_container">
             <template id="t0">
-                <div  class="test_card" >
+                <div class="test_card">
                     <div class="preview"></div>
-                    <i class="fa fa-ellipsis-v more"  style="color: grey;">
-                        <div  class="dropdown-content">
-                            <a><i class="fa fa-flash" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">Activate</div></a>
-                            <a id="password"><i class="fa fa-hashtag" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">Passwords</div></a>
-                            <a><i class="fa fa-group" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">Responses</div></a>
-                            <a><i class="fa fa-eye" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">View</div></a>
-                            <a style="color:tomato;"><i class="fa fa-trash-o" style="font-size:20px;color:tomato;"></i><div style="margin-left:-9vh">Delete</div></a>
+                    <i class="fa fa-ellipsis-v more" style="color: grey;">
+                        <div class="dropdown-content">
+                            <a><i class="fa fa-flash" style="font-size:20px;color:grey;"></i>
+                                <div style="margin-left:-3vh">Activate</div>
+                            </a>
+                            <a id="password"><i class="fa fa-hashtag" style="font-size:20px;color:grey;"></i>
+                                <div style="margin-left:-3vh">Passwords</div>
+                            </a>
+                            <a><i class="fa fa-group" style="font-size:20px;color:grey;"></i>
+                                <div style="margin-left:-3vh">Responses</div>
+                            </a>
+                            <a><i class="fa fa-eye" style="font-size:20px;color:grey;"></i>
+                                <div style="margin-left:-3vh">View</div>
+                            </a>
+                            <a style="color:tomato;"><i class="fa fa-trash-o" style="font-size:20px;color:tomato;"></i>
+                                <div style="margin-left:-3vh">Delete</div>
+                            </a>
                         </div>
                     </i>
-                <h1 style="padding: 6% 0 0 12%;font-size: unset;font-family: 'Bold';margin-bottom: 0;">DBMS</h1>
-                <p style="padding: 2% 12%;font-size: small; word-spacing: 5px;">desc</p>
+                    <h1 style="padding: 6% 0 0 12%;font-size: unset;font-family: 'Bold';margin-bottom: 0;">DBMS</h1>
+                    <p style="padding: 2% 12%;font-size: small; word-spacing: 5px;">desc</p>
                 </div>
             </template>
         </div>
     </div>
-     <br>
-     <br>
-<script>
-   var test_count=0;
-    
-    function refresh_recent(){
-        let recent_title=document.getElementById("recent_title");
-        let test=document.getElementById("test_container");
-        let active=document.getElementById("active_container");
-        fetch("./all-exams").then((res)=>res.json()).then((data)=>{
-           let parent= document.getElementById("test_container");
-           while(parent.childElementCount !=1){
-            parent.removeChild(parent.lastChild);
-           }
-            count=0;
-            // remove active_exam = key and store in another variable to know which subject is activate
-            let active_subject=data.active_subject;
-            data = Object.keys(data);
-            console.log(active_subject);
-            
-            for (let index = 0; index < data.length;index++) {
-                const element = data[index];
+    <br>
+    <br>
+    <script>
+        // variable to count the no of test cards
+        var test_count = 0;
 
-                node=document.getElementById("t0");
-                copy=node.content.children[0].cloneNode(true);
-                copy.children[1].addEventListener("click",function show_more(e){if(typeof(e.path[0].children[0]) !="undefined"){e.path[0].children[0].classList.toggle("show");}});
-            copy.children[1].children[0].children[2].addEventListener("click",(e)=>{window.location="./show_test/"+e.path[4].children[2].value;});
-                
-                
-                if(element != "active_subject"){
-                    if(active_subject !=element){
-                        // copy.style.background=bg[count%2];
-                        copy.id=++test_count;
-                        copy.children[1].children[0].children[0].addEventListener("click",(e)=>{
-                            if(active.childElementCount==1){
-                                alert("Some test is already active Please deactivate that first to activate this!!");
-                            }
-                            else{
-                                fetch("./active-exam/{'subject_name':'"+e.path[4].children[2].value+"'}").then((res)=>{
-                                    if(active.childElementCount !=0){
+        // function to refresh the activated and deactivated test card
+        function refresh_recent() {
+
+            // variable to acces the card
+            let recent_title = document.getElementById("recent_title");
+            let test = document.getElementById("test_container");
+            let active = document.getElementById("active_container");
+
+            // fetching test details from server
+            fetch("./all-exams").then((res) => res.json()).then((data) => {
+
+                console.log(data);
+
+                // removing already existing test from current page
+                let parent = document.getElementById("test_container");
+                while (parent.childElementCount != 1) {
+                    parent.removeChild(parent.lastChild);
+                }
+
+                //    extracting the active subject name from server response
+                let active_subject = data[0];
+                // data = Object.keys(data);
+
+                // creating each cards for the tests
+                for (let index = 0; index < data.length; index++) {
+                    const element = data[index];
+
+                    // selecting the temperory node and cloning it
+                    node = document.getElementById("t0");
+                    copy = node.content.children[0].cloneNode(true);
+
+                    // adding event to show drop down
+                    copy.children[1].addEventListener("click", function show_more(e) { if (typeof (e.path[0].children[0]) != "undefined") { e.path[0].children[0].classList.toggle("show"); } });
+
+                    // view option
+                    copy.children[1].children[0].children[3].addEventListener("click", (e) => { window.location = "./show_test/" + e.path[4].children[2].value; });
+
+                    // checking that we creating the deactivated test cards 
+                    if (index !=0 && data[index] !=data[0]) {
+
+                        // checking that we are not creating the active test card comming with deactivated card
+                        // if (active_subject != element) {
+
+                            // creating the deactivated test card
+
+                            //providing id to card 
+                            copy.id = ++test_count;
+
+                            //  activate option
+                            copy.children[1].children[0].children[0].addEventListener("click", (e) => {
+                                if (active.childElementCount == 1) {
+                                    alert("Some test is already active Please deactivate that first to activate this!!");
+                                }
+                                else {
+
+                                    //fetch call to activate the subject 
+                                    fetch("./active-exam/{'subject_name':'" + e.path[4].children[2].value + "'}").then((res) => {
+
+                                        // first removing the current test from active section 
+                                        if (active.childElementCount != 0) {
                                             active.removeChild(active.lastChild);
-                                    }
+                                        }
+
+                                        // refreshing the all test cards
+                                        refresh_recent();
+                                    })
+                                }
+
+                            });
+
+                            // delete option
+                            copy.children[1].children[0].children[4].addEventListener("click", (e) => {
+                                console.log(e); fetch("./delete_subject/" + e.path[4].children[2].value).then((res) => {
+
+                                    // removing the current tests cards
+                                    document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
+
+                                    // refreshing the all test cards
                                     refresh_recent();
                                 })
-                            }
-                           
+                            });
+
+                            // adding test name to card
+                            copy.children[2].value = element;
+                            copy.children[2].innerText = element.length > 15 ? element.slice(0, 15) + "..." : element;
+
+                            // test status title "active/inactive"
+                            copy.children[3].innerHTML = '<i class="fa fa-dot-circle-o"></i>&nbsp;Inactive';
+                            copy.children[3].style.color = "blue";
+
+                            // adding background image to test card
+                            copy.children[0].style.background = "url('../../static/icon.jpg')";
+                            copy.children[0].style.backgroundSize = "cover";
+
+                            // appending the card in recent section
+                            document.getElementById("test_container").appendChild(copy);
+                            
+
+
+                        // }
+                    }
+
+                    // creating active test card
+                    else if (index==0 && data[index]!="None") {
+
+                        // deactivate option 
+                        copy.children[1].children[0].children[0].innerHTML = '<i class="fa fa-flash" style="font-size:20px;color:grey;"></i><div style="margin-left:-3vh">&nbsp;Deactivate</div>';
+
+                        // view option  
+                        copy.children[1].children[0].children[0].addEventListener("click", (e) => {
+                            fetch("./active-exam/{'subject_name':'None'}").then((res) => {
+                                document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
+                                refresh_recent();
+                            })
                         });
-                        copy.children[1].children[0].children[3].addEventListener("click",(e)=>{console.log(e);fetch("./delete_subject/"+e.path[4].children[2].value).then((res)=>{
-                            document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
-                            refresh_recent();
-                        })});
-                        copy.children[2].value=element;
-                        copy.children[2].innerText=element.length>15?element.slice(0,15)+"...":element;
-                        copy.children[3].innerHTML='<i class="fa fa-dot-circle-o"></i>&nbsp;Inactive';
-                        copy.children[3].style.color="blue";
-                        copy.children[0].style.background="url('../../static/icon.jpg')";
-                        copy.children[0].style.backgroundSize="cover";
-                        document.getElementById("test_container").appendChild(copy);
-                        count++;
-                        
-                        
+
+                        // delete option
+                        copy.children[1].children[0].children[4].addEventListener("click", (e) => { alert("please deactivate this test first then delete!!") });
+
+                        // providing name to active card
+                        copy.children[2].value = active_subject;
+                        copy.children[2].innerText = active_subject.length > 15 ? active_subject.slice(0, 15) + "..." : active_subject;
+
+                        // test status title "active/inactive"
+                        copy.children[3].innerHTML = '<i class="fa fa-dot-circle-o"></i>&nbsp;Active';
+                        copy.children[3].style.color = "tomato";
+
+                        //styling active card
+                        // copy.style.position = "relative";
+                        // copy.style.zIndex = "2";
+                        // copy.style.margin = "-2% 0 0 20%";
+                        copy.id="active";
+
+                        // backgroung image for active card
+                        copy.children[0].style.background = "url('../../static/icon.jpg')";
+                        copy.children[0].style.backgroundSize = "cover";
+
+                        // appending the card to the active section
+                        document.getElementById("active_container").appendChild(copy);
+
                     }
                 }
-                else if(active_subject !=""){ 
-                    copy.children[1].children[0].children[0].innerHTML='<i class="fa fa-flash" style="font-size:20px;color:grey;"></i><div style="margin-left:-9vh">&nbsp;Deactivate</div>';                               
-                    copy.children[1].children[0].children[0].addEventListener("click",(e)=>{fetch("./active-exam/{'subject_name':'"+e.path[4].children[2].value+"','is_active':False}").then((res)=>{
-                            document.getElementById("active_container").removeChild(document.getElementById("active_container").lastChild);
-                            refresh_recent();
-                        })});
-                    copy.children[1].children[0].children[3].addEventListener("click",(e)=>{alert("please deactivate this test first then delete!!")});
-                    copy.children[2].value=active_subject;
-                    copy.children[2].innerText=active_subject.length>15?active_subject.slice(0,15)+"...":active_subject;
-                    copy.children[3].innerHTML='<i class="fa fa-dot-circle-o"></i>&nbsp;Active';
-                    copy.children[3].style.color="tomato";
-                    copy.style.position="relative";
-                    copy.style.zIndex="2";
-                    copy.style.margin="-2% 0 0 20%";
-                    copy.children[0].style.background="url('../../static/icon.jpg')";
-                    copy.children[0].style.backgroundSize="cover";
-                    document.getElementById("active_container").appendChild(copy);
-                    
-                }  
-            }
-            if(test.childElementCount ==1){
-            recent_title.innerText="No recent tests";
-            }
-        else{
-            recent_title.innerText="Recent tests";
-            }
-            if(active.childElementCount ==0){
-            document.getElementById("active_title").innerText="No active tests";
-            }
-        else{
-            document.getElementById("active_title").innerText="Active tests";
-            }
-        });
-       
-    }
-    
-    window.onclick = function(event) {
-      let tests= document.getElementsByClassName("test_card");
-      for (let index = 0; index < tests.length; index++) {
-        const element = tests[index];
-        if(element!=event.path[1]){
-            element.children[1].children[0].classList.remove("show");
-        }
-      }
-    }
-    refresh_recent();
-</script>
-<!-- use xlsx.full.min.js from version 0.19.0 -->
-<script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.19.0/package/dist/xlsx.full.min.js"></script>
-<script>
 
-    document.getElementById("password").onclick= function(event){
-        fetch('/generate-passwords/30')
-        .then((response) => response.json())
-        .then((data) => {
-            const objs=data.filter(row=> {});
-            const rows=data.map(row =>({
-                number: row.number,
-                password: row.password,
-                sign: null
-            }));
-           const worksheet= XLSX.utils.json_to_sheet(rows);
-           const workbook = XLSX.utils.book_new();
-           XLSX.utils.book_append_sheet(workbook,worksheet,"Passwords");
-           XLSX.utils.sheet_add_aoa(worksheet,[["number","password"]],{origin: "A1"});
-           const max_width= rows.reduce((w,r) => Math.max(w,r.password.length),10);
-           worksheet["!cols"]=[{ wch: max_width}];
-           XLSX.writeFile(workbook,"Passwords.xlsx",{compression: false});
-        })		
-    }
+                // dynamically changing the section titles
+
+                // recent section
+                if (test.childElementCount == 1) {
+                    recent_title.innerText = "No recent tests";
+                }
+                else {
+                    recent_title.innerText = "Recent tests";
+                }
+
+                // active section
+                if (active.childElementCount == 0) {
+                    document.getElementById("active_title").innerText = "No active tests";
+                }
+                else {
+                    document.getElementById("active_title").innerText = "Active tests";
+                }
+            });
+
+        }
+
+        // code to remove dropdown box
+        window.onclick = function (event) {
+            let tests = document.getElementsByClassName("test_card");
+            for (let index = 0; index < tests.length; index++) {
+                const element = tests[index];
+                if (element != event.path[1]) {
+                    element.children[1].children[0].classList.remove("show");
+                }
+            }
+        }
+
+        // refreshing the test cards when page loads
+        refresh_recent();
+
+    </script>
+    <!-- use xlsx.full.min.js from version 0.19.0 -->
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.19.0/package/dist/xlsx.full.min.js"></script>
+    <script>
+
+        let pass_func = function (event) {
+            fetch('/generate-passwords/30')
+                .then((response) => response.json())
+                .then((data) => {
+                    const objs = data.filter(row => { });
+                    const rows = data.map(row => ({
+                        number: row.number,
+                        password: row.password,
+                        sign: null
+                    }));
+                    const worksheet = XLSX.utils.json_to_sheet(rows);
+                    const workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, "Passwords");
+                    XLSX.utils.sheet_add_aoa(worksheet, [["number", "password"]], { origin: "A1" });
+                    const max_width = rows.reduce((w, r) => Math.max(w, r.password.length), 10);
+                    worksheet["!cols"] = [{ wch: max_width }];
+                    XLSX.writeFile(workbook, "Passwords.xlsx", { compression: false });
+                })
+        }
 
     </script>
 
 </body>
+
 </html>

@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../static/favicon/favicon-96x96.png" type="image/x-icon">
     <link rel="stylesheet" href="../../static/css/create_test.css">
     <link rel="stylesheet" href="../../static/css/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css"/>
     <title>Active tests</title>
 </head>
+
 <body>
     <div class="nav-wrapper">
         <nav class="navbar">
@@ -25,7 +27,8 @@
         <br>
         <div class="top_head">
             <input type="text" name="test_title" id="title" value="Untitled test" style="font-size: 2em;">
-            <input type="text" name="test_time" id="time" placeholder="Enter the time span of test (in min)" style="padding:15px 20px;">
+            <input type="text" name="test_time" id="time" placeholder="Enter the time span of test (in min)"
+                style="padding:15px 20px;">
         </div>
         <br>
         <div id="que_container">
@@ -50,124 +53,152 @@
                 </div>
             </template>
         </div>
-        
+
     </form>
-    <div class="student_container"id="student_container" >
+    <div class="student_container" id="student_container">
         <input type="number" id="count" placeholder="Enter the no of students">
         <div class="nav-item btn" id="btn_gen" onclick="genarate()"><a>Generate</a></div>
     </div>
     <script>
+        // variable to count no of questions
         var count;
-    function mount_question(){
-        fetch("../subject_questions").then((res)=>res.json()).then((data)=>{
-            
-            
-            count=Math.floor((Object.keys(data).length-3)/6);
-            document.getElementById("title").value=data.test_title[0];
-            document.getElementById("title").readOnly=true;
-            document.getElementById("time").value=data.test_time[0];
-            document.getElementById("time").readOnly=true;
 
-            let form=document.getElementById("que_container");
-            let node=form.lastElementChild;
-            
-            if(count==0){form.innerHTML="<center>No questions avialable</center>"}
-            for (let index = 1; index <= count; index++) {
-                let copy=node.content.children[0].cloneNode(true)
-                copy.setAttribute("id",index);
+        // function to add questions to the form
+        function mount_question() {
 
-                copy.childNodes[1].value=data["q"+index];
-                copy.childNodes[1].readOnly=true;
-                copy.childNodes[1].name="q"+index;
+            // fecth the active test question details from server
+            fetch("../subject_questions").then((res) => res.json()).then((data) => {
 
-                copy.childNodes[7].name=index+"answer";
-                copy.childNodes[7].value=1;
-                copy.childNodes[7].disabled=true;
-                copy.childNodes[7].checked=copy.childNodes[7].value ==Number(data[index+"answer"])?true:false;
-                copy.childNodes[9].childNodes[0].value=data[index+"option1"];
-                copy.childNodes[9].childNodes[0].name=index+"option1";
-                copy.childNodes[9].childNodes[0].readOnly=true;
-                copy.childNodes[9].for=index+"answer";
+                // calc the no of questions
+                count = Math.floor((Object.keys(data).length - 3) / 6);
 
-                copy.childNodes[13].name=index+"answer";
-                copy.childNodes[13].value=2;
-                copy.childNodes[13].disabled=true;
-                copy.childNodes[13].checked=copy.childNodes[13].value ==Number(data[index+"answer"])?true:false;
-                copy.childNodes[15].childNodes[0].value=data[index+"option2"];
-                copy.childNodes[15].childNodes[0].name=index+"option2";
-                copy.childNodes[15].childNodes[0].readOnly=true;
-                copy.childNodes[15].for=index+"op1";
+                // setting  test title 
+                document.getElementById("title").value = data.test_title[0];
+                document.getElementById("title").readOnly = true;
 
-                copy.childNodes[19].name=index+"answer";
-                copy.childNodes[19].value=3;
-                copy.childNodes[19].disabled=true;
-                copy.childNodes[19].checked=copy.childNodes[19].value ==Number(data[index+"answer"])?true:false;
-                copy.childNodes[21].childNodes[0].value=data[index+"option3"];
-                copy.childNodes[21].childNodes[0].name=index+"option3";
-                copy.childNodes[21].childNodes[0].readOnly=true;
-                copy.childNodes[21].for=index+"op1";
+                // setting time value
+                document.getElementById("time").value = data.test_time[0];
+                document.getElementById("time").readOnly = true;
 
-                copy.childNodes[25].name=index+"answer";
-                copy.childNodes[25].value=4;
-                copy.childNodes[25].disabled=true;
-                copy.childNodes[25].checked=copy.childNodes[25].value ==Number(data[index+"answer"])?true:false;
-                copy.childNodes[27].childNodes[0].value=data[index+"option4"];
-                copy.childNodes[27].childNodes[0].name=index+"option4";
-                copy.childNodes[27 ].childNodes[0].readOnly=true;
-                copy.childNodes[27].for=index+"op1";
+                // variable for question container
+                let form = document.getElementById("que_container");
 
-                form.appendChild(copy);
-                // window.scrollTo(0,document.body.clientHeight);
-                
-            }
+                // selecting the temp node
+                let node = form.lastElementChild;
 
-        });
-    }
-    mount_question();
-    fetch("/show-passwords/").then((res)=>res.json()).then((data)=>{
-        console.log(data.length);
-        if(data.length >1){
-                let student_box=document.getElementById("student_container");
-                student_box.removeChild(student_box.lastElementChild);
-                student_box.removeChild(student_box.lastElementChild);
-                let node=document.createElement("div");
-                node.innerHTML="<b>Student Id and Pass</b>";
-                student_box.appendChild(node);
-                let roll=1;
-                for (let index = 1; index < data.length; index++) {
-                    const element = data[index];
-                    node=document.createElement("div");
-                    node.innerHTML="<b>"+roll+":</b>&nbsp; "+element;
-                student_box.appendChild(node);
-                roll++;
+                // if no questions available
+                if (count == 0) { form.innerHTML = "<center>No questions avialable</center>" }
+
+                // adding questions to from 
+                for (let index = 1; index <= count; index++) {
+
+                    // copying temp node
+                    let copy = node.content.children[0].cloneNode(true)
+
+                    // setting id
+                    copy.setAttribute("id", index);
+
+                    // setting qeustion title
+                    copy.childNodes[1].value = data["q" + index];
+                    copy.childNodes[1].readOnly = true;
+                    copy.childNodes[1].name = "q" + index;
+
+                    // setting option 1
+                    copy.childNodes[7].name = index + "answer";
+                    copy.childNodes[7].value = 1;
+                    copy.childNodes[7].disabled = true;
+                    copy.childNodes[7].checked = copy.childNodes[7].value == Number(data[index + "answer"]) ? true : false;
+                    copy.childNodes[9].childNodes[0].value = data[index + "option1"];
+                    copy.childNodes[9].childNodes[0].name = index + "option1";
+                    copy.childNodes[9].childNodes[0].readOnly = true;
+                    copy.childNodes[9].for = index + "answer";
+
+                    // setting option 2
+                    copy.childNodes[13].name = index + "answer";
+                    copy.childNodes[13].value = 2;
+                    copy.childNodes[13].disabled = true;
+                    copy.childNodes[13].checked = copy.childNodes[13].value == Number(data[index + "answer"]) ? true : false;
+                    copy.childNodes[15].childNodes[0].value = data[index + "option2"];
+                    copy.childNodes[15].childNodes[0].name = index + "option2";
+                    copy.childNodes[15].childNodes[0].readOnly = true;
+                    copy.childNodes[15].for = index + "op1";
+
+                    // // setting option 3
+                    copy.childNodes[19].name = index + "answer";
+                    copy.childNodes[19].value = 3;
+                    copy.childNodes[19].disabled = true;
+                    copy.childNodes[19].checked = copy.childNodes[19].value == Number(data[index + "answer"]) ? true : false;
+                    copy.childNodes[21].childNodes[0].value = data[index + "option3"];
+                    copy.childNodes[21].childNodes[0].name = index + "option3";
+                    copy.childNodes[21].childNodes[0].readOnly = true;
+                    copy.childNodes[21].for = index + "op1";
+
+                    // // setting option 4
+                    copy.childNodes[25].name = index + "answer";
+                    copy.childNodes[25].value = 4;
+                    copy.childNodes[25].disabled = true;
+                    copy.childNodes[25].checked = copy.childNodes[25].value == Number(data[index + "answer"]) ? true : false;
+                    copy.childNodes[27].childNodes[0].value = data[index + "option4"];
+                    copy.childNodes[27].childNodes[0].name = index + "option4";
+                    copy.childNodes[27].childNodes[0].readOnly = true;
+                    copy.childNodes[27].for = index + "op1";
+
+                    // appending the question the form
+                    form.appendChild(copy);
+
                 }
-            }
-            else{
-                console.log(data);
-            }
-    });
 
-
-    function genarate(){
-        let student_box=document.getElementById("student_container");
-        let count=document.getElementById("count").value;
-            fetch("/generate-passwords/"+count).then((res)=>res.json()).then((data)=>{
-                console.log(data);
-                student_box.removeChild(student_box.lastElementChild);
-                student_box.removeChild(student_box.lastElementChild);
-                let node=document.createElement("div");
-                node.innerHTML="<b>Student Id and Pass</b>";
-                student_box.appendChild(node);
-                let roll=1;
-                for (let index = 0; index < data.length; index++) {
-                    const element = data[index];
-                    node=document.createElement("div");
-                    node.innerHTML="<b>"+roll+":</b>&nbsp; "+element;
-                student_box.appendChild(node);
-                roll++;
-                }
             });
-    }
+        }
+
+        // mounting the question when the form loads
+        mount_question();
+
+    // fetch("/show-passwords/").then((res)=>res.json()).then((data)=>{
+    //     console.log(data.length);
+    //     if(data.length >1){
+    //             let student_box=document.getElementById("student_container");
+    //             student_box.removeChild(student_box.lastElementChild);
+    //             student_box.removeChild(student_box.lastElementChild);
+    //             let node=document.createElement("div");
+    //             node.innerHTML="<b>Student Id and Pass</b>";
+    //             student_box.appendChild(node);
+    //             let roll=1;
+    //             for (let index = 1; index < data.length; index++) {
+    //                 const element = data[index];
+    //                 node=document.createElement("div");
+    //                 node.innerHTML="<b>"+roll+":</b>&nbsp; "+element;
+    //             student_box.appendChild(node);
+    //             roll++;
+    //             }
+    //         }
+    //         else{
+    //             console.log(data);
+    //         }
+    // });
+
+
+    // function genarate(){
+    //     let student_box=document.getElementById("student_container");
+    //     let count=document.getElementById("count").value;
+    //         fetch("/generate-passwords/"+count).then((res)=>res.json()).then((data)=>{
+    //             console.log(data);
+    //             student_box.removeChild(student_box.lastElementChild);
+    //             student_box.removeChild(student_box.lastElementChild);
+    //             let node=document.createElement("div");
+    //             node.innerHTML="<b>Student Id and Pass</b>";
+    //             student_box.appendChild(node);
+    //             let roll=1;
+    //             for (let index = 0; index < data.length; index++) {
+    //                 const element = data[index];
+    //                 node=document.createElement("div");
+    //                 node.innerHTML="<b>"+roll+":</b>&nbsp; "+element;
+    //             student_box.appendChild(node);
+    //             roll++;
+    //             }
+    //         });
+    // }
     </script>
 </body>
+
 </html>
