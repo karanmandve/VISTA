@@ -156,7 +156,7 @@ def teacher():
             flash("Id does not exist, please try again")
             return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
         elif admin.password == password:
-            login_user(admin, remember=True)
+            login_user(admin)
             return render_template("Dashboard_for_teachers/dashboard.html")
         else:
             flash("Password is wrong, try again")
