@@ -78,17 +78,17 @@
             fetch("../subject_questions").then((res) => res.json()).then((data) => {
 
                 // calc the no of questions
-                count = Math.floor((Object.keys(data).length - 3) / 6);
+                count =  data.length;
 
                 //saving subject name for deleting its question purpose
-                subject_name = data.test_title[0];
+                subject_name =  data[0].subject_name;
 
                 // setting  test title
-                document.getElementById("title").value = data.test_title[0];
+                document.getElementById("title").value = data[0].subject_name;
                 document.getElementById("title").readOnly = true;
 
                 // setting time value
-                document.getElementById("time").value = data.test_time[0];
+                document.getElementById("time").value = data[0].test_time;
                 document.getElementById("time").readOnly = true;
 
                 // variable for question container
@@ -110,7 +110,7 @@
                     copy.setAttribute("id", index);
 
                     // setting qeustion title
-                    copy.childNodes[1].value = data["q" + index];
+                    copy.childNodes[1].value = data[index-1].question;
                     copy.childNodes[1].readOnly = true;
                     copy.childNodes[1].name = "q" + index;
 
@@ -118,8 +118,8 @@
                     copy.childNodes[7].name = index + "answer";
                     copy.childNodes[7].value = 1;
                     copy.childNodes[7].disabled = true;
-                    copy.childNodes[7].checked = copy.childNodes[7].value == Number(data[index + "answer"]) ? true : false;
-                    copy.childNodes[9].childNodes[0].value = data[index + "option1"];
+                    copy.childNodes[7].checked = copy.childNodes[7].value == Number(data[index-1].answer) ? true : false;
+                    copy.childNodes[9].childNodes[0].value = data[index-1].option_1;
                     copy.childNodes[9].childNodes[0].name = index + "option1";
                     copy.childNodes[9].childNodes[0].readOnly = true;
                     copy.childNodes[9].for = index + "answer";
@@ -128,8 +128,8 @@
                     copy.childNodes[13].name = index + "answer";
                     copy.childNodes[13].value = 2;
                     copy.childNodes[13].disabled = true;
-                    copy.childNodes[13].checked = copy.childNodes[13].value == Number(data[index + "answer"]) ? true : false;
-                    copy.childNodes[15].childNodes[0].value = data[index + "option2"];
+                    copy.childNodes[13].checked = copy.childNodes[13].value == Number(data[index-1].answer) ? true : false;
+                    copy.childNodes[15].childNodes[0].value = data[index-1].option_2;
                     copy.childNodes[15].childNodes[0].name = index + "option2";
                     copy.childNodes[15].childNodes[0].readOnly = true;
                     copy.childNodes[15].for = index + "op1";
@@ -138,8 +138,8 @@
                     copy.childNodes[19].name = index + "answer";
                     copy.childNodes[19].value = 3;
                     copy.childNodes[19].disabled = true;
-                    copy.childNodes[19].checked = copy.childNodes[19].value == Number(data[index + "answer"]) ? true : false;
-                    copy.childNodes[21].childNodes[0].value = data[index + "option3"];
+                    copy.childNodes[19].checked = copy.childNodes[19].value == Number(data[index-1].answer) ? true : false;
+                    copy.childNodes[21].childNodes[0].value = data[index-1].option_3;
                     copy.childNodes[21].childNodes[0].name = index + "option3";
                     copy.childNodes[21].childNodes[0].readOnly = true;
                     copy.childNodes[21].for = index + "op1";
@@ -148,8 +148,8 @@
                     copy.childNodes[25].name = index + "answer";
                     copy.childNodes[25].value = 4;
                     copy.childNodes[25].disabled = true;
-                    copy.childNodes[25].checked = copy.childNodes[25].value == Number(data[index + "answer"]) ? true : false;
-                    copy.childNodes[27].childNodes[0].value = data[index + "option4"];
+                    copy.childNodes[25].checked = copy.childNodes[25].value == Number(data[index-1].answer) ? true : false;
+                    copy.childNodes[27].childNodes[0].value =data[index-1].option_4;
                     copy.childNodes[27].childNodes[0].name = index + "option4";
                     copy.childNodes[27].childNodes[0].readOnly = true;
                     copy.childNodes[27].for = index + "op1";

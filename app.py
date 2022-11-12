@@ -13,17 +13,12 @@ from functools import wraps
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "karan"
 app.config["SESSION_COOKIE_SECURE"]=True
-<<<<<<< HEAD
 # app.config["SERVER_NAME"]="vista.azurewebsites.net"
-=======
-app.config["SERVER_NAME"]="vista.azurewebsites.net"
->>>>>>> 86518af41894584ecf255584c228b9f596ecbd79
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exam.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
 csrf = CSRFProtect(app)
-csrf.init_app(app)
 cors = CORS(app)
 login_manager = LoginManager(app)
 db = SQLAlchemy(app)
@@ -301,6 +296,30 @@ def delete_subject(subject_name):
         return "Subject Deleted"
 
 
+@app.route("/subject_questions")
+def subject_questions():
+    active_subject = AllSubject.query.filter_by(subject_name=SHOW_TEST).first()
+    all_questions = Questions.query.filter_by(subject_name=active_subject.subject_name).all()
+    all_questions = [question.__dict__ for question in all_questions]
+    for question in all_questions:
+        question.pop("_sa_instance_state")
+    return jsonify(all_questions)
+
+@app.route("/show_test/<subject_name>")
+def show_test(subject_name):
+    global SHOW_TEST
+    csrf = LoginForm()
+    SHOW_TEST=subject_name
+    if  AllSubject.query.filter_by(id=1).first().subject_name == SHOW_TEST:
+        print("hello")
+        return render_template("Dashboard_for_teachers/show-active-test.html", csrf=csrf)
+    else:
+        return render_template("Dashboard_for_teachers/show-test.html", csrf=csrf)
+
+@app.route("/update_add_subject_questions", methods=["POST"])
+def update_add_subject_questions():
+    return "bye"
+
 # @app.route("/subject_questions")
 # def subject_questions():
 #     with open("database.txt", "r") as file:
@@ -317,7 +336,7 @@ def delete_subject(subject_name):
 #     if subject_name != ACTIVE_SUBJECT:
 #         csrf = LoginForm()
 #         print(ACTIVE_SUBJECT)
-#         return render_template("Dashboard_for_teachers/show-test.html", csrf=csrf)
+        # return render_template("Dashboard_for_teachers/show-test.html", csrf=csrf)
 #     else:
 #         csrf = LoginForm()
 #         print(ACTIVE_SUBJECT)
