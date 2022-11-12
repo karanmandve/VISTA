@@ -13,7 +13,11 @@ from functools import wraps
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "karan"
 app.config["SESSION_COOKIE_SECURE"]=True
+<<<<<<< HEAD
 # app.config["SERVER_NAME"]="vista.azurewebsites.net"
+=======
+app.config["SERVER_NAME"]="vista.azurewebsites.net"
+>>>>>>> 86518af41894584ecf255584c228b9f596ecbd79
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exam.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
