@@ -12,11 +12,13 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "karan"
+app.config["SESSION_COOKIE_SECURE"]=False
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exam.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
 csrf = CSRFProtect(app)
+csrf.init_app(app)
 cors = CORS(app)
 login_manager = LoginManager(app)
 db = SQLAlchemy(app)
@@ -246,9 +248,7 @@ def form_submit():
 def all_exam():
 
     all_subjects = db.session.query(AllSubject.subject_name).all()
-    print(all_subjects)
     all_subjects = [subject[0] for subject in all_subjects]
-    print(all_subjects)
     return jsonify(all_subjects)
 
 
