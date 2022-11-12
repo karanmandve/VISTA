@@ -12,7 +12,7 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "karan"
-app.config["SESSION_COOKIE_SECURE"]=True
+app.config["SESSION_COOKIE_SECURE"]=False
 # app.config["SERVER_NAME"]="vista.azurewebsites.net"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exam.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -155,14 +155,12 @@ def teacher():
         if admin.roll_no != roll_no:
             flash("Id does not exist, please try again")
             return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
-            # return redirect(url_for('teacher'))
         elif admin.password == password:
-            login_user(admin, remember=True)
+            login_user(admin)
             return render_template("Dashboard_for_teachers/dashboard.html")
         else:
             flash("Password is wrong, try again")
             return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
-            # return redirect(url_for('teacher'))
 
     return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
 
@@ -174,29 +172,9 @@ def logout():
     return redirect(url_for("homepage"))
 
 
-@app.route("/dashboard", methods=["GET", "POST"])
+@app.route("/dashboard")
 @admin_only
 def dashboard():
-    # dashboard_login_form = LoginForm()
-
-    # if dashboard_login_form.validate_on_submit():
-
-    #     admin = User.query.filter_by(id=1).first()
-
-    #     roll_no = int(dashboard_login_form.roll_no.data)
-    #     password = dashboard_login_form.password.data
-
-    #     if admin.roll_no != roll_no:
-    #         flash("Id does not exist, please try again")
-    #         return redirect(url_for('teacher'))
-    #     elif admin.password == password:
-    #         login_user(admin, remember=True)
-    #         return render_template("Dashboard_for_teachers/dashboard.html")
-    #     else:
-    #         flash("Password is wrong, try again")
-    #         return redirect(url_for('teacher'))
-        
-
     return render_template("Dashboard_for_teachers/dashboard.html")
 
 
