@@ -305,6 +305,7 @@ def subject_questions():
         question.pop("_sa_instance_state")
     return jsonify(all_questions)
 
+
 @app.route("/show_test/<subject_name>")
 def show_test(subject_name):
     global SHOW_TEST
