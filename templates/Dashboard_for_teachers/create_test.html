@@ -32,6 +32,7 @@
         {% endfor %}
       
       {% endif %}
+            <em><p style="color: red; font-size: 1.3rem; margin-top: 5%;" id="msg"></p></em>
         <br>
         <div class="top_head">
             <input type="text" name="test_title" id="" value="Untitled test" style="font-size: 2em;">
@@ -41,20 +42,20 @@
         <br>
         <div id="que_container">
             <div class="que" id="1">
-                <input class="que_title" type="text" name="q1" id="" value="untitled question">
+                <input class="que_title" type="text" name="q1" id="" value="untitled question" >
                 <br>
                 <br>
                 <input type="radio" name="1answer" value="1">
-                <label for="op1"><input type="text" placeholder="option 1" name="1option1"></label>
+                <label for="op1"><input type="text" placeholder="option 1" name="1option1" ></label>
                 <br>
                 <input type="radio" name="1answer" value="2">
-                <label for="op2"><input type="text" placeholder="option 2" name="1option2"></label>
+                <label for="op2"><input type="text" placeholder="option 2" name="1option2" ></label>
                 <br>
                 <input type="radio" name="1answer" value="3">
-                <label for="op3"><input type="text" placeholder="option 3" name="1option3"></label>
+                <label for="op3"><input type="text" placeholder="option 3" name="1option3" ></label>
                 <br>
                 <input type="radio" name="1answer" value="4">
-                <label for="op4"><input type="text" placeholder="option 4" name="1option4"></label>
+                <label for="op4"><input type="text" placeholder="option 4" name="1option4" ></label>
                 <br>
                 <br>
             </div>
@@ -72,7 +73,6 @@
     <script>
         // variable to count no of questions
         var count = 1;
-
         // function to  add new empty question
         function add() {
             // incresing the count
@@ -150,7 +150,35 @@
 
         // function to submit form
         function done() {
-            let action = confirm("Do you really want to save this test");
+            let action=true;
+            let input=document.querySelectorAll("input[type='text");
+            for (let index = 0; index < input.length; index++) {
+                const element = input[index];
+                if (element.value.length == 0){
+                    document.getElementById("msg").innerText="Please fill all the fields";
+                    setTimeout(()=>{document.getElementById("msg").innerText=""},2000);
+                    element.focus();
+                    window.scrollTo(0,0);
+                    action=false;
+                    break;
+                }
+            }
+            let radio=document.getElementsByClassName("que");
+            for (let index = 0; index < radio.length; index++) {
+                const element = radio[index];
+                let option=element.children  
+                    if(option[3].checked || option[6].checked || option[9].checked || option[12].checked){}
+                    else{
+                        document.getElementById("msg").innerText="Please fill the fields";
+                        setTimeout(()=>{document.getElementById("msg").innerText=""},2000);
+                        element.focus();
+                        window.scrollTo(0,0);
+                        action=false;
+                        break;
+                    }
+            }
+            
+            action =  action ==false ? false:confirm("Do you really want to save this test");
             if (action) {
                 let form = document.getElementById("form");
                 form.submit();
