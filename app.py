@@ -17,6 +17,8 @@ app.config["SESSION_COOKIE_SECURE"]=False
 # app.config["SERVER_NAME"]="vista.azurewebsites.net"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exam.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["WTF_CSRF_ENABLED"] = False
+
 
 
 csrf = CSRFProtect(app)
