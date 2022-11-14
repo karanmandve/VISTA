@@ -96,6 +96,7 @@
       
         {% endif %}
         <div class="input-group my-3">
+          {{ dashboard_login_form.csrf_token() }}
           {{ dashboard_login_form.roll_no(placeholder="Username", class="form-control") }}
             
         </div>
