@@ -1,4 +1,5 @@
 import string
+import bcrypt
 from flask import Flask, render_template, url_for, redirect, request, jsonify, flash, abort
 from flask_cors import CORS
 from flask_wtf import FlaskForm, CSRFProtect
@@ -14,6 +15,8 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "karan"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exam.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["WTF_CSRF_ENABLED"] = False
+
 
 
 csrf = CSRFProtect(app)
@@ -148,12 +151,13 @@ def teacher():
         admin = User.query.filter_by(id=1).first()
 
         roll_no = int(dashboard_login_form.roll_no.data)
-        password = dashboard_login_form.password.data
+        password = bytes(dashboard_login_form.password.data, "UTF-8")
+        admin_password_hash = bytes(admin.password, "UTF-8")
 
         if admin.roll_no != roll_no:
             flash("Id does not exist, please try again")
             return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
-        elif admin.password == password:
+        elif bcrypt.checkpw(password, admin_password_hash):
             login_user(admin)
             return render_template("Dashboard_for_teachers/dashboard.html")
         else:
@@ -405,6 +409,7 @@ def student_response():
 
 # KRISHNA'S CODE
 
+
 @app.route("/generate-passwords/<count>")
 @admin_only
 def generate_passwords(count):
@@ -417,6 +422,45 @@ def generate_passwords(count):
         passwords.append(dict1)
 
     return jsonify(passwords)
+
+
+class UpdatePasswordForm(FlaskForm):
+    current = StringField('current', validators=[validators.data_required()])
+    new = StringField('new', validators=[validators.data_required()])
+
+
+@app.route("/change-password", methods=['POST', 'GET'])
+def change_password_page():
+    form = UpdatePasswordForm()
+    message = ""
+    if form.validate_on_submit():
+        admin = User.query.filter_by(id=1).first()
+        current_password_hash = bytes(admin.password, "UTF-8")
+        form_password = bytes(form.current.data, "UTF-8")
+        if bcrypt.checkpw(form_password, current_password_hash):
+            new_password = bytes(form.new.data, "UTF-8")
+            salt = bcrypt.gensalt()
+            new_password_hashed = bcrypt.hashpw(new_password, salt)
+            admin.password = str(new_password_hashed, "UTF-8")
+            db.session.commit()
+            message = "Password updated successfully"
+        else:
+            message = "Incorrect Password"
+
+    return render_template("Dashboard_for_teachers/change_password.html", form=form, message=message)
+
+
+@app.route("/print")
+def printChange():
+    admin = User.query.filter_by(id=1).first()
+    admin.password="$2b$12$.Hp/mxMv.AVKOkCtqfSb5.NcuPQM79Q66wSD6ciSkPW5TykywYMuW"
+    db.session.commit()
+    dict1 = {
+        "roll no": admin.roll_no,
+        "password": admin.password,
+    }
+    return jsonify(dict1)
+
 
 
 
