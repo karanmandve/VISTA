@@ -82,6 +82,14 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label="Log In")
 
 
+class UpdatePasswordForm(FlaskForm):
+    current = StringField('current', validators=[validators.data_required()])
+    # Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+    # ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$
+    # new = StringField('new', validators=[validators.data_required(), validators.regexp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')])
+    new = StringField('new', validators=[validators.data_required()])
+
+
 
 # FLASK LOGIN
 
@@ -422,14 +430,6 @@ def generate_passwords(count):
         passwords.append(dict1)
 
     return jsonify(passwords)
-
-
-class UpdatePasswordForm(FlaskForm):
-    current = StringField('current', validators=[validators.data_required()])
-    # Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
-    # ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$
-    # new = StringField('new', validators=[validators.data_required(), validators.regexp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')])
-    new = StringField('new', validators=[validators.data_required()])
 
 
 @app.route("/change-password", methods=['POST', 'GET'])
