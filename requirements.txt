@@ -15,5 +15,5 @@ six==1.16.0
 SQLAlchemy==1.4.44
 Werkzeug==2.2.2
 WTForms==3.0.1
-gunicorn==20.1.0
 bcrypt==4.0.1
+gunicorn==20.1.0
