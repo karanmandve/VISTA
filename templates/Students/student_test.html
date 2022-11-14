@@ -75,6 +75,7 @@
         </div>
     </div>
    <script>
+    let warnning=0;
     let count;
     let time;
     var cur_que;
@@ -207,6 +208,18 @@
             form.children[1].removeChild(form.children[1].children[0]);
             form.submit();
         }
+
+        // warnning systems
+        setInterval(()=>{
+            if(document.visibilityState=="hidden"){
+                ++warnning;
+                console.log(warnning);
+                if(warnning==3){
+                    finish();
+                }
+            }
+        },1000)
+        
    </script>
 </body>
 </html>
