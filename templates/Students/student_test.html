@@ -25,7 +25,8 @@
         <div class="test_container">
             <div class="up_sec">
                 <div id="title" style="font-family: 'Bold';">DBMS TEST</div>
-                <div id="timer"><b></b></div>
+                <div class="container" style="background: tomato;"><i class="fa fa-exclamation-triangle"></i>&nbsp;<div id="warning">0</div>/3</div>
+                <div class="container"><i class="fa fa-clock-o"></i>&nbsp;<div id="timer"></div></div>
             </div>
             <div class="mid_sec">
                 
@@ -75,7 +76,7 @@
         </div>
     </div>
    <script>
-    let warnning=0;
+    let warning=0;
     let count;
     let time;
     var cur_que;
@@ -205,18 +206,23 @@
         }
         function finish(){
             let form = document.getElementById("form");
-            form.children[1].removeChild(form.children[1].children[0]);
+            form.children[0].removeChild(form.children[0].children[0]);
             form.submit();
         }
 
         // warnning systems
-        setInterval(()=>{
-            if(document.visibilityState=="hidden"){
-                ++warnning;
-                console.log(warnning);
-                if(warnning==3){
+        let flag=true;
+        let warn_time=setInterval(()=>{
+            if(document.visibilityState=="hidden" && flag){
+                ++warning;
+                document.getElementById("warning").innerText=warning;
+                flag=false;
+                if(warning==3){
                     finish();
                 }
+            }
+            else if(document.visibilityState=="visible" && flag==false){
+                flag=true;
             }
         },1000)
         

@@ -25,7 +25,7 @@ body{
     border-top: 8px solid lightblue;
     padding: 40px;
 }
-#timer{
+.container{
     color: white;
     display: flex;
     align-items: center;
