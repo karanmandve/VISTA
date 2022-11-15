@@ -109,7 +109,7 @@ def admin_only(f):
         try:
             current_user.password
         except:
-            abort(403)
+            return abort(403)
             
         admin = User.query.filter_by(id=1).first()
 
@@ -130,7 +130,7 @@ def admin_only(f):
 @app.route("/")
 def homepage():
     # db.create_all()
-    # user = User(roll_no=00, password="root")
+    # user = User(roll_no=99, password="root")
     # db.session.add(user)
     # db.session.commit()
 
@@ -237,6 +237,7 @@ def all_exam():
 
     all_subjects = db.session.query(AllSubject.subject_name).all()
     all_subjects = [subject[0] for subject in all_subjects]
+    
     return jsonify(all_subjects)
 
 
@@ -299,11 +300,13 @@ def show_test(subject_name):
     global SHOW_TEST
     csrf = LoginForm()
     SHOW_TEST=subject_name
+
     if  AllSubject.query.filter_by(id=1).first().subject_name == SHOW_TEST:
         print("hello")
         return render_template("Dashboard_for_teachers/show-active-test.html", csrf=csrf)
     else:
         return render_template("Dashboard_for_teachers/show-test.html", csrf=csrf)
+
 
 @app.route("/update_add_subject_questions", methods=["POST"])
 def update_add_subject_questions():
