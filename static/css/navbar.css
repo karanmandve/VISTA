@@ -23,7 +23,7 @@ a{
       display: grid;
       grid-template-columns: 1fr 3fr;
       align-items: center;
-      height:5vh;
+      height:9vh;
       overflow: hidden;
     }
     .nav-wrapper{
@@ -31,7 +31,7 @@ a{
       background: black;
     }
     .navbar img {
-      height: 10vh;
+      height: 9vh;
       width: auto;
       justify-self: start;
       margin-left: 80px;
