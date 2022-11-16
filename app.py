@@ -164,15 +164,15 @@ def teacher():
 
         if admin.roll_no != roll_no:
             flash("Id does not exist, please try again")
-            return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
+            return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form, teacher_page=True)
         elif bcrypt.checkpw(password, admin_password_hash):
             login_user(admin)
             return render_template("Dashboard_for_teachers/dashboard.html")
         else:
             flash("Password is wrong, try again")
-            return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
+            return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form, teacher_page=True)
 
-    return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
+    return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form, teacher_page=True)
 
 
 @app.route("/logout")
