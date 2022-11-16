@@ -147,7 +147,7 @@ def homepage():
 
 @app.route("/about")
 def aboutpage():
-    return render_template("about_index.html")
+    return render_template("about.html")
 
 
 @app.route("/teacher-login", methods=["GET", "POST"])
@@ -470,7 +470,6 @@ def printChange():
 
 
 
-
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
 
