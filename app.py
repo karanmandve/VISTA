@@ -50,7 +50,7 @@ class Questions(db.Model):
 class StudentResponse(db.Model):
     __tablename__ = "student_response"
     id = db.Column(db.Integer, primary_key=True)
-    roll_no = db.Column(db.Integer, nullable=False)
+    roll_no = db.Column(db.Integer, unique=False, nullable=False)
     question = db.Column(db.Text, nullable=False)
     option_1 = db.Column(db.String(250), nullable=False)
     option_2 = db.Column(db.String(250), nullable=False)
@@ -86,8 +86,8 @@ class UpdatePasswordForm(FlaskForm):
     current = StringField('current', validators=[validators.data_required()])
     # Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
     # ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$
-    # new = StringField('new', validators=[validators.data_required(), validators.regexp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')])
-    new = StringField('new', validators=[validators.data_required()])
+    new = StringField('new', validators=[validators.data_required(), validators.regexp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')])
+    # new = StringField('new', validators=[validators.data_required()])
 
 
 
@@ -109,7 +109,7 @@ def admin_only(f):
         try:
             current_user.password
         except:
-            abort(403)
+            return abort(403)
             
         admin = User.query.filter_by(id=1).first()
 
@@ -130,7 +130,7 @@ def admin_only(f):
 @app.route("/")
 def homepage():
     # db.create_all()
-    # user = User(roll_no=00, password="root")
+    # user = User(roll_no=99, password="root")
     # db.session.add(user)
     # db.session.commit()
 
@@ -147,7 +147,7 @@ def homepage():
 
 @app.route("/about")
 def aboutpage():
-    return render_template("about_index.html")
+    return render_template("about.html")
 
 
 @app.route("/teacher-login", methods=["GET", "POST"])
@@ -164,15 +164,15 @@ def teacher():
 
         if admin.roll_no != roll_no:
             flash("Id does not exist, please try again")
-            return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
+            return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form, teacher_page=True)
         elif bcrypt.checkpw(password, admin_password_hash):
             login_user(admin)
             return render_template("Dashboard_for_teachers/dashboard.html")
         else:
             flash("Password is wrong, try again")
-            return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
+            return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form, teacher_page=True)
 
-    return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form)
+    return render_template("Teachers/teacher-login.html", dashboard_login_form=dashboard_login_form, teacher_page=True)
 
 
 @app.route("/logout")
@@ -237,6 +237,7 @@ def all_exam():
 
     all_subjects = db.session.query(AllSubject.subject_name).all()
     all_subjects = [subject[0] for subject in all_subjects]
+    
     return jsonify(all_subjects)
 
 
@@ -287,10 +288,13 @@ def delete_subject(subject_name):
 @app.route("/subject_questions")
 def subject_questions():
     active_subject = AllSubject.query.filter_by(subject_name=SHOW_TEST).first()
+
     all_questions = Questions.query.filter_by(subject_name=active_subject.subject_name).all()
     all_questions = [question.__dict__ for question in all_questions]
+    
     for question in all_questions:
         question.pop("_sa_instance_state")
+    
     return jsonify(all_questions)
 
 
@@ -299,11 +303,13 @@ def show_test(subject_name):
     global SHOW_TEST
     csrf = LoginForm()
     SHOW_TEST=subject_name
+
     if  AllSubject.query.filter_by(id=1).first().subject_name == SHOW_TEST:
         print("hello")
         return render_template("Dashboard_for_teachers/show-active-test.html", csrf=csrf)
     else:
         return render_template("Dashboard_for_teachers/show-test.html", csrf=csrf)
+
 
 @app.route("/update_add_subject_questions", methods=["POST"])
 def update_add_subject_questions():
@@ -397,22 +403,25 @@ def active_exam_questions():
 @app.route("/student-response", methods=["POST"])
 @login_required
 def student_response():
-    response_data = request.form.to_dict(flat=False)
-    print(response_data)
+    # response_data = request.form.to_dict(flat=False)
 
-    # try:
-    #     with open("student_response.txt", "r") as file:
-    #         student_data = file.read()
-    #         student_data = eval(student_data)
+    # counter = int(len(response_data)/6)
 
-    #     with open("student_response.txt", "w") as file:
-    #         student_data["student"] = response_data
-    # except:
-    #     with open("student_response.txt", "w") as file:
-    #         response_data = {"student": response_data}
-    #         file.write(f"{response_data}")
+    # for count in range(1, counter+1):
+    #     roll_no = 0
+    #     question = response_data[f"q{count}"][0]
+    #     option_1 = response_data[f"{count}option1"][0]
+    #     option_2 = response_data[f"{count}option2"][0]
+    #     option_3 = response_data[f"{count}option3"][0]
+    #     option_4 = response_data[f"{count}option4"][0]
+    #     answer = response_data[f"{count}answer"][0]
 
-    return "more work needed"
+    #     student_response = StudentResponse(roll_no=roll_no, question=question, option_1=option_1, option_2=option_2, option_3=option_3, option_4=option_4, answer=answer)
+    #     db.session.add(student_response)
+    #     db.session.commit()
+
+    return render_template("Students/student_result.html", score=2)
+    # return "Student response stored successfully"
 
 
 # KRISHNA'S CODE
@@ -446,11 +455,11 @@ def change_password_page():
             new_password_hashed = bcrypt.hashpw(new_password, salt)
             admin.password = str(new_password_hashed, "UTF-8")
             db.session.commit()
-            message = "Password updated successfully"
+            return "Password updated successfully"
         else:
-            message = "Incorrect Password"
+            return "Incorrect Password"
 
-    return render_template("Dashboard_for_teachers/change_password.html", form=form, message=message)
+    return render_template("Dashboard_for_teachers/change_password.html", form=form)
 
 
 @app.route("/print")
@@ -467,7 +476,6 @@ def printChange():
 
 
 
-
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
 

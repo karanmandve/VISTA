@@ -5,15 +5,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- BOOTSTRAP    -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
     <link rel="shortcut icon" href="../../static/favicon/favicon-96x96.png" type="image/x-icon">
     <link rel="stylesheet" href="../../static/css/create_test.css">
-    <link rel="stylesheet" href="../../static/css/navbar.css">
+    <!-- <link rel="stylesheet" href="../../static/css/navbar.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Active tests</title>
 </head>
 
 <body>
-    <div class="nav-wrapper">
+
+    <!-- NAVBAR -->
+
+    {% include 'header.html' %}    
+
+
+    <!-- <div class="nav-wrapper">
         <nav class="navbar">
             <img src="../../static/logoblack.png" alt="Company Logo">
             <ul class="nav no-search">
@@ -21,7 +31,7 @@
                 <li class="nav-item"><a href="#">Contact Us</a></li>
             </ul>
         </nav>
-    </div>
+    </div> -->
     <form  method="POST" id="form">
         {{ csrf.csrf_token }}
         <br>
