@@ -216,6 +216,7 @@
             if(document.visibilityState=="hidden" && flag){
                 ++warning;
                 document.getElementById("warning").innerText=warning;
+                alert("dont do this");
                 flag=false;
                 if(warning==3){
                     finish();
