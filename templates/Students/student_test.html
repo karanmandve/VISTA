@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">   
     <link rel="shortcut icon" href="../../static/favicon/favicon-96x96.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../static/css/navbar.css">
@@ -12,7 +13,7 @@
     <title>Test</title>
 </head>
 <body>
-    <div class="nav-wrapper">
+    <!-- <div class="nav-wrapper">
         <nav class="navbar">
             <img src="../../static/logoblack.png" alt="Company Logo">
             <ul class="nav no-search">
@@ -20,7 +21,10 @@
                 <li class="nav-item"><a href="#">Contact Us</a></li>
             </ul>
         </nav>
-    </div>
+    </div> -->
+    
+    {% include 'header.html' %}
+    
     <div style="display: flex;height:91vh;justify-content:center;align-items:center;">
         <div class="test_container">
             <div class="up_sec">
@@ -70,8 +74,8 @@
             </div>
             <div class="low_sec">
                 <div class="btn" style="background:tomato;" onclick="finish()">Finish</div>
-                <div class="btn" style="background:#3498db;" onclick="next()">Next</div>
-                <div class="btn" style="background:#3498db;" onclick="pre()">Previous</div>
+                <div id="nxt" class="btn" style="background:#3498db;" onclick="next()">Next</div>
+                <div id="pre"  class="btn" style="background:#3498db;" onclick="pre()">Previous</div>
             </div>
         </div>
     </div>
@@ -141,6 +145,7 @@
                 
             }
             cur_que=form.children[1].id;
+            document.getElementById("pre").style.display="none";
             refresh_curent();
             time=Number(data[0].test_time);
             
@@ -180,7 +185,12 @@
                     let node=box.children[cur_que].style.background="lightgreen";
                 }
                 cur_que=String(++temp);
+                document.getElementById("nxt").style.display="flex";
+                document.getElementById("pre").style.display="flex";
                 refresh_curent();
+                if(temp == count){
+                    document.getElementById("nxt").style.display="none";
+                } 
             }
         }
         function selected(){
@@ -201,7 +211,12 @@
                     let node=box.children[cur_que].style.background="lightgreen";
                 }
                 cur_que=String(--temp);
+                document.getElementById("nxt").style.display="flex";
+                document.getElementById("pre").style.display="flex";
                 refresh_curent();
+                if(temp == 1){
+                    document.getElementById("pre").style.display="none";
+                } 
             }
         }
         function finish(){
