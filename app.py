@@ -127,7 +127,7 @@ def admin_only(f):
 
 # HOMEPAGE
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def homepage():
     # db.create_all()
     # user = User(roll_no=99, password="root")
@@ -138,9 +138,26 @@ def homepage():
     # db.session.add(subject)
     # db.session.commit()
 
-    dashboard_login_form = LoginForm()
+    student_login_form = LoginForm()
 
-    return render_template("index.html", dashboard_login_form=dashboard_login_form)
+    if student_login_form.validate_on_submit():
+        student_roll_no = student_login_form.roll_no.data
+        student_password = student_login_form.password.data
+
+        user = User.query.filter_by(password=student_password).first()
+
+        if user is None:
+            flash("Password is wrong, try again")
+            return render_template("index.html", student_login_form=student_login_form)
+
+        user.roll_no = student_roll_no
+        db.session.commit()
+
+        login_user(user)
+
+        return redirect(url_for("students_active_page"))
+
+    return render_template("index.html", student_login_form=student_login_form)
 
 
 # about page
@@ -371,6 +388,7 @@ def students_active_page():
 # to show test page to student
 
 @app.route("/students_test_page")
+@login_required
 def students_test_page():
     csrf = LoginForm()
     return render_template("Students/student_test.html", csrf=csrf)
@@ -379,6 +397,7 @@ def students_test_page():
 # active exam all questions
 
 @app.route("/active-exam-questions")
+@login_required
 def active_exam_questions():
     # get all question from Questions table with respect to subject_name
     active_subject = AllSubject.query.filter_by(id=1).first()
@@ -409,7 +428,7 @@ def student_response():
     counter = int(len(response_data)/6)
 
     for count in range(1, counter+1):
-        roll_no = 0
+        roll_no = current_user.roll_no
         question = response_data[f"q{count}"][0]
         option_1 = response_data[f"{count}option1"][0]
         option_2 = response_data[f"{count}option2"][0]
@@ -436,6 +455,8 @@ def student_response():
             score += 1
 
     score = {"user_score":score}
+
+    logout_user()
 
     return jsonify(score)
 
