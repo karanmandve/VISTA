@@ -261,6 +261,18 @@ def all_exam():
 
 # ENDPOINTS FOR DROP DOWN MENU OPTIONS
 
+@app.route("/all-students-responses")
+@admin_only
+def all_students_responses():
+    all_students_responses = db.session.query(StudentResponse).all()
+    
+    all_students_responses = [response.__dict__ for response in all_students_responses]
+    
+    for response in all_students_responses:
+        del response["_sa_instance_state"]
+
+    return jsonify(all_students_responses)
+
 @app.route("/active-exam/<subject_name>")  # first make a dictionary then make it string then pass to url
 @admin_only
 def active_exam(subject_name):
@@ -268,7 +280,6 @@ def active_exam(subject_name):
     subject_name = eval(subject_name)  # to convert string to dictionary
 
     active_subject = AllSubject.query.filter_by(id=1).first()
-    print(active_subject.subject_name)
 
     if subject_name["subject_name"] != "None":
         active_subject.subject_name = subject_name["subject_name"]
@@ -325,7 +336,6 @@ def show_test(subject_name):
     SHOW_TEST=subject_name
 
     if  AllSubject.query.filter_by(id=1).first().subject_name == SHOW_TEST:
-        print("hello")
         return render_template("Dashboard_for_teachers/show-active-test.html", csrf=csrf)
     else:
         return render_template("Dashboard_for_teachers/show-test.html", csrf=csrf)
