@@ -212,7 +212,7 @@ def form_submit():
     db.session.add(subject)
     db.session.commit()
 
-    questions_count = int((len(form_data)-3)/6)
+    questions_count = int((len(form_data)-2)/6)
 
     for count in range(1, questions_count+1):
         subject_name = form_data["test_title"][0]
@@ -229,8 +229,8 @@ def form_submit():
         db.session.commit()
 
 
-    return render_template("Dashboard_for_teachers/dashboard.html")
-
+    # return render_template("Dashboard_for_teachers/dashboard.html")
+    return redirect(url_for('dashboard'))
 
 @app.route("/all-exams")
 @login_required
@@ -449,11 +449,20 @@ def student_response():
 def generate_passwords(count):
     count = int(count)
     passwords = []
+    all_user = []
+
     for i in range(1, count + 1):
         password = ''.join(
             random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in range(6))
         dict1 = {"number": i, "password": password}
         passwords.append(dict1)
+
+        user = User(roll_no=i, password=password)
+        all_user.append(user)
+
+
+    db.session.bulk_save_objects(all_user)
+    db.session.commit()
 
     return jsonify(passwords)
 
