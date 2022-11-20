@@ -22,42 +22,6 @@
     <section id="landing-page">
 
       {% include 'header.html' %}
-
-
-        <!-- NAVBAR -->
-        <!-- <nav class="navbar bg-white navbar-expand-lg shadow-sm pt-1 pb-1">
-          <img src="../static/new_img.png" class = "logo" style="width:150px; padding:10px 20px">
-          <img src="../static/vista_img.png" class = "logo" style="width:150px; padding:10px 20px"> -->
-          <!-- <a class="navbar-brand ms-3" href="index.html">Vista</a> -->
-          <!-- <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse me-2" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto menu-item">
-              {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                    <a href="{{ url_for('logout') }}" class="nav-link menu">Logout</a>
-                </li>
-                <li class="nav-item">
-                  <a href="{{ url_for('dashboard') }}" class="nav-link menu">Dashboard</a>
-              </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link menu">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu">Contact</a>
-                </li>
-                <li class="nav-item menu">
-                    <a href="/about" class="nav-link menu">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url_for('teacher') }}" class="nav-link"><div class="btn btn-primary">Teacher Login</div></a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-     -->
     
 
     <!-- PANDA LOGIN     -->
@@ -86,7 +50,7 @@
           <div class="finger"></div>
         </div>
       </div>
-      <form action="{{ url_for('dashboard') }}" method="POST" class="wrong-entry">
+      <form action="{{ url_for('homepage') }}" method="POST" class="wrong-entry">
         <div class="hand"></div>
         <div class="hand rgt"></div>
         <h1>Login</h1>
@@ -99,11 +63,11 @@
       
         {% endif %}
         <div class="input-group my-3">
-          {{ dashboard_login_form.roll_no(placeholder="Username", class="form-control") }}
+          {{ student_login_form.roll_no(placeholder="Roll no", class="form-control") }}
             
         </div>
         <div class="input-group">
-          {{ dashboard_login_form.password(placeholder="Password", class="form-control") }}
+          {{ student_login_form.password(placeholder="Password", class="form-control") }}
 
           <br>
         </div>

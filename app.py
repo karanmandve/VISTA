@@ -50,7 +50,7 @@ class Questions(db.Model):
 class StudentResponse(db.Model):
     __tablename__ = "student_response"
     id = db.Column(db.Integer, primary_key=True)
-    roll_no = db.Column(db.Integer, unique=False, nullable=False)
+    roll_no = db.Column(db.Integer, nullable=False)
     question = db.Column(db.Text, nullable=False)
     option_1 = db.Column(db.String(250), nullable=False)
     option_2 = db.Column(db.String(250), nullable=False)
@@ -127,7 +127,7 @@ def admin_only(f):
 
 # HOMEPAGE
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def homepage():
     # db.create_all()
     # user = User(roll_no=99, password="root")
@@ -138,9 +138,26 @@ def homepage():
     # db.session.add(subject)
     # db.session.commit()
 
-    dashboard_login_form = LoginForm()
+    student_login_form = LoginForm()
 
-    return render_template("index.html", dashboard_login_form=dashboard_login_form)
+    if student_login_form.validate_on_submit():
+        student_roll_no = student_login_form.roll_no.data
+        student_password = student_login_form.password.data
+
+        user = User.query.filter_by(password=student_password).first()
+
+        if user is None:
+            flash("Password is wrong, try again")
+            return render_template("index.html", student_login_form=student_login_form)
+
+        user.roll_no = student_roll_no
+        db.session.commit()
+
+        login_user(user)
+
+        return redirect(url_for("students_active_page"))
+
+    return render_template("index.html", student_login_form=student_login_form)
 
 
 # about page
@@ -200,6 +217,7 @@ def create_test():
 @admin_only
 def form_submit():
     form_data = request.form.to_dict(flat=False)
+    print(form_data)
 
     subject_name = form_data["test_title"][0]
 
@@ -211,7 +229,7 @@ def form_submit():
     db.session.add(subject)
     db.session.commit()
 
-    questions_count = int((len(form_data)-3)/6)
+    questions_count = int((len(form_data)-2)/6)
 
     for count in range(1, questions_count+1):
         subject_name = form_data["test_title"][0]
@@ -228,8 +246,8 @@ def form_submit():
         db.session.commit()
 
 
-    return render_template("Dashboard_for_teachers/dashboard.html")
-
+    # return render_template("Dashboard_for_teachers/dashboard.html")
+    return redirect(url_for('dashboard'))
 
 @app.route("/all-exams")
 @login_required
@@ -243,6 +261,18 @@ def all_exam():
 
 # ENDPOINTS FOR DROP DOWN MENU OPTIONS
 
+@app.route("/all-students-responses")
+@admin_only
+def all_students_responses():
+    all_students_responses = db.session.query(StudentResponse).all()
+    
+    all_students_responses = [response.__dict__ for response in all_students_responses]
+    
+    for response in all_students_responses:
+        del response["_sa_instance_state"]
+
+    return jsonify(all_students_responses)
+
 @app.route("/active-exam/<subject_name>")  # first make a dictionary then make it string then pass to url
 @admin_only
 def active_exam(subject_name):
@@ -250,7 +280,6 @@ def active_exam(subject_name):
     subject_name = eval(subject_name)  # to convert string to dictionary
 
     active_subject = AllSubject.query.filter_by(id=1).first()
-    print(active_subject.subject_name)
 
     if subject_name["subject_name"] != "None":
         active_subject.subject_name = subject_name["subject_name"]
@@ -258,11 +287,13 @@ def active_exam(subject_name):
 
         return "Subject Activated"
     else:
+        db.session.query(StudentResponse).delete()
+        db.session.query(User).filter(User.id != 1).delete()
+
         active_subject.subject_name = "None"
         db.session.commit()
 
         return "Subject Deactivated"
-        
 
 
 @app.route("/delete_subject/<subject_name>")
@@ -305,7 +336,6 @@ def show_test(subject_name):
     SHOW_TEST=subject_name
 
     if  AllSubject.query.filter_by(id=1).first().subject_name == SHOW_TEST:
-        print("hello")
         return render_template("Dashboard_for_teachers/show-active-test.html", csrf=csrf)
     else:
         return render_template("Dashboard_for_teachers/show-test.html", csrf=csrf)
@@ -370,6 +400,7 @@ def students_active_page():
 # to show test page to student
 
 @app.route("/students_test_page")
+@login_required
 def students_test_page():
     csrf = LoginForm()
     return render_template("Students/student_test.html", csrf=csrf)
@@ -378,6 +409,7 @@ def students_test_page():
 # active exam all questions
 
 @app.route("/active-exam-questions")
+@login_required
 def active_exam_questions():
     # get all question from Questions table with respect to subject_name
     active_subject = AllSubject.query.filter_by(id=1).first()
@@ -403,25 +435,43 @@ def active_exam_questions():
 @app.route("/student-response", methods=["POST"])
 @login_required
 def student_response():
-    # response_data = request.form.to_dict(flat=False)
+    response_data = request.form.to_dict(flat=False)
 
-    # counter = int(len(response_data)/6)
+    counter = int(len(response_data)/6)
 
-    # for count in range(1, counter+1):
-    #     roll_no = 0
-    #     question = response_data[f"q{count}"][0]
-    #     option_1 = response_data[f"{count}option1"][0]
-    #     option_2 = response_data[f"{count}option2"][0]
-    #     option_3 = response_data[f"{count}option3"][0]
-    #     option_4 = response_data[f"{count}option4"][0]
-    #     answer = response_data[f"{count}answer"][0]
+    for count in range(1, counter+1):
+        roll_no = current_user.roll_no
+        question = response_data[f"q{count}"][0]
+        option_1 = response_data[f"{count}option1"][0]
+        option_2 = response_data[f"{count}option2"][0]
+        option_3 = response_data[f"{count}option3"][0]
+        option_4 = response_data[f"{count}option4"][0]
+        answer = response_data[f"{count}answer"][0]
 
-    #     student_response = StudentResponse(roll_no=roll_no, question=question, option_1=option_1, option_2=option_2, option_3=option_3, option_4=option_4, answer=answer)
-    #     db.session.add(student_response)
-    #     db.session.commit()
+        student_response = StudentResponse(roll_no=roll_no, question=question, option_1=option_1, option_2=option_2, option_3=option_3, option_4=option_4, answer=answer)
+        db.session.add(student_response)
+        db.session.commit()
 
-    return render_template("Students/student_result.html", score=2)
-    # return "Student response stored successfully"
+    active_subject = AllSubject.query.filter_by(id=1).first()
+    questions_data = Questions.query.filter_by(subject_name=active_subject.subject_name).all()
+
+    question_answer_dict = {data.question:data.answer for data in questions_data}
+
+    score = 0
+
+    for count in range(1, counter+1):
+        question = response_data[f"q{count}"][0]
+        answer = response_data[f"{count}answer"][0]
+
+        if answer == question_answer_dict[question]:
+            score += 1
+
+    score = {"user_score":score}
+
+    logout_user()
+
+    return jsonify(score)
+
 
 
 # KRISHNA'S CODE
@@ -432,11 +482,20 @@ def student_response():
 def generate_passwords(count):
     count = int(count)
     passwords = []
+    all_user = []
+
     for i in range(1, count + 1):
         password = ''.join(
             random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in range(6))
         dict1 = {"number": i, "password": password}
         passwords.append(dict1)
+
+        user = User(roll_no=i, password=password)
+        all_user.append(user)
+
+
+    db.session.bulk_save_objects(all_user)
+    db.session.commit()
 
     return jsonify(passwords)
 
