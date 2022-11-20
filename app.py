@@ -50,7 +50,7 @@ class Questions(db.Model):
 class StudentResponse(db.Model):
     __tablename__ = "student_response"
     id = db.Column(db.Integer, primary_key=True)
-    roll_no = db.Column(db.Integer, unique=False, nullable=False)
+    roll_no = db.Column(db.Integer, nullable=False)
     question = db.Column(db.Text, nullable=False)
     option_1 = db.Column(db.String(250), nullable=False)
     option_2 = db.Column(db.String(250), nullable=False)
@@ -200,6 +200,7 @@ def create_test():
 @admin_only
 def form_submit():
     form_data = request.form.to_dict(flat=False)
+    print(form_data)
 
     subject_name = form_data["test_title"][0]
 
@@ -403,25 +404,41 @@ def active_exam_questions():
 @app.route("/student-response", methods=["POST"])
 @login_required
 def student_response():
-    # response_data = request.form.to_dict(flat=False)
+    response_data = request.form.to_dict(flat=False)
 
-    # counter = int(len(response_data)/6)
+    counter = int(len(response_data)/6)
 
-    # for count in range(1, counter+1):
-    #     roll_no = 0
-    #     question = response_data[f"q{count}"][0]
-    #     option_1 = response_data[f"{count}option1"][0]
-    #     option_2 = response_data[f"{count}option2"][0]
-    #     option_3 = response_data[f"{count}option3"][0]
-    #     option_4 = response_data[f"{count}option4"][0]
-    #     answer = response_data[f"{count}answer"][0]
+    for count in range(1, counter+1):
+        roll_no = 0
+        question = response_data[f"q{count}"][0]
+        option_1 = response_data[f"{count}option1"][0]
+        option_2 = response_data[f"{count}option2"][0]
+        option_3 = response_data[f"{count}option3"][0]
+        option_4 = response_data[f"{count}option4"][0]
+        answer = response_data[f"{count}answer"][0]
 
-    #     student_response = StudentResponse(roll_no=roll_no, question=question, option_1=option_1, option_2=option_2, option_3=option_3, option_4=option_4, answer=answer)
-    #     db.session.add(student_response)
-    #     db.session.commit()
+        student_response = StudentResponse(roll_no=roll_no, question=question, option_1=option_1, option_2=option_2, option_3=option_3, option_4=option_4, answer=answer)
+        db.session.add(student_response)
+        db.session.commit()
 
-    return render_template("Students/student_result.html", score=2)
-    # return "Student response stored successfully"
+    active_subject = AllSubject.query.filter_by(id=1).first()
+    questions_data = Questions.query.filter_by(subject_name=active_subject.subject_name).all()
+
+    question_answer_dict = {data.question:data.answer for data in questions_data}
+
+    score = 0
+
+    for count in range(1, counter+1):
+        question = response_data[f"q{count}"][0]
+        answer = response_data[f"{count}answer"][0]
+
+        if answer == question_answer_dict[question]:
+            score += 1
+
+    score = {"user_score":score}
+
+    return jsonify(score)
+
 
 
 # KRISHNA'S CODE
