@@ -208,7 +208,7 @@ body {
 
 form {
   display: none;
-  max-width: 50vh;
+  max-width:19rem;
   padding: 20px 40px;
   background: #fff;
   height: 300px;
