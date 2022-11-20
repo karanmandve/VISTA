@@ -10,8 +10,8 @@
 body{
   /* background-image: url("https://images.pexels.com/photos/6985003/pexels-photo-6985003.jpeg?cs=srgb&dl=pexels-gradienta-6985003.jpg&fm=jpg&_gl=1*12rp8sa*_ga*MzQ0MTQ0NzMxLjE2MjEwMDI2MTU.*_ga_8JE65Q40S6*MTY2NzA2NTYwNi4xLjEuMTY2NzA2NTg3Ny4wLjAuMA.."); */
   /* background: linear-gradient(90deg, #1CB5E0 0%, #000851 100%); */
-  background: rgb(2,0,36);
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+  /* background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%); */
   /* background: black; */
   /* background: linear-gradient(#573ddc, #5fe8f8); */
   
@@ -22,30 +22,28 @@ body{
   text-align: center;
 }
 
-.about p{
-  color: white;
-  font-family: 'Yatra One', cursive;
+ p{
+  font-family: "Regular", cursive;
   font-size: 17px;
-  color: rgb(255, 248, 248);
   margin-bottom: 25px;
+  line-height: 4;
 }
 
 .about h1{
   font-family: 'Yatra One', cursive;
   font-size: 48px;
-  color: rgb(255, 248, 248);
   margin-bottom: 25px;
 }
 
 .wrapper{
-  margin-top: 60px;
   text-align: center;
+  padding-bottom: 3%;
 }
 
 .wrapper h1{
-  font-family: 'Yatra One', cursive;
-  font-size: 48px;
-  color: rgb(255, 248, 248);
+  font-family: "Regular";
+  /* font-size: 48px; */
+  color:white;
   margin-bottom: 25px;
 }
 
@@ -133,7 +131,8 @@ body{
 }
 
 .team_member:hover {
-  background: linear-gradient(#573ddc, #5fe8f8);
+  /* background: linear-gradient(#573ddc, #5fe8f8); */
+  background:linear-gradient(rgb(80, 177, 204),rgb(176, 218, 223)) rgb(80, 177, 204);
   color: #ffffff;
 }
 .team_member:hover .img-container {
