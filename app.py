@@ -276,11 +276,13 @@ def active_exam(subject_name):
 
         return "Subject Activated"
     else:
+        db.session.query(StudentResponse).delete()
+        db.session.query(User).filter(User.id != 1).delete()
+
         active_subject.subject_name = "None"
         db.session.commit()
 
         return "Subject Deactivated"
-        
 
 
 @app.route("/delete_subject/<subject_name>")
