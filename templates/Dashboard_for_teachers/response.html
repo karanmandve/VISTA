@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- BOOTSTRAP    -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <link rel="shortcut icon" href="../../static/favicon/favicon-96x96.png" type="image/x-icon">
+    <link rel="stylesheet" href="../../static/css/create_test.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Active tests</title>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    {% include 'header.html' %}    
+    <div style="display: flex;justify-content: center; align-items: center;flex-direction: column;margin: 3%;">
+        <div class="top_head" style="padding-left:2%;">
+            <h2><div id="no" style="display: inline;"></div> responses</h2>
+        </div>
+        <div id="que_container" style="margin-top: 2%;">
+            <div><b>Roll no</b></div>
+            <div id="res"></div>
+        </div>
+    </div>
+   
+    <script>
+        var count=0;
+        fetch("./all-students-responses").then((res)=>res.json()).then((data)=>{
+            console.log(data);
+            let roll_no=data[0].roll_no;
+            count++;
+            child=document.createElement("div");
+            child.setAttribute("class","response");
+            child.innerText=roll_no;
+            document.getElementById("res").appendChild(child);
+            document.getElementById("no").innerText=count;
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                if (element.roll_no !=roll_no){
+                    roll_no=element.roll_no;
+                    count++;
+                    console.log(roll_no);
+                    child=document.createElement("div");
+                    child.setAttribute("class","response");
+                    child.innerText=roll_no;
+                    document.getElementById("res").appendChild(child);
+                    document.getElementById("no").innerText=count;
+
+                }
+                    
+            }
+        });
+    </script>
+</body>
+
+</html>

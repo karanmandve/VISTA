@@ -91,6 +91,12 @@ form{
 .container{
     margin-top: 6%;
 }
+ /* for small screen size */
+ @media only screen and (max-width:768px){
+    picture{
+        display: none;
+    }
+ }
 
 
 

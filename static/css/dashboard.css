@@ -140,7 +140,7 @@ background: radial-gradient(#f588d8, #c0a3e5); */
   position: absolute;
   background-color: white;
   width: 24vh;
-  height: 132px;
+  /* height: 132px; */
   margin-left: -8vh;
   margin-top: -23vh;
   overflow: auto;

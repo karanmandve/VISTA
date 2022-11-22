@@ -28,8 +28,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background: white;
         }
-
+        .board{
+            background: white;
+            box-shadow: 0px 0px 28px -3px grey;
+            border-radius: 4px;
+            padding: 6% 5%;
+        }
         /* h1{
             display: inline-block;
             height: auto;
@@ -46,8 +52,9 @@
     {% include "header.html" %}
 
     <div class="score">
-
-        <h1 style="color: #1a73e8;"> Your Score is : {{ score }}/2  </h1>
+        <div class="board">
+            <h1 style="color: #1a73e8;"> Your Score is : {{ data[0] }}/{{data[1]}} </h1>
+        </div>
     </div>
 
 

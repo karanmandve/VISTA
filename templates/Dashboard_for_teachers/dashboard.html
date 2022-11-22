@@ -140,9 +140,11 @@
 
                             // removing passsword option
                             copy.children[1].children[0].removeChild(copy.children[1].children[0].children[1]);
+                             // removing response option
+                             copy.children[1].children[0].removeChild(copy.children[1].children[0].children[1]);
 
                             // view option
-                            copy.children[1].children[0].children[2].addEventListener("click", (e) => { window.location = "./show_test/" + e.path[4].children[2].value; });
+                            copy.children[1].children[0].children[1].addEventListener("click", (e) => { window.location = "./show_test/" + e.path[4].children[2].value; });
                             //  activate option
                             copy.children[1].children[0].children[0].addEventListener("click", (e) => {
                                 if (active.childElementCount == 1) {
@@ -166,7 +168,7 @@
                             });
 
                             // delete option
-                            copy.children[1].children[0].children[3].addEventListener("click", (e) => {
+                            copy.children[1].children[0].children[2].addEventListener("click", (e) => {
                                 console.log(e); fetch("./delete_subject/" + e.path[4].children[2].value).then((res) => {
 
                                     // removing the current tests cards
@@ -223,6 +225,10 @@
                                 alert("Enter the valid student number !!");
                             }
                         });
+                        
+                        //responses 
+                        copy.children[1].children[0].children[2].addEventListener("click",(e)=>{window.location="./response_page";});
+
                         // view option
                         copy.children[1].children[0].children[3].addEventListener("click", (e) => { window.location = "./show_test/" + e.path[4].children[2].value; });
                        

@@ -261,8 +261,14 @@ def all_exam():
 
 # ENDPOINTS FOR DROP DOWN MENU OPTIONS
 
-@app.route("/all-students-responses")
+# endpoint for response page
+@app.route("/response_page")
 @admin_only
+def response():
+    return render_template("Dashboard_for_teachers/response.html")
+
+@app.route("/all-students-responses")
+# @admin_only
 def all_students_responses():
     all_students_responses = db.session.query(StudentResponse).all()
     
@@ -394,7 +400,8 @@ def update_add_subject_questions():
 @app.route("/students-active-page")
 @login_required
 def students_active_page():
-    return render_template("Students/student_active_test.html")
+    current_user
+    return render_template("Students/student_active_test.html",current_user=current_user)
 
 
 # to show test page to student
@@ -465,12 +472,10 @@ def student_response():
 
         if answer == question_answer_dict[question]:
             score += 1
-
-    score = {"user_score":score}
-
+        data=[score,counter]
     logout_user()
 
-    return jsonify(score)
+    return render_template("Students/student_result.html",data=data)
 
 
 

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../../static/favicon/favicon-96x96.png" type="image/x-icon">
-    <!-- <link rel="stylesheet" href="../../static/css/navbar.css"> -->
+    <link rel="stylesheet" href="../../static/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="../../static/css/dashboard.css">
     <title>Active Test</title>
@@ -26,7 +26,7 @@
         </nav>
     </div> -->
     {% include 'header.html' %}
-    
+    <div id="user_id" style="display: none;">{{current_user.id-1}}</div> 
     <div class="new">
         <div class="right">
             <div id="active_title" class="title">No active test</div>
@@ -35,21 +35,46 @@
                     <div  class="test_card" style="margin: -11px 0 0 141px;position: absolute;z-index: 1;" >
                         <div class="preview" style="background: url('../../static/icon.jpg');background-size: cover;"></div>
                         <h1 style="padding: 6% 0 0 12%;font-size: unset;font-family: 'Bold';">DBMS</h1>
-                        <p style="padding: 3% 12%;padding: 6% 12%;margin: 1% 0 0 50%;" class="btn" onclick="start()">Start</p>
+                        <p  style="display:flex;align-items:center;justify-content:center;border-radius:4px;background:lightblue;width: fit-content;padding: 3% 11%;margin: -2% 0 0 6%;cursor:pointer;"  onclick="start()">Start</p>
                     </div>
                 </template>
             </div>
         </div>
     </div>
 <script>
+    var  user_id=document.getElementById("user_id").innerText;
     fetch("./all-exams").then((res)=>res.json()).then((data)=>{
         let cont=document.getElementById("active_container")
         let node=cont.children[0].content.children[0];
         let copy=node.cloneNode(true);
         copy.children[1].innerText=data[0];
+        copy.children[2].id="btn";
         cont.appendChild(copy);
-    });
+        fetch("./all-students-responses").then((res)=>res.json()).then((data)=>{
+        var btn=document.getElementById("btn");
+            console.log(data);
+            let roll_no=data[0].roll_no;
+                if(roll_no==user_id){
+                    console.log(user_id);
+                   btn.onclick=()=>{}
+                   btn.innerText="Completed"; 
+                }
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                if (element.roll_no !=roll_no){
+                    roll_no=element.roll_no;
+                    if(roll_no==user_id){
+                        console.log(user_id);
+                        btn.onclick=()=>{}
+                        btn.innerText="Completed"; 
+                        }
 
+                }    
+            }
+        });
+    });
+    
+    
     // function to start the test
     function start(){
        let check=confirm("Do you really want to start the test ?");
