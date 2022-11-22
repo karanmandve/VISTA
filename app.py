@@ -466,11 +466,9 @@ def student_response():
         if answer == question_answer_dict[question]:
             score += 1
 
-    score = {"user_score":score}
-
     logout_user()
 
-    return jsonify(score)
+    return render_template("Students/student_result.html", score=score)
 
 
 
