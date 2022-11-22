@@ -472,17 +472,10 @@ def student_response():
 
         if answer == question_answer_dict[question]:
             score += 1
-<<<<<<< HEAD
         data=[score,counter]
     logout_user()
 
     return render_template("Students/student_result.html",data=data)
-=======
-
-    logout_user()
-
-    return render_template("Students/student_result.html", score=score)
->>>>>>> b1a70decd839ee28153026bb44c7a4325f3e137b
 
 
 
