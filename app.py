@@ -71,6 +71,13 @@ class AllSubject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subject_name = db.Column(db.String(250), nullable=False)
 
+class AllScore(db.Model):
+    __tablename__ = "all_scores"
+    id = db.Column(db.Integer, primary_key=True)
+    roll_no = db.Column(db.Integer, nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+    total_questions = db.Column(db.Integer, nullable=False)
+
 
 
 # FLASK WTFORMS
@@ -129,7 +136,7 @@ def admin_only(f):
 
 @app.route("/", methods=["GET", "POST"])
 def homepage():
-    # db.create_all()
+    db.create_all()
     # user = User(roll_no=99, password="root")
     # db.session.add(user)
     # db.session.commit()
@@ -472,11 +479,26 @@ def student_response():
 
         if answer == question_answer_dict[question]:
             score += 1
+
         data=[score,counter]
+
+    score_table = AllScore(roll_no=current_user.roll_no, score=score, total_questions=counter)
+    db.session.add(score_table)
+    db.session.commit()
+
     logout_user()
 
-    return render_template("Students/student_result.html",data=data)
+    return render_template("Students/student_result.html")
 
+
+@app.route("/student_result")
+def student_result():
+    all_results = AllScore.query.all()
+
+    print(all_results)
+    print(all_results[0])
+
+    return jsonify(all_results)
 
 
 # KRISHNA'S CODE
