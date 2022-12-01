@@ -1,129 +1,117 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../static/css/login.css">
-    <title>Document</title>
-</head>
-<body>
-    <div class="container">
-        <div id="left">
-        <form action="{{ url_for('dashboard') }}" method="POST">
-            <center><h2><b>LOGIN TO YOUR ACCOUNT</b></h2></center>
-            <br>
-            <br>
-            <div class="group">
-                {{ dashboard_login_form.csrf_token }}
-                {{ dashboard_login_form.id }}
-                <span class="highlight"></span>
-                <span class="bar"></span>
-                <label>Teacher ID</label>
-              </div>
-              
-              <div class="group">      
-                {{ dashboard_login_form.password }}
-                <span class="highlight"></span>
-                <span class="bar"></span>
-                <label>Password</label>
-              </div>
-              {{ dashboard_login_form.submit(class="btn") }}
-              <br><br><br><br>
-              <a href="/"><- GoTo Home</a>
-            </form>
-        </div>
-        <div id="right" style="background:url(../../static/tem.jpeg);background-size: cover;"></div>
-
-    </div> 
-    <script>
-        let input_element = document.querySelector("input");
-        input_element.addEventListener("keyup", () => {
-            input_element.setAttribute("value", input_element.value);
-        })
-    </script>
-</body>
-</html> -->
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="../../static/favicon/favicon-96x96.png" type="image/x-icon">
-    
-    <!-- GOOGLE FONT -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+   <link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+   <link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+   <style lang="en" type="text/css" id="dark-mode-custom-style"></style>
+   <style lang="en" type="text/css" id="dark-mode-native-style"></style>
+   <styl lang="en" type="text/css" id="dark-mode-native-sheet"></style>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>Login V1</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css"/>
+      <!-- <link rel="stylesheet" type="text/css" href="../static/login/bootstrap.min.css"> -->
+      <!-- <link rel="stylesheet" type="text/css" href="../static/login/font-awesome.min.css"> -->
+      <link rel="stylesheet" type="text/css" href="../static/login/animate.css">
+      <!-- <link rel="stylesheet" type="text/css" href="../static/login/hamburgers.min.css">
+      <link rel="stylesheet" type="text/css" href="../static/login/select2.min.css"> -->
+      <link rel="stylesheet" type="text/css" href="../static/login/util.css">
+      <link rel="stylesheet" type="text/css" href="../static/login/main.css">
+      <link rel="stylesheet" type="text/css" href="../static/css/style.css ">
+      <link rel="stylesheet" href="../static/css/about_page.css">
+      <meta name="robots" content="noindex, follow">
+      <style>
+        body{
+          font-family: 'Regular';
+        }
+      </style>
+   </head>
+   <body>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link rel="stylesheet" href="../static/css/teacher_login.css">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/about_page.css">
-    <title>Document</title>
-  </head>
-  <body>
+      <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+         <a class="navbar-brand" href="#">VISTA</a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+         </button>
+       
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+           <ul class="navbar-nav mr-auto">
+             <li class="nav-item active">
+               <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+             </li>
+             <li class="nav-item active">
+               <a class="nav-link" href="#">Github <span class="sr-only">(current)</span></a>
+             </li>
+             <li class="nav-item active">
+               <a class="nav-link" href="#">About <span class="sr-only">(current)</span></a>
+             </li>
+             <li class="nav-item active">
+               <a class="nav-link" href="#">Teacher Login <span class="sr-only">(current)</span></a>
+             </li>
+           </ul>
+         </div>
+       </nav> -->
+       <section id="landing-page">
+        {% include 'header.html' %}
+       
 
-    <!-- NAVBAR -->
-  <section id="landing-page">
-    {% include 'header.html' %}
+      <div class="limiter">
+         <div class="container-login100">
+            <div class="wrap-login100">
+               <div class="login100-pic js-tilt" data-tilt="" style="transform: perspective(300px) rotateX(4.35deg) rotateY(-4.26deg) scale3d(1.1, 1.1, 1.1); will-change: transform;">
+                  <img src="../static/logo.jpg" alt="IMG">
+               </div>
+               <form class="login100-form validate-form"  action="{{ url_for('teacher') }}" method="POST">
+                  <span class="login100-form-title">
+                  Teacher Login
+                  </span>
+                   
+                    {% if get_flashed_messages() %}
 
-    <div class="container">
-      <div class="panda">
-        <div class="ear"></div>
-        <div class="face">
-          <div class="eye-shade"></div>
-          <div class="eye-white">
-            <div class="eye-ball"></div>
-          </div>
-          <div class="eye-shade rgt"></div>
-          <div class="eye-white rgt">
-            <div class="eye-ball"></div>
-          </div>
-          <div class="nose"></div>
-          <div class="mouth"></div>
-        </div>
-        <div class="body"></div>
-        <div class="foot">
-          <div class="finger"></div>
-        </div>
-        <div class="foot rgt">
-          <div class="finger"></div>
-        </div>
+                    {% for message in get_flashed_messages() %}
+                      <em><p style="color: red; height: 5%;">{{ message }}</p></em>
+                    {% endfor %}
+                  
+                  {% endif %}
+                  <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                     <!-- <input class="input100" type="text" name="email" placeholder="Roll No."> -->
+                     {{ dashboard_login_form.roll_no(placeholder="ID", class="form-control") }}
+                     <span class="focus-input100"></span>
+                     <!-- <span class="symbol-input100"> -->
+                     <i class="fa fa-envelope" aria-hidden="true"></i>
+                     </span>
+                  </div>
+                  <div class="wrap-input100 validate-input" data-validate="Password is required">
+                     <!-- <input class="input100" type="password" name="pass" placeholder="Password"> -->
+                     {{ dashboard_login_form.password(placeholder="Password", class="form-control") }}
+                     <span class="focus-input100"></span>
+                     <!-- <span class="symbol-input100"> -->
+                     <i class="fa fa-lock" aria-hidden="true"></i>
+                     </span>
+                  </div>
+                  <div class="container-login100-form-btn">
+                     <button class="login100-form-btn" href="/students_active_page">
+                     Login
+                     </button>
+                  </div>
+                  <div class="text-center p-t-12">
+                     <a class="txt2" href="./">
+                      student login
+                     </a>
+                  </div>
+                  <a href="{{ url_for('change_password_page') }}" class="nav-link"><div class="btn btn-primary">Change Password</div></a></div>
+                  <div class="text-center p-t-136">
+                     <a class="txt2" href="./">
+                     </a>
+                  </div>
+               </form>
+            </div>
+         </div>
       </div>
-      <form action="{{ url_for('teacher') }}" method="POST" class="wrong-entry">
-        <div class="hand"></div>
-        <div class="hand rgt"></div>
-        <h1>Login</h1>
-        
-        {% if get_flashed_messages() %}
-
-        {% for message in get_flashed_messages() %}
-          <em><p style="color: red; height: 5%;">{{ message }}</p></em>
-        {% endfor %}
-      
-      {% endif %}
-        <div class="input-group my-3">
-          {{ dashboard_login_form.roll_no(placeholder="Roll no", class="form-control") }}
-        </div>
-        <div class="input-group">
-          {{ dashboard_login_form.password(placeholder="Password", class="form-control") }}
-          <br />
-        </div>
-        <button
-          href="/students_active_page"
-          class="btn btn-start-exam btn-primary mt-4"
-        >
-          Login
-        </button>
-      </form>
-    </div>
-
-    <a href="{{ url_for('change_password_page') }}" class="nav-link"><div class="btn btn-primary">Change Password</div></a></div>
-  </section>
+    </section>
     <section id="about_us" style="padding:3% 18% 2% 18%;">
       
       <h1>About Project</h1>
@@ -194,35 +182,26 @@
           </div>
       </div>
     </section>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script>
-      $("#password").focusin(function () {
-        $("form").addClass("up");
-      });
-      $("#password").focusout(function () {
-        $("form").removeClass("up");
-      });
+      <script src="../static/login/jquery-3.2.1.min.js.download"></script>
+      <script src="../static/login/popper.js.download"></script>
+      <script src="../static/login/bootstrap.min.js.download"></script>
+      <script src="../static/login/select2.min.js.download"></script> -->
+      <script src="../static/login/tilt.jquery.min.js.download"></script>
+      <script>
+         $('.js-tilt').tilt({
+         	scale: 1.1
+         })
+      </script>
+      <script async="" src="../static/login/js"></script>
+      <!-- <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
 
-      // Panda Eye move
-      $(document).on("mousemove", function (event) {
-        var dw = $(document).width() / 15;
-        var dh = $(document).height() / 15;
-        var x = event.pageX / dw;
-        var y = event.pageY / dh;
-        $(".eye-ball").css({
-          width: x,
-          height: y,
-        });
-      });
-
-      // validation
-
-      // $(".btn").click(function () {
-      //   $("form").addClass("wrong-entry");
-      //   setTimeout(function () {
-      //     $("form").removeClass("wrong-entry");
-      //   }, 3000);
-      // });
-    </script>
-  </body>
+         gtag('config', 'UA-23581568-13');
+      </script>
+       <script src="../static/login/main.js.download"></script>
+      <script defer="" src="../static/login/vaafb692b2aea4879b33c060e79fe94621666317369993" integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA==" data-cf-beacon="{&quot;rayId&quot;:&quot;7645e0c95cb39a78&quot;,&quot;token&quot;:&quot;cd0b4b3a733644fc843ef0b185f98241&quot;,&quot;version&quot;:&quot;2022.11.0&quot;,&quot;si&quot;:100}" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script> -->
+   </body>
 </html>
