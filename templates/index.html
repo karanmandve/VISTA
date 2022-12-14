@@ -4,26 +4,33 @@
    <link type="text/css" rel="stylesheet" id="dark-mode-general-link">
    <style lang="en" type="text/css" id="dark-mode-custom-style"></style>
    <style lang="en" type="text/css" id="dark-mode-native-style"></style>
-   <style lang="en" type="text/css" id="dark-mode-native-sheet"></style>
+   <styl lang="en" type="text/css" id="dark-mode-native-sheet"></style>
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <title>Login V1</title>
+      <title>VISTA</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
       <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600&amp;lang=en.css"/>
-      <link rel="stylesheet" type="text/css" href="../static/login/bootstrap.min.css">
-      <link rel="stylesheet" type="text/css" href="../static/login/font-awesome.min.css">
+      <!-- <link rel="stylesheet" type="text/css" href="../static/login/bootstrap.min.css"> -->
+      <!-- <link rel="stylesheet" type="text/css" href="../static/login/font-awesome.min.css"> -->
       <link rel="stylesheet" type="text/css" href="../static/login/animate.css">
-      <link rel="stylesheet" type="text/css" href="../static/login/hamburgers.min.css">
-      <link rel="stylesheet" type="text/css" href="../static/login/select2.min.css">
+      <!-- <link rel="stylesheet" type="text/css" href="../static/login/hamburgers.min.css">
+      <link rel="stylesheet" type="text/css" href="../static/login/select2.min.css"> -->
       <link rel="stylesheet" type="text/css" href="../static/login/util.css">
       <link rel="stylesheet" type="text/css" href="../static/login/main.css">
+      <link rel="stylesheet" type="text/css" href="../static/css/style.css ">
+      <link rel="stylesheet" href="../static/css/about_page.css">
       <meta name="robots" content="noindex, follow">
+      <style>
+        body{
+          font-family: 'Regular';
+        }
+      </style>
    </head>
    <body>
-   <nav class=""navbar navbar-light bg-light">
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
          <a class="navbar-brand" href="#">VISTA</a>
          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
            <span class="navbar-toggler-icon"></span>
@@ -45,8 +52,10 @@
              </li>
            </ul>
          </div>
-       </nav>
-
+       </nav> -->
+       <section id="landing-page">
+        {% include 'header.html' %}
+       
 
       <div class="limiter">
          <div class="container-login100">
@@ -54,26 +63,36 @@
                <div class="login100-pic js-tilt" data-tilt="" style="transform: perspective(300px) rotateX(4.35deg) rotateY(-4.26deg) scale3d(1.1, 1.1, 1.1); will-change: transform;">
                   <img src="../static/logo.jpg" alt="IMG">
                </div>
-               <form class="login100-form validate-form">
+               <form class="login100-form validate-form"  action="./" method="POST">
                   <span class="login100-form-title">
                   Student Login
                   </span>
+                   
+                    {% if get_flashed_messages() %}
+
+                    {% for message in get_flashed_messages() %}
+                      <em><p style="color: red; height: 5%;">{{ message }}</p></em>
+                    {% endfor %}
+                  
+                  {% endif %}
                   <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                     <input class="input100" type="text" name="email" placeholder="Roll No.">
+                     <!-- <input class="input100" type="text" name="email" placeholder="Roll No."> -->
+                     {{ student_login_form.roll_no(placeholder="Roll no", class="form-control") }}
                      <span class="focus-input100"></span>
-                     <span class="symbol-input100">
+                     <!-- <span class="symbol-input100"> -->
                      <i class="fa fa-envelope" aria-hidden="true"></i>
                      </span>
                   </div>
                   <div class="wrap-input100 validate-input" data-validate="Password is required">
-                     <input class="input100" type="password" name="pass" placeholder="Password">
+                     <!-- <input class="input100" type="password" name="pass" placeholder="Password"> -->
+                     {{ student_login_form.password(placeholder="Password", class="form-control") }}
                      <span class="focus-input100"></span>
-                     <span class="symbol-input100">
+                     <!-- <span class="symbol-input100"> -->
                      <i class="fa fa-lock" aria-hidden="true"></i>
                      </span>
                   </div>
                   <div class="container-login100-form-btn">
-                     <button class="login100-form-btn">
+                     <button class="login100-form-btn" href="/students_active_page">
                      Login
                      </button>
                   </div>
@@ -87,17 +106,89 @@
                   <div class="text-center p-t-136">
                      <a class="txt2" href="{{ url_for('teacher') }}">
                      Teacher login
-                     <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                      </a>
                   </div>
+                  <a href="/students-active-page">for testing
+                  </a>
                </form>
             </div>
          </div>
       </div>
+    </section>
+    <section id="about_us" style="padding:3% 18% 2% 18%;">
+      
+      <h1>About Project</h1>
+          <p>VISTA stands for Virtual Instant Student Test Assestment. This is made for taking VIVA exams online without any hassel of using the traditional pen and paper method.
+          This website is made by the group of five members of Computer Science & Engineering branch as a 5th Sem PSL Project. We hope that you'll like this and enjoy using this website 😀 </p>
+          </p>
+  
+    </section>
+    <section id="team">
+      <div class="wrapper">
+          <h1>Our Team</h1>
+          <div class="our_team">
+              <div class="team_member">
+                  <div class="member_img">
+                      <img src="https://avatars.githubusercontent.com/u/89638731?v=4" alt="dhananjay's github pfp" width="120" height="120" style=" border-radius: 50%">
+                      <div class="social_media">
+                          <div class="github item"><a href="https://www.github.com/dhananjayyedlabadkar" target="_blank"><i class="fab fa-github"></i></a></div>
+                          <div class="linkedin item"><a href="https://www.linkedin.com/in/dhananjay-yedlabadkar-20b952242/" target="_blank"><i class="fab fa-linkedin"></i></a></div>
+                      </div>
+                  </div>
+                  <h3>Dhananjay Yedlabadkar</h3>
+                  <p>Frontend Dev</p>
+              </div>
+              <div class="team_member">
+                  <div class="member_img">
+                      <img src="https://avatars.githubusercontent.com/u/80609574?v=4" alt="krishna's github pfp" width="120" height="120" style=" border-radius: 50%">
+                      <div class="social_media">
+                                   <div class="github item"><a href="https://www.github.com/krishnapandey24" target="_blank"><i class="fab fa-github"></i></a></div>
+                          <div class="linkedin item"><a href="https://www.linkedin.com/in/krishnapandey24" target="_blank"><i class="fab fa-linkedin"></i></a></div>
+                      </div>
+                  </div>
+                  <h3>Krishna Pandey</h3>
+                  <p>Backend & Fronted Dev</p>
+              </div>
+              <div class="team_member">
+                  <div class="member_img">
+                      <img src="https://avatars.githubusercontent.com/u/96898585?v=4" alt="somesh's github pfp" width="120" height="120" style=" border-radius: 50%">
+                      <div class="social_media">
+                          <div class="github item"><a href="https://www.github.com/somesh-waghade" target="_blank"><i class="fab fa-github"></i></a></div>
+                          <div class="linkedin item"><a href="https://www.linkedin.com/in/somesh-waghade-5ab54b229" target="_blank"><i class="fab fa-linkedin"></i></a></div>
+                      </div>
+                  </div>
+                  <h3>Somesh Wagade</h3>
+                  <p>Frontend dev</p>
+              </div>
+              <div class="team_member">
+                  <div class="member_img">
+                      <img src="https://avatars.githubusercontent.com/u/59260030?v=4" alt="karan's github pfp" width="120" height="120" style=" border-radius: 50%">
+                      <div class="social_media">
+                          <div class="github item"><a href="https://www.github.com/karanmandve" target="_blank"><i class="fab fa-github"></i></a></div>
+                          <div class="linkedin item"><a href="https://www.linkedin.com/in/karanmandve" target="_blank"><i class="fab fa-linkedin"></i></a></div>
+                      </div>
+                  </div>
+                  <h3>Karan Mandave</h3>
+                  <p>Backend & Frontend Dev</p>
+              </div>
+              <div class="team_member">
+                  <div class="member_img">
+                      <img src="https://avatars.githubusercontent.com/u/115344883?v=4" alt="rabiya's github pfp" width="120" height="120" style=" border-radius: 50%">
+                      <div class="social_media">
+                          <div class="github item"><a href="https://www.github.com/rabiyasiddiquee" target="_blank"><i class="fab fa-github"></i></a></div>
+                          <div class="linkedin item"><a href="https://www.linkedin.com/in/" target="_blank"><i class="fab fa-linkedin"></i></a></div>
+                      </div>
+                  </div>
+                  <h3>Rabiya Siddique</h3>
+                  <p>Analyst & Tester</p>
+              </div>
+          </div>
+      </div>
+    </section>
       <script src="../static/login/jquery-3.2.1.min.js.download"></script>
       <script src="../static/login/popper.js.download"></script>
       <script src="../static/login/bootstrap.min.js.download"></script>
-      <script src="../static/login/select2.min.js.download"></script>
+      <script src="../static/login/select2.min.js.download"></script> -->
       <script src="../static/login/tilt.jquery.min.js.download"></script>
       <script>
          $('.js-tilt').tilt({
@@ -105,15 +196,15 @@
          })
       </script>
       <script async="" src="../static/login/js"></script>
-      <script>
+      <!-- <script>
          window.dataLayer = window.dataLayer || [];
          function gtag(){dataLayer.push(arguments);}
          gtag('js', new Date());
 
          gtag('config', 'UA-23581568-13');
-      </script>
+      </script> 
       <script src="../static/login/main.js.download"></script>
       <script defer="" src="../static/login/vaafb692b2aea4879b33c060e79fe94621666317369993" integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA==" data-cf-beacon="{&quot;rayId&quot;:&quot;7645e0c95cb39a78&quot;,&quot;token&quot;:&quot;cd0b4b3a733644fc843ef0b185f98241&quot;,&quot;version&quot;:&quot;2022.11.0&quot;,&quot;si&quot;:100}" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script> -->
    </body>
 </html>
