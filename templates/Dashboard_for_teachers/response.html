@@ -27,6 +27,8 @@
         <div id="que_container" style="margin-top: 2%;">
             <div><b>Roll no</b></div>
             <div id="res"></div>
+            <div style="margin-top: 10px;"><b>Score</b></div>
+            <div id="score"></div>
         </div>
     </div>
    
@@ -56,6 +58,10 @@
                 }
                     
             }
+        });
+
+        fetch("./student_result").then((res)=>res.json()).then((data)=>{
+            document.querySelector("#score").innerHTML = data[0].score;
         });
     </script>
 </body>

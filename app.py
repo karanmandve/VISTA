@@ -495,8 +495,13 @@ def student_response():
 def student_result():
     all_results = AllScore.query.all()
 
-    print(all_results)
-    print(all_results[0])
+    # convert all_results into dictionary
+    all_results = [result.__dict__ for result in all_results]
+
+    # remove _sa_instance_state from all_results
+
+    for result in all_results:
+        result.pop("_sa_instance_state")
 
     return jsonify(all_results)
 
@@ -529,7 +534,7 @@ def generate_passwords(count):
 
 @app.route("/change-password", methods=['POST', 'GET'])
 def change_password_page():
-    form = UpdatePasswordForm()
+    form = UpdatePasswordForm() 
     message = ""
     if form.validate_on_submit():
         admin = User.query.filter_by(id=1).first()
