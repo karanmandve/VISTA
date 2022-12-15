@@ -25,43 +25,86 @@
             <h2><div id="no" style="display: inline;"></div> responses</h2>
         </div>
         <div id="que_container" style="margin-top: 2%;">
-            <div><b>Roll no</b></div>
+            <div style="display:flex;justify-content:space-between;padding: 0 1.5rem;"><b>Roll no</b><b>Score</b></div>
             <div id="res"></div>
-            <div style="margin-top: 10px;"><b>Score</b></div>
-            <div id="score"></div>
         </div>
     </div>
    
     <script>
         var count=0;
-        fetch("./all-students-responses").then((res)=>res.json()).then((data)=>{
-            console.log(data);
+        // fetch("./all-students-responses").then((res)=>res.json()).then((data)=>{
+        //     console.log(data);
+        //     let roll_no=data[0].roll_no;
+        //     count++;
+        //     child=document.createElement("div");
+        //     child.setAttribute("class","response");
+        //     child.innerText=roll_no;
+        //     document.getElementById("res").appendChild(child);
+        //     document.getElementById("no").innerText=count;
+        //     for (let index = 0; index < data.length; index++) {
+        //         const element = data[index];
+        //         if (element.roll_no !=roll_no){
+        //             roll_no=element.roll_no;
+        //             count++;
+        //             console.log(roll_no);
+        //             child=document.createElement("div");
+        //             child.setAttribute("class","response");
+        //             child.innerText=roll_no;
+        //             document.getElementById("res").appendChild(child);
+        //             document.getElementById("no").innerText=count;
+
+        //         }
+                    
+        //     }
+        // });
+
+        fetch("./student_result").then((res)=>res.json()).then((data)=>{
             let roll_no=data[0].roll_no;
+            let score=data[0].score;
             count++;
+
+            parent=document.createElement("div");
+           
+            parent.setAttribute("class","response");
+            
             child=document.createElement("div");
-            child.setAttribute("class","response");
             child.innerText=roll_no;
-            document.getElementById("res").appendChild(child);
+           
+            child2=document.createElement("div");
+            child2.innerText=score+"/"+data[0].total_questions;
+
+            parent.appendChild(child);
+            parent.appendChild(child2);
+
+            document.getElementById("res").appendChild(parent);
             document.getElementById("no").innerText=count;
+
             for (let index = 0; index < data.length; index++) {
                 const element = data[index];
                 if (element.roll_no !=roll_no){
                     roll_no=element.roll_no;
+                    score=element.score;
                     count++;
                     console.log(roll_no);
+                    parent=document.createElement("div");
+                    parent.setAttribute("class","response");
+                    
                     child=document.createElement("div");
-                    child.setAttribute("class","response");
                     child.innerText=roll_no;
-                    document.getElementById("res").appendChild(child);
+                
+                    child2=document.createElement("div");
+                    child2.innerText=score+"/"+element.total_questions;
+
+                    parent.appendChild(child);
+                    parent.appendChild(child2);
+
+                    document.getElementById("res").appendChild(parent);
                     document.getElementById("no").innerText=count;
 
                 }
                     
             }
-        });
-
-        fetch("./student_result").then((res)=>res.json()).then((data)=>{
-            document.querySelector("#score").innerHTML = data[0].score;
+            
         });
     </script>
 </body>

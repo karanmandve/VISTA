@@ -145,8 +145,10 @@ body{
 }
 
 .response{
+  display: flex;
+  justify-content: space-between;
   background:#d7d7d7;
-  padding-left: 1rem;
+  padding: 0.5rem 2rem;
   margin-top: 0.2rem;
 }
 
