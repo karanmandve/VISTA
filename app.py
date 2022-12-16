@@ -301,6 +301,7 @@ def active_exam(subject_name):
         return "Subject Activated"
     else:
         db.session.query(StudentResponse).delete()
+        db.session.query(AllScore).delete()
         db.session.query(User).filter(User.id != 1).delete()
 
         active_subject.subject_name = "None"
