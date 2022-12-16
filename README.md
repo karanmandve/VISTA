@@ -1,6 +1,7 @@
 # 🚀 VISTA: Virtual Instant Student Test Assessment
 
-VISTA is a web application for taking VIVA exams online. It is built using the Flask framework, with HTML, CSS, and JavaScript for the front-end.
+VISTA is a web application for taking VIVA exams online without any hassel of using the traditional pen and paper method.
+It is built using the Flask framework (micro-framework of python languege), with HTML, CSS, and JavaScript for the front-end.
 
 ## Visit the VISTA Website:
 
@@ -8,7 +9,7 @@ VISTA is a web application for taking VIVA exams online. It is built using the F
 
 ## 👥 Team Members:
 
-- Somesh Wadhade
+- Somesh Waghade
 - Krishna Pandey
 - Dhananjay Yedlabadkar
 - Karan Mandve
@@ -27,16 +28,17 @@ VISTA is a web application for taking VIVA exams online. It is built using the F
 
 ## 💾 Installation:
 
-1. Clone the repository: `git clone https://github.com/[YOUR_USERNAME]/vista.git`
+1. Clone the repository: `git clone https://github.com/karanmandve/vista.git`
 2. Install the required dependencies: `pip install -r requirements.txt`
-3. Set the flask app environment variable: `export FLASK_APP=vista`
-4. Run the app: `flask run`
+3. Run the app: `flask run`
 
 ## 📖 Usage:
 
 1. To create an exam, log in as an instructor and use the "Create Exam" form.
-2. To take an exam, log in as a student and select the exam from the list.
-3. When you have finished the exam, submit your answers and wait for the instructor to grade them.
+2. Activate perticuler exam form list which you created.
+3. Generate password for student and give to studnets.
+4. To take an exam, log in as a student and select the exam from the list.
+5. When you have finished the exam, submit your answers.
 
 ## 🤝 Contribution:
 
