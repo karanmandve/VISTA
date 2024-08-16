@@ -109,23 +109,33 @@ def load_user(user_id):
 
 # ADMIN LOGIN DECORATOR FUNCTION
 
-
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        try:
-            current_user.password
-        except:
+        # If id is not 1 then return abort with 403 error
+        if current_user.id != 1:
             return abort(403)
-            
-        admin = User.query.filter_by(id=1).first()
-
-        if current_user.password == admin.password:
-            return f(*args, **kwargs)
-        else:
-            return abort(403)
+        # Otherwise continue with the route function
+        return f(*args, **kwargs)
 
     return decorated_function
+
+# def admin_only(f):
+#     @wraps(f)
+#     def decorated_function(*args, **kwargs):
+#         try:
+#             current_user.password
+#         except:
+#             return abort(403)
+            
+#         admin = User.query.filter_by(id=1).first()
+
+#         if current_user.password == admin.password:
+#             return f(*args, **kwargs)
+#         else:
+#             return abort(403)
+
+#     return decorated_function
 
 
 
