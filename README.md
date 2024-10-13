@@ -5,7 +5,7 @@ It is built using the Flask framework (micro-framework of python languege), with
 
 ## Visit the VISTA Website:
 
-[vista.azurewebsites.net](https://vista.azurewebsites.net)
+[vista.azurewebsites.net](https://vista-app.azurewebsites.net/)
 
 ## 👥 Team Members:
 
